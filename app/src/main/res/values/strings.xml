@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">ScheduleAndroid</string>
+    <string name="search_title">Search</string>
+    <string name="list_groups">Список групп</string>
+    <string name="notifyMessage">Уведомления</string>
+    <string name="setting">Настройки</string>
+    <string name="messageAboutError">Сообщить об ошибке</string>
+    <string name="downloadingGroups">Загружаем список. Подождите…</string>
+    <string name="about_app">О программе</string>
+
+    <string-array name="name_array_curses">
+        <item> 1 курс бакалавриат</item>
+        <item> 2 курс бакалавриат</item>
+        <item> 3 курс бакалавриат</item>
+        <item> 4 курс бакалавриат</item>
+        <item> 1 курс магистратура</item>
+        <item> 2 курс магистратура</item>
+    </string-array>
+</resources>
