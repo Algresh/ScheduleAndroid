@@ -44,9 +44,9 @@ public class MainActivity extends AppCompatActivity {
 
     private List<GroupDTO> createMockDepartmentListData() {
         List<GroupDTO> data = new ArrayList<>();
-        data.add(connectedManager.getGroupDTOByFaculty("Департамент компьютерной инженерии"));// Эта правильная ее нужно раскоментить!!!
-        data.add(connectedManager.getGroupDTOByFaculty("Департамент электронной инженерии"));// Эта правильная ее нужно раскоментить!!!
-        data.add(connectedManager.getGroupDTOByFaculty("Департамент прикладной математики"));// Эта правильная ее нужно раскоментить!!!
+        data.add(connectedManager.getGroupDTOByFaculty(ConnectedManager.FACULTY_DKE));// Эта правильная ее нужно раскоментить!!!
+        data.add(connectedManager.getGroupDTOByFaculty(ConnectedManager.FACULTY_DEE));// Эта правильная ее нужно раскоментить!!!
+        data.add(connectedManager.getGroupDTOByFaculty(ConnectedManager.FACULTY_DPM));// Эта правильная ее нужно раскоментить!!!
 //        data.add(new GroupDTO("Департамент электронной инженерии"));
 //        data.add(new GroupDTO("Департамент электронной инженерии"));
 //        data.add(new GroupDTO("Департамент прикладной математики"));

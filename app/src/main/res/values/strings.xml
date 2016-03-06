@@ -16,4 +16,10 @@
         <item> 1 курс магистратура</item>
         <item> 2 курс магистратура</item>
     </string-array>
+
+    <string-array name="name_array_faculties">
+        <item> Департамент компьютерной инженерии</item>
+        <item> Департамент электронной инженерии</item>
+        <item> Департамент прикладной математики</item>
+    </string-array>
 </resources>

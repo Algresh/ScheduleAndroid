@@ -28,17 +28,24 @@ import java.util.concurrent.ExecutionException;
  */
 public class ConnectedManager {
 
-    public static final String GROUP_URL = "http://10.0.2.2/schedule/APIController/get_all_groups.php";
+    public static final String GROUP_URL = "http://10.0.2.2/schedule/APIController/get_all_groups.php?faculty=";
     public static final String LESSON_URL = "http://127.0.0.1/schedule/APIController/get_all_lessons_by_grp.php";
+    public static final String FACULTY_DKE = "1";
+    public static final String FACULTY_DEE = "2";
+    public static final String FACULTY_DPM = "3";
     public static final String MY_TAG = "myTag";
 
     DownloadPageTask MyTask;
     private ProgressDialog pDialog;
     private Context context;
 
+    private String[] faculties;
+
 
     public ConnectedManager(Context context) {
         this.context = context;
+
+        this.faculties = context.getResources().getStringArray(R.array.name_array_faculties);
     }
 
     public GroupDTO getGroupDTOByFaculty(String faculty) {
@@ -51,7 +58,7 @@ public class ConnectedManager {
         if (networkinfo != null && networkinfo.isConnected()) {
             //запускаем новый поток для подачи запроса на сервер
             MyTask =  new DownloadPageTask();
-            MyTask.execute(GROUP_URL);
+            MyTask.execute(GROUP_URL + faculty);
 
             Log.d(MY_TAG , "before downloading");
             String jsonStringGroups = null; //JSON который длжен вернуть сервер
@@ -83,6 +90,8 @@ public class ConnectedManager {
             HttpURLConnection connection = (HttpURLConnection) url
                     .openConnection();// открываем соединение
             connection.setRequestMethod("GET");
+
+//            connection.setRequestProperty("faculty", "1");
 
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) { // 200 OK
@@ -122,7 +131,7 @@ public class ConnectedManager {
             return null;
         }
 
-        GroupDTO  grpDTO = new GroupDTO(title);
+        GroupDTO  grpDTO = new GroupDTO(this.getStringFaculty(title));
         int idGrp;
         String namGrp;
         int versionGrp;
@@ -183,6 +192,23 @@ public class ConnectedManager {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
         }
+    }
+
+    private String getStringFaculty(String numFaculty) {
+        String strFaculty = null;
+        switch (numFaculty) {
+            case "1":
+                strFaculty = this.faculties[0];
+                break;
+            case "2":
+                strFaculty = this.faculties[1];
+                break;
+            case "3":
+                strFaculty = this.faculties[2];
+                break;
+        }
+
+        return strFaculty;
     }
 
 
