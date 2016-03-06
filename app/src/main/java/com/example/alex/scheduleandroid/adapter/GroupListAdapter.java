@@ -20,7 +20,7 @@ import java.util.List;
 
 public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.GroupViewHolder> {
 
-    private List<GroupDTO> data;// расписание с сервера
+    private List<GroupDTO> data;// группы с сервера
     private Context context;
 
 
