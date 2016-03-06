@@ -45,18 +45,31 @@ public class GroupDTO {
         return groups;
     }
 
-    public String[] getNameOfGroups() {
-        int numberGrps = groups.size();
+    public String[] getNameOfGroups(int numCourse) {
+        int numberGrps = this.numberGroupsByCourse(numCourse);
         String[] nameGroups;
         nameGroups  = new String[numberGrps];
 
         int i = 0;
         for (Group item : groups) {
-            nameGroups[i] = item.getTitleGrp();
-            i++;
+            if(item.getCourse() == numCourse){
+                nameGroups[i] = item.getTitleGrp();
+                i++;
+            }
         }
 
         return nameGroups;
+    }
+
+    private int numberGroupsByCourse(int course) {
+        int numberRightGrps = 0;
+        for (Group item : groups) {
+            if (item.getCourse() == course) {
+                numberRightGrps++;
+            }
+        }
+
+        return  numberRightGrps;
     }
 
 

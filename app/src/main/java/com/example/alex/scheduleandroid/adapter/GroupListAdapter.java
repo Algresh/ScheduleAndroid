@@ -69,13 +69,14 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.Grou
         GroupDTO item = data.get(position);
         holder.textView.setText(item.getTitle());
 
-        String[] titleGroups = item.getNameOfGroups(); //Получаем группы
+        String[] titleGroups; //Получаем группы
 
         this.filingCourses();
 
         childData = new ArrayList<ArrayList<Map<String, String>>>();
 
         for(int i = 0; i < NUMBER_OF_CURSES; i++) {
+            titleGroups = item.getNameOfGroups(i);
             childData.add(this.filingGroups(titleGroups));// заполняем коллекцию курсов группами
         }
 

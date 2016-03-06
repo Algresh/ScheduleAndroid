@@ -13,11 +13,14 @@ public class Group {
 
     private int numberMessages;
 
-    public Group(String titleGrp, int versionGrp, int idGrp, int numberMessages) {
+    private int course;
+
+    public Group(String titleGrp, int versionGrp, int idGrp, int numberMessages , int course) {
         this.titleGrp = titleGrp;
         this.versionGrp = versionGrp;
         this.idGrp = idGrp;
         this.numberMessages = numberMessages;
+        this.course = course;
     }
 
     public String getTitleGrp() {
@@ -50,5 +53,13 @@ public class Group {
 
     public void setNumberMessages(int numberMessages) {
         this.numberMessages = numberMessages;
+    }
+
+    public int getCourse() {
+        return course;
+    }
+
+    public void setCourse(int course) {
+        this.course = course;
     }
 }

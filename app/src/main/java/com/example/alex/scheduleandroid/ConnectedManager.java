@@ -136,6 +136,7 @@ public class ConnectedManager {
         String namGrp;
         int versionGrp;
         int numMessages;
+        int course;
 
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
@@ -151,8 +152,9 @@ public class ConnectedManager {
                     namGrp = arrayElement.getString("nam_grp");
                     versionGrp = arrayElement.getInt("version_grp");
                     numMessages = arrayElement.getInt("num_message");
+                    course = arrayElement.getInt("course");
 
-                    grpDTO.setGroup(new Group(namGrp , versionGrp , idGrp , numMessages));
+                    grpDTO.setGroup(new Group(namGrp , versionGrp , idGrp , numMessages , course));
                 }
             } else {
                 return null;
