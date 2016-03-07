@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 
 import com.example.alex.scheduleandroid.dto.GroupDTO;
+import com.example.alex.scheduleandroid.dto.WorkDayDTO;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,7 +30,7 @@ import java.util.concurrent.ExecutionException;
 public class ConnectedManager {
 
     public static final String GROUP_URL = "http://10.0.2.2/schedule/APIController/get_all_groups.php?faculty=";
-    public static final String LESSON_URL = "http://127.0.0.1/schedule/APIController/get_all_lessons_by_grp.php";
+    public static final String LESSON_URL = "http://10.0.2.2/schedule/APIController/get_all_lessons_by_grp.php?grp=";
     public static final String FACULTY_DKE = "1";
     public static final String FACULTY_DEE = "2";
     public static final String FACULTY_DPM = "3";
@@ -51,11 +52,8 @@ public class ConnectedManager {
     public GroupDTO getGroupDTOByFaculty(String faculty) {
         GroupDTO grpDTO = null;
 
-        // этот класс отвечает за проверку подключения
-        ConnectivityManager myConnMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkinfo = myConnMgr.getActiveNetworkInfo();
 
-        if (networkinfo != null && networkinfo.isConnected()) {
+        if (this.checkConnection()) {
             //запускаем новый поток для подачи запроса на сервер
             MyTask =  new DownloadPageTask();
             MyTask.execute(GROUP_URL + faculty);
@@ -70,7 +68,7 @@ public class ConnectedManager {
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-            Log.d(MY_TAG , "after downloading");
+            Log.d(MY_TAG, "after downloading");
 
             //парсим полученный JSON
             grpDTO = this.parseRespondJSONGroups(jsonStringGroups, faculty);
@@ -80,6 +78,31 @@ public class ConnectedManager {
 
         return grpDTO;
 
+    }
+
+    public WorkDayDTO getWorkDTOByGroup(String group) {
+        WorkDayDTO workDayDTO = null;
+
+        if (this.checkConnection()) {
+            MyTask = new DownloadPageTask();
+            MyTask.execute(LESSON_URL + group);
+
+            String jsonStringLessons = null;
+            try {
+                jsonStringLessons = MyTask.get();
+                pDialog.dismiss();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
+            workDayDTO = this.parseRespondJSONLessons(jsonStringLessons , "today");
+        } else {
+            Toast.makeText(context, "Нет интернета", Toast.LENGTH_SHORT).show();
+        }
+
+        return workDayDTO;
     }
 
     private String downloadOneUrl(String myurl) throws IOException {
@@ -167,6 +190,70 @@ public class ConnectedManager {
         return grpDTO;
     }
 
+    private WorkDayDTO parseRespondJSONLessons (String jsonString , String dateOfLesson) {
+        if(jsonString.equals("error")) {
+            return null;
+        }
+
+        WorkDayDTO workDayDTO = new WorkDayDTO(dateOfLesson);
+        workDayDTO.setDateOfWorkDay(dateOfLesson);
+
+        int idLesson;
+        String teacher;
+        int subGrp;
+        String classRoom;
+        String place;
+        int numberLesson;
+        String typeLesson;
+        String nameSubject;
+        String[] date;
+
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+
+            int success = jsonObject.getInt("success");
+
+            if(success == 1) {
+                JSONArray jsonLessons = jsonObject.getJSONArray("lesson");
+
+                for (int i = 0; i< jsonLessons.length(); i++) {
+                    JSONObject arrayElement = jsonLessons.getJSONObject(i);
+
+                    idLesson  = arrayElement.getInt("id");
+                    teacher  = arrayElement.getString("teacher");
+                    nameSubject  = arrayElement.getString("namSubj");
+                    subGrp  = arrayElement.getInt("subGrp");
+                    classRoom  = arrayElement.getString("classRoom");
+                    place  = arrayElement.getString("place");
+                    numberLesson  = arrayElement.getInt("numberLesson");
+                    typeLesson  = arrayElement.getString("getString");
+
+                    JSONArray jsonDateLesson = jsonObject.getJSONArray("dateLesson");
+
+                    date = new String[jsonDateLesson.length()];
+
+                    for (int j = 0; j < jsonDateLesson.length(); j++) {
+                        JSONObject arrayDateElement = jsonDateLesson.getJSONObject(j);
+                        date[j] = arrayDateElement.getString("lesson_date");
+
+                    }
+
+                    workDayDTO.setGroup(new Lesson(nameSubject , numberLesson , classRoom , typeLesson , teacher ,subGrp ,place ,date));
+                }
+
+            } else {
+                return null;
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        return  workDayDTO;
+
+    }
+
     private class DownloadPageTask extends AsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
@@ -211,6 +298,14 @@ public class ConnectedManager {
         }
 
         return strFaculty;
+    }
+
+    private boolean checkConnection () {
+        // этот класс отвечает за проверку подключения
+        ConnectivityManager myConnMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkinfo = myConnMgr.getActiveNetworkInfo();
+
+        return networkinfo != null && networkinfo.isConnected();
     }
 
 

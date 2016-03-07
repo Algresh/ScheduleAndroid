@@ -17,13 +17,19 @@ public class LessonsShowActivity extends AppCompatActivity {
 
     private static final int LAYOUT = R.layout.activity_lessons_show;
 
+    private ConnectedManager connectedManager;
+
+    private String group;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
 
         Intent intent  = getIntent();
-        String group = intent.getStringExtra("group");
+        group = intent.getStringExtra("group");
+
+        connectedManager = new ConnectedManager(this);
 
         RecyclerView recyclerViewLessons = (RecyclerView) findViewById(R.id.recycleViewLessons);
         recyclerViewLessons.setLayoutManager(new LinearLayoutManager(this));
@@ -35,6 +41,8 @@ public class LessonsShowActivity extends AppCompatActivity {
         list.add(new WorkDayDTO("ddd"));
         list.add(new WorkDayDTO("dddd"));
         list.add(new WorkDayDTO("ddda"));
+
+//        connectedManager.getWorkDTOByGroup(group);
 
         return list;
     }
