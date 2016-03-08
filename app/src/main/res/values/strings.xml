@@ -9,6 +9,9 @@
     <string name="about_app">О программе</string>
     <string name="today"> Сегодня </string>
     <string name="tomorrow"> Завтра </string>
+    <string name="numLesson"> Пара: </string>
+    <string name="classRoom"> Ауд: </string>
+    <string name="subGroup"> Подгруппа: </string>
 
     <string-array name="name_array_curses">
         <item> 1 курс бакалавриат</item>

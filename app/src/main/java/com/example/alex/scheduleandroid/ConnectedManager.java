@@ -58,7 +58,7 @@ public class ConnectedManager {
             MyTask =  new DownloadPageTask();
             MyTask.execute(GROUP_URL + faculty);
 
-            Log.d(MY_TAG , "before downloading");
+//            Log.d(MY_TAG , "before downloading");
             String jsonStringGroups = null; //JSON который длжен вернуть сервер
             try {
                 jsonStringGroups = MyTask.get();// получаем значения из AsyncTask
@@ -68,7 +68,7 @@ public class ConnectedManager {
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-            Log.d(MY_TAG, "after downloading");
+//            Log.d(MY_TAG, "after downloading");
 
             //парсим полученный JSON
             grpDTO = this.parseRespondJSONGroups(jsonStringGroups, faculty);
@@ -97,7 +97,7 @@ public class ConnectedManager {
                 e.printStackTrace();
             }
 
-            workDayDTO = this.parseRespondJSONLessons(jsonStringLessons , date);
+            workDayDTO = this.parseRespondJSONLessons(jsonStringLessons, date);
         } else {
             Toast.makeText(context, "Нет интернета", Toast.LENGTH_SHORT).show();
         }
@@ -108,6 +108,7 @@ public class ConnectedManager {
     private String downloadOneUrl(String myurl) throws IOException {
         InputStream inputstream = null;
         String data = "";
+//        Log.d(MY_TAG , "OK");
         try {
             URL url = new URL(myurl);
             HttpURLConnection connection = (HttpURLConnection) url
@@ -136,8 +137,10 @@ public class ConnectedManager {
             connection.disconnect();// закрываем соединение
             //return data;
         } catch (MalformedURLException e) {
+            Log.d(MY_TAG , "1");
             e.printStackTrace();
         } catch (IOException e) {
+            Log.d(MY_TAG , "2");
             e.printStackTrace();
         } finally {
             if (inputstream != null) {
@@ -206,17 +209,20 @@ public class ConnectedManager {
         int numberLesson;
         String typeLesson;
         String nameSubject;
-        String[] date;
+        String[] date = null;
 
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
 
             int success = jsonObject.getInt("success");
 
+
             if(success == 1) {
                 JSONArray jsonLessons = jsonObject.getJSONArray("lesson");
+//                Log.d(MY_TAG , jsonLessons.length() + "");
 
                 for (int i = 0; i< jsonLessons.length(); i++) {
+
                     JSONObject arrayElement = jsonLessons.getJSONObject(i);
 
                     idLesson  = arrayElement.getInt("id");
@@ -226,17 +232,28 @@ public class ConnectedManager {
                     classRoom  = arrayElement.getString("classRoom");
                     place  = arrayElement.getString("place");
                     numberLesson  = arrayElement.getInt("numberLesson");
-                    typeLesson  = arrayElement.getString("getString");
+//                    Log.d(MY_TAG , "0");
+                    typeLesson  = arrayElement.getString("typeLesson");
+//                    Log.d(MY_TAG , "44");
 
-                    JSONArray jsonDateLesson = jsonObject.getJSONArray("dateLesson");
+                    date = null;
+                    try{
+                        JSONArray jsonDateLesson = jsonObject.getJSONArray("dateLesson");
+//                        Log.d(MY_TAG , "1");
 
-                    date = new String[jsonDateLesson.length()];
+                        date = new String[jsonDateLesson.length()];
+//                        Log.d(MY_TAG , "2");
 
-                    for (int j = 0; j < jsonDateLesson.length(); j++) {
-                        JSONObject arrayDateElement = jsonDateLesson.getJSONObject(j);
-                        date[j] = arrayDateElement.getString("lesson_date");
+                        for (int j = 0; j < jsonDateLesson.length(); j++) {
+                            JSONObject arrayDateElement = jsonDateLesson.getJSONObject(j);
+                            date[j] = arrayDateElement.getString("lesson_date");
 
+                        }
+//                        Log.d(MY_TAG , "3");
+                    }catch (JSONException e) {
+                        e.printStackTrace();
                     }
+
 
                     workDayDTO.setGroup(new Lesson(nameSubject , numberLesson , classRoom , typeLesson , teacher ,subGrp ,place ,date));
                 }
@@ -247,6 +264,7 @@ public class ConnectedManager {
 
         } catch (JSONException e) {
             e.printStackTrace();
+//            Log.d(MY_TAG, "oo");
         }
 
 

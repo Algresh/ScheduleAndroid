@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:columnCount="3"
+    android:rowCount="4">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/numLesson"
+        android:id="@+id/numLesson"
+        style="@style/textLesson"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_columnSpan="2"
+        android:layout_gravity="right"
+        android:text="@string/classRoom"
+        android:id="@+id/classRoom"
+        style="@style/textLesson" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_columnSpan="3"
+        android:layout_gravity="center"
+        android:id="@+id/nameSubj"
+        android:text="Medium Text"
+        style="@style/textLesson"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_columnSpan="3"
+        android:layout_gravity="center"
+        android:id="@+id/teacher"
+        android:text="Medium Text"
+        style="@style/textLesson"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/subGroup"
+        android:id="@+id/subGroup"
+        style="@style/textLesson"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/address"
+        android:layout_columnSpan="2"
+        android:layout_gravity="right"
+        style="@style/textLesson"/>
+
+</GridLayout>

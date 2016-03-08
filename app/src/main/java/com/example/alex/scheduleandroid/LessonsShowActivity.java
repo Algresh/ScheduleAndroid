@@ -5,9 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.TextView;
 
-import com.example.alex.scheduleandroid.adapter.LessonListAdapter;
+import com.example.alex.scheduleandroid.adapter.WorkDayListAdapter;
 import com.example.alex.scheduleandroid.dto.WorkDayDTO;
 
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ public class LessonsShowActivity extends AppCompatActivity {
 
         RecyclerView recyclerViewLessons = (RecyclerView) findViewById(R.id.recycleViewLessons);
         recyclerViewLessons.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewLessons.setAdapter(new LessonListAdapter(mockLesson()));
+        recyclerViewLessons.setAdapter(new WorkDayListAdapter(mockLesson() , this));
     }
 
     private List<WorkDayDTO> mockLesson(){

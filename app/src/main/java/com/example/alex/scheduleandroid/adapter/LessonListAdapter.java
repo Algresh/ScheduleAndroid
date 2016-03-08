@@ -1,53 +1,70 @@
 package com.example.alex.scheduleandroid.adapter;
 
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.content.Context;
+import android.widget.SimpleAdapter;
 
+import com.example.alex.scheduleandroid.Lesson;
 import com.example.alex.scheduleandroid.R;
 import com.example.alex.scheduleandroid.dto.WorkDayDTO;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-public class LessonListAdapter extends RecyclerView.Adapter<LessonListAdapter.LessonViewHolder> {
+public class LessonListAdapter {
 
-    private List<WorkDayDTO> data;// расписание с сервера
+    private static final String CLASS_ROOM = "classRoom";
+    private static final String NUMBER_LESSON = "numberLesson";
+    private static final String NAME_SUBJECT = "nameSubject";
+    private static final String TEACHER = "teacher";
+    private static final String SUB_GROUP = "subGroup";
+    private static final String ADDRESS = "address";
 
-    public LessonListAdapter(List<WorkDayDTO> data) {
-        this.data = data;
+    Context context;
+
+    String[] from = {CLASS_ROOM , NUMBER_LESSON , NAME_SUBJECT , TEACHER , SUB_GROUP , ADDRESS};
+
+    int[] to = {R.id.classRoom , R.id.numLesson , R.id.nameSubj
+            , R.id.teacher , R.id.subGroup , R.id.address};
+
+    private String classRoom;
+    private String numLesson;
+    private String subGrp;
+
+    public LessonListAdapter(Context context) {
+        this.context = context;
+
+        classRoom = context.getResources().getString(R.string.classRoom);
+        numLesson = context.getResources().getString(R.string.numLesson);
+        subGrp = context.getResources().getString(R.string.subGroup);
     }
 
-    @Override
-    public LessonViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.work_day_item, parent , false);
+    public SimpleAdapter getAdapter(WorkDayDTO itemDTO) {
 
-        return new LessonListAdapter.LessonViewHolder(view);
-    }
+        ArrayList<HashMap<String , String>> list = new ArrayList<HashMap<String , String>>();
 
-    @Override
-    public void onBindViewHolder(LessonViewHolder holder, int position) {
-        WorkDayDTO item = data.get(position);
-        holder.textView.setText(item.getDateOfWorkDay());
-    }
+        String title;
 
+        HashMap<String , String> hm;
 
-    @Override
-    public int getItemCount() {
-        return data.size();
-    }
+        for(Lesson item: itemDTO.getLessons()) {
+            hm = new HashMap<String , String>();
 
-    public class LessonViewHolder extends RecyclerView.ViewHolder {
-        CardView cardView;
-        TextView textView;
+            title = item.getTypeLesson() + ": " + item.getTitleOfSubject();
 
-        public LessonViewHolder(View itemView) {
-            super(itemView);
+            hm.put(CLASS_ROOM , classRoom + item.getClassRoom());
+            hm.put(NUMBER_LESSON , numLesson +  item.getNumberOfLesson());
+            hm.put(NAME_SUBJECT , title );
+            hm.put(TEACHER , item.getTeacher());
+            hm.put(SUB_GROUP , subGrp + item.getSunGroup());
+            hm.put(ADDRESS , item.getAdress());
 
-            cardView = (CardView) itemView.findViewById(R.id.cardViewWorkDay);
-            textView = (TextView) itemView.findViewById(R.id.dateOfLessons);
+            list.add(hm);
         }
+
+        SimpleAdapter simpleAdapter = new SimpleAdapter(context , list , R.layout.lesson_item ,
+                from , to);
+
+        return simpleAdapter;
+
     }
 }
