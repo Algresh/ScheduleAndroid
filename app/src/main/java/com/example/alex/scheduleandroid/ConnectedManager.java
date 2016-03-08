@@ -80,7 +80,7 @@ public class ConnectedManager {
 
     }
 
-    public WorkDayDTO getWorkDTOByGroup(String group) {
+    public WorkDayDTO getWorkDTOByGroup(String group ,String date) {
         WorkDayDTO workDayDTO = null;
 
         if (this.checkConnection()) {
@@ -97,7 +97,7 @@ public class ConnectedManager {
                 e.printStackTrace();
             }
 
-            workDayDTO = this.parseRespondJSONLessons(jsonStringLessons , "today");
+            workDayDTO = this.parseRespondJSONLessons(jsonStringLessons , date);
         } else {
             Toast.makeText(context, "Нет интернета", Toast.LENGTH_SHORT).show();
         }

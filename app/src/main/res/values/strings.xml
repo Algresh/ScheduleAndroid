@@ -7,6 +7,8 @@
     <string name="messageAboutError">Сообщить об ошибке</string>
     <string name="downloadingGroups">Загружаем список. Подождите…</string>
     <string name="about_app">О программе</string>
+    <string name="today"> Сегодня </string>
+    <string name="tomorrow"> Завтра </string>
 
     <string-array name="name_array_curses">
         <item> 1 курс бакалавриат</item>
@@ -22,4 +24,30 @@
         <item> Департамент электронной инженерии</item>
         <item> Департамент прикладной математики</item>
     </string-array>
+
+    <string-array name="name_day_of_week">
+        <item> Воскресенье </item>
+        <item> Понедельник </item>
+        <item> Вторник </item>
+        <item> Среда </item>
+        <item> Четверг</item>
+        <item> Пятница </item>
+        <item> Суббота </item>
+    </string-array>
+
+    <string-array name="name_month">
+        <item> Янв </item>
+        <item> Фев </item>
+        <item> Мар </item>
+        <item> Апр</item>
+        <item> Май </item>
+        <item> Июн </item>
+        <item> Июл </item>
+        <item> Авг </item>
+        <item> Сен </item>
+        <item> Окт </item>
+        <item> Ноя </item>
+        <item> Дек </item>
+    </string-array>
+
 </resources>
