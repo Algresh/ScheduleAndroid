@@ -1,6 +1,7 @@
 package com.example.alex.scheduleandroid.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.SimpleAdapter;
 
 import com.example.alex.scheduleandroid.Lesson;
@@ -18,6 +19,8 @@ public class LessonListAdapter {
     private static final String TEACHER = "teacher";
     private static final String SUB_GROUP = "subGroup";
     private static final String ADDRESS = "address";
+
+    public static final String MY_TAG = "myTag";
 
     Context context;
 
@@ -47,6 +50,7 @@ public class LessonListAdapter {
         HashMap<String , String> hm;
 
         for(Lesson item: itemDTO.getLessons()) {
+
             hm = new HashMap<String , String>();
 
             title = item.getTypeLesson() + ": " + item.getTitleOfSubject();

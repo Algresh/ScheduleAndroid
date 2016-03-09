@@ -43,4 +43,8 @@ public class WorkDayDTO {
         return lessons;
     }
 
+    public int getNumberOfLessons() {
+        return lessons.size();
+    }
+
 }

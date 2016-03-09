@@ -67,6 +67,8 @@ public class LessonsShowActivity extends AppCompatActivity {
         sevenDays[0] = this.getResources().getString(R.string.today);
         sevenDays[1] = this.getResources().getString(R.string.tomorrow);
 
+        calendar.add(Calendar.DAY_OF_MONTH, 2);
+
         for (int i = 2; i < DAYS_FOR_SHOWING; i++) {
 
 
