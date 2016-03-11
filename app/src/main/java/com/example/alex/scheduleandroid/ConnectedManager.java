@@ -80,7 +80,7 @@ public class ConnectedManager {
 
     }
 
-    public WorkDayDTO getWorkDTOByGroup(String group ,String date) {
+    public WorkDayDTO getWorkDTOByGroup(String group ,String[] date) {
         WorkDayDTO workDayDTO = null;
 
         if (this.checkConnection()) {
@@ -193,7 +193,7 @@ public class ConnectedManager {
         return grpDTO;
     }
 
-    private WorkDayDTO parseRespondJSONLessons (String jsonString , String dateOfLesson) {
+    private WorkDayDTO parseRespondJSONLessons (String jsonString , String[] dateOfLesson) {
         if(jsonString.equals("error")) {
             return null;
         }
@@ -237,16 +237,20 @@ public class ConnectedManager {
 //                    Log.d(MY_TAG , "44");
 
                     date = null;
+
                     try{
-                        JSONArray jsonDateLesson = jsonObject.getJSONArray("dateLesson");
+//                        Log.d(MY_TAG , "Q");
+                        JSONArray jsonDateLesson = arrayElement.getJSONArray("dateLesson");
 //                        Log.d(MY_TAG , "1");
 
                         date = new String[jsonDateLesson.length()];
+
 //                        Log.d(MY_TAG , "2");
 
                         for (int j = 0; j < jsonDateLesson.length(); j++) {
                             JSONObject arrayDateElement = jsonDateLesson.getJSONObject(j);
                             date[j] = arrayDateElement.getString("lesson_date");
+
 
                         }
 //                        Log.d(MY_TAG , "3");

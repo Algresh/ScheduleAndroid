@@ -50,8 +50,10 @@ public class LessonsShowActivity extends AppCompatActivity {
 
         String[] dates = getSevenDays(calendar);
 
+        WorkDayDTO workDayDTO = connectedManager.getWorkDTOByGroup(group, dates);
+
         for (int i = 0; i < DAYS_FOR_SHOWING; i++) {
-            list.add(connectedManager.getWorkDTOByGroup(group ,dates[i] ));
+            list.add(workDayDTO);
         }
 
         return list;

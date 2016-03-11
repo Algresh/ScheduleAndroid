@@ -3,6 +3,7 @@ package com.example.alex.scheduleandroid.adapter;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.example.alex.scheduleandroid.ConnectedManager;
 import com.example.alex.scheduleandroid.R;
 import com.example.alex.scheduleandroid.dto.WorkDayDTO;
 
@@ -37,10 +39,11 @@ public class WorkDayListAdapter extends RecyclerView.Adapter<WorkDayListAdapter.
     @Override
     public void onBindViewHolder(LessonViewHolder holder, int position) {
         WorkDayDTO item = data.get(position);
-        holder.textView.setText(item.getDateOfWorkDay());
+        holder.textView.setText(item.getDateOfWorkDay(position));
 
+//        Log.d(ConnectedManager.MY_TAG, position + "");
         LessonListAdapter lessonListAdapter = new LessonListAdapter(context);
-        SimpleAdapter adapter = lessonListAdapter.getAdapter(item);
+        SimpleAdapter adapter = lessonListAdapter.getAdapter(item , position);
 
         holder.listView.setAdapter(adapter);
         setListViewHeightBasedOnChildren(holder.listView);
@@ -51,7 +54,7 @@ public class WorkDayListAdapter extends RecyclerView.Adapter<WorkDayListAdapter.
         /**
          * @TODO understand how this method worked
          */
-        ListAdapter listAdapter = listView.getAdapter();
+        ListAdapter listAdapter = listView.getAdapter();// получаем адаптер списка
         if (listAdapter == null) {
             // pre-condition
             return;
@@ -65,7 +68,7 @@ public class WorkDayListAdapter extends RecyclerView.Adapter<WorkDayListAdapter.
         }
 
         ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1) + 30);
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
     }

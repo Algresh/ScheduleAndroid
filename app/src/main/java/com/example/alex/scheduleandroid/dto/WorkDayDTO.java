@@ -9,21 +9,25 @@ import java.util.List;
  * Created by alex on 06.03.16.
  */
 public class WorkDayDTO {
-    private String dateOfWorkDay;
+    private String[] dateOfWorkDay;
 
     private List<Lesson> lessons;
 
-    public WorkDayDTO(String dateOfWorkDay) {
+    public WorkDayDTO(String[] dateOfWorkDay) {
         this.dateOfWorkDay = dateOfWorkDay;
 
         lessons = new ArrayList<Lesson>();
     }
 
-    public String getDateOfWorkDay() {
+    public String[] getDateOfWorkDay() {
         return dateOfWorkDay;
     }
 
-    public void setDateOfWorkDay(String dateOfWorkDay) {
+    public String getDateOfWorkDay(int position) {
+        return dateOfWorkDay[position];
+    }
+
+    public void setDateOfWorkDay(String[] dateOfWorkDay) {
         this.dateOfWorkDay = dateOfWorkDay;
     }
 
