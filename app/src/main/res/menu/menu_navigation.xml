@@ -3,7 +3,9 @@
     <item
         android:title="@string/list_groups"
         android:orderInCategory="1"
-        android:icon="@drawable/view_list" />
+        android:icon="@drawable/view_list"
+        android:id="@+id/listOfGroups"
+        />
 
     <item
         android:title="@string/notifyMessage"
