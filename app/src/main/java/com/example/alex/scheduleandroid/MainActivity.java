@@ -2,6 +2,7 @@ package com.example.alex.scheduleandroid;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +13,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 
 import com.example.alex.scheduleandroid.adapter.GroupListAdapter;
@@ -23,6 +26,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    final static String GROUP_USER = "group_user";
     private static final int LAYOUT = R.layout.activity_main;
 
     private DrawerLayout drawerLayout;
@@ -78,7 +82,12 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
+        View headerLayout = navigationView.getHeaderView(0);
 
+        TextView tvUserGroup = (TextView) headerLayout.findViewById(R.id.groupUserNavigationHeader);
+        SharedPreferences sPref = getSharedPreferences(GROUP_USER , MODE_PRIVATE);
+        String userGrp = sPref.getString(GROUP_USER , "");
+        tvUserGroup.setText(userGrp);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override

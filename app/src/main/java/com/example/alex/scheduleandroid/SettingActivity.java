@@ -22,7 +22,7 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
-        sPref = getPreferences(MODE_PRIVATE);
+        sPref = getSharedPreferences(GROUP_USER , MODE_PRIVATE);
         String userGrp = sPref.getString(GROUP_USER , "");
 
 
@@ -39,7 +39,7 @@ public class SettingActivity extends AppCompatActivity {
 
         SharedPreferences.Editor editor = sPref.edit();
         editor.putString(GROUP_USER , str);
-        editor.commit();
+        editor.apply();
         Toast.makeText(this , grpSaved , Toast.LENGTH_SHORT).show();
     }
 
