@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
     private MyAsyncTask myAsyncTask;
 
+    private String userGrp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,19 +87,26 @@ public class MainActivity extends AppCompatActivity {
         View headerLayout = navigationView.getHeaderView(0);
 
         TextView tvUserGroup = (TextView) headerLayout.findViewById(R.id.groupUserNavigationHeader);
-        SharedPreferences sPref = getSharedPreferences(GROUP_USER , MODE_PRIVATE);
-        String userGrp = sPref.getString(GROUP_USER , "");
+        SharedPreferences sPref = getSharedPreferences(GROUP_USER, MODE_PRIVATE);
+        userGrp = sPref.getString(GROUP_USER , "");
         tvUserGroup.setText(userGrp);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 drawerLayout.closeDrawers();
+                Intent intent;
                 switch (item.getItemId()) {
                     case R.id.settings:
-                        Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                        intent = new Intent(MainActivity.this, SettingActivity.class);
                         startActivity(intent);
                         break;
+                    case R.id.myLessonsItem:
+                        intent = new Intent(MainActivity.this , LessonsShowActivity.class);
+                        intent.putExtra("group" , userGrp);
+                        startActivity(intent);
+                        break;
+
                 }
                 return true;
             }

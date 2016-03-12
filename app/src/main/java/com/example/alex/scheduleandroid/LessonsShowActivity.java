@@ -2,6 +2,7 @@ package com.example.alex.scheduleandroid;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.alex.scheduleandroid.adapter.WorkDayListAdapter;
@@ -23,6 +25,7 @@ public class LessonsShowActivity extends AppCompatActivity {
 
     private static final int LAYOUT = R.layout.activity_lessons_show;
     private static final int DAYS_FOR_SHOWING = 7;
+    final static String GROUP_USER = "group_user";
 
     private ConnectedManager connectedManager;
 
@@ -37,6 +40,8 @@ public class LessonsShowActivity extends AppCompatActivity {
     private DownloadPageTask downloadPageTask;
 
     private DrawerLayout drawerLayout;
+    private String userGrp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +69,32 @@ public class LessonsShowActivity extends AppCompatActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout_lesson);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
+        View headerLayout = navigationView.getHeaderView(0);
+
+        TextView tvUserGroup = (TextView) headerLayout.findViewById(R.id.groupUserNavigationHeader);
+        SharedPreferences sPref = getSharedPreferences(GROUP_USER, MODE_PRIVATE);
+        userGrp = sPref.getString(GROUP_USER , "");
+        tvUserGroup.setText(userGrp);
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 drawerLayout.closeDrawers();
+                Intent intent;
                 switch (item.getItemId()) {
                     case R.id.listOfGroups:
-                        Intent intent = new Intent(LessonsShowActivity.this , MainActivity.class);
+                        intent = new Intent(LessonsShowActivity.this , MainActivity.class);
                         startActivity(intent);
+                        break;
+                    case R.id.settings:
+                        intent = new Intent(LessonsShowActivity.this, SettingActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.myLessonsItem:
+                        intent = new Intent(LessonsShowActivity.this , LessonsShowActivity.class);
+                        intent.putExtra("group" , userGrp);
+                        startActivity(intent);
+                        break;
                 }
 
                 return true;

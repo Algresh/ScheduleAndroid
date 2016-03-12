@@ -8,6 +8,13 @@
         />
 
     <item
+        android:title="@string/my_lessons"
+        android:orderInCategory="1"
+        android:icon="@drawable/view_list"
+        android:id="@+id/myLessonsItem"
+        />
+
+    <item
         android:title="@string/notifyMessage"
         android:orderInCategory="1"
         android:id="@+id/notification"
