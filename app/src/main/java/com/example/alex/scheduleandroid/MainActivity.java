@@ -1,8 +1,6 @@
 package com.example.alex.scheduleandroid;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -20,7 +18,6 @@ import com.example.alex.scheduleandroid.dto.GroupDTO;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -85,16 +82,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 drawerLayout.closeDrawers();
-                switch (item.getItemId()) {
-                    case R.id.listOfGroups:
-                        /**
-                         * @TODO Проверку в какой активити ты находишься
-                         */
-
-                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        break;
-                }
+//                switch (item.getItemId()) {
+//                    case R.id.listOfGroups:
+//
+//
+//                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+//                        startActivity(intent);
+//                        break;
+//                }
                 return true;
             }
         });

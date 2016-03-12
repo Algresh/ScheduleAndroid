@@ -3,10 +3,13 @@ package com.example.alex.scheduleandroid;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.alex.scheduleandroid.adapter.WorkDayListAdapter;
@@ -33,6 +36,8 @@ public class LessonsShowActivity extends AppCompatActivity {
 
     private DownloadPageTask downloadPageTask;
 
+    private DrawerLayout drawerLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,11 +51,32 @@ public class LessonsShowActivity extends AppCompatActivity {
         this.dayOfWeek = this.getResources().getStringArray(R.array.name_day_of_week);
         this.month = this.getResources().getStringArray(R.array.name_month);
 
+        initNavigationView();
+
 
         recyclerViewLessons = (RecyclerView) findViewById(R.id.recycleViewLessons);
         recyclerViewLessons.setLayoutManager(new LinearLayoutManager(this));
         downloadPageTask = new DownloadPageTask();
         downloadPageTask.execute();
+    }
+
+    private void initNavigationView() {
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout_lesson);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                drawerLayout.closeDrawers();
+                switch (item.getItemId()) {
+                    case R.id.listOfGroups:
+                        Intent intent = new Intent(LessonsShowActivity.this , MainActivity.class);
+                        startActivity(intent);
+                }
+
+                return true;
+            }
+        });
     }
 
 
