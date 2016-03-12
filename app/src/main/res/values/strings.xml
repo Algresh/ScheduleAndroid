@@ -14,6 +14,7 @@
     <string name="subGroup"> Подгруппа: </string>
     <string name="open"> open </string>
     <string name="close"> close </string>
+    <string name="noLessons"> Занятий нет </string>
 
     <string-array name="name_array_curses">
         <item> 1 курс бакалавриат</item>

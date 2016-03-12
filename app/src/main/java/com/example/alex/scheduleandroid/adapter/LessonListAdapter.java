@@ -54,28 +54,20 @@ public class LessonListAdapter {
         Calendar calendar2 = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
-//        Log.d(ConnectedManager.MY_TAG, calendar.toString());
-//        Log.d(ConnectedManager.MY_TAG, calendar2.toString());
         long dateLong1 =  10000 * calendar.get(Calendar.YEAR)  + calendar.get(Calendar.MONTH) * 100 + calendar.get(Calendar.DAY_OF_MONTH);
         long dateLong2 = 0;
-//        Log.d(ConnectedManager.MY_TAG, dateLong1 + " | " + dateLong2);
-
-//        calendar.compareTo()
-
-//        Log.d(ConnectedManager.MY_TAG , calendar.toString());
 
         ArrayList<HashMap<String , String>> list = new ArrayList<HashMap<String , String>>();
 
         String title;
 
         HashMap<String , String> hm;
-//        Log.d(ConnectedManager.MY_TAG, "1");
+
+        boolean dayWithoutLessons = true; // флаг показывающий есть ли занятие в этот день
 
         for(Lesson item: itemDTO.getLessons()) {
-//            Log.d(ConnectedManager.MY_TAG, "dds");
 
-            for(String strDate : item.getDateOfLesson()){
-//                Log.d(ConnectedManager.MY_TAG, "2");
+            for(String strDate : item.getDateOfLesson()) {
                 try {
                     Date date = format.parse(strDate);
                     calendar2.setTime(date);
@@ -83,11 +75,11 @@ public class LessonListAdapter {
                     e.printStackTrace();
                 }
 
-//                Log.d(ConnectedManager.MY_TAG, "3");
                 dateLong2 = 10000 * calendar2.get(Calendar.YEAR)  + calendar2.get(Calendar.MONTH) * 100 + calendar2.get(Calendar.DAY_OF_MONTH);
 
                 if(dateLong1 == dateLong2) {
-//                    Log.d(ConnectedManager.MY_TAG, "4");
+                    dayWithoutLessons = false;
+
                     hm = new HashMap<String , String>();
 
                     title = item.getTypeLesson() + ": " + item.getTitleOfSubject();
@@ -108,6 +100,15 @@ public class LessonListAdapter {
             }
 
         }
+
+        if (dayWithoutLessons) {
+            hm = new HashMap<String , String>();
+            title = context.getResources().getString(R.string.noLessons);
+            hm.put(NAME_SUBJECT , title );
+            list.add(hm);
+        }
+
+
 
 
         SimpleAdapter simpleAdapter = new SimpleAdapter(context , list , R.layout.lesson_item ,
