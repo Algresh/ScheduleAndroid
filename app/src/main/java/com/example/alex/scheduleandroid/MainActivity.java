@@ -110,17 +110,15 @@ public class MainActivity extends AppCompatActivity {
 
             pDialog = new ProgressDialog(MainActivity.this);
             pDialog.setMessage(strMsg);
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(false);
             pDialog.show();
         }
 
         @Override
         protected List<GroupDTO> doInBackground(Void... params) {
             List<GroupDTO> data = new ArrayList<>();
-            data.add(connectedManager.getGroupDTOByFaculty(ConnectedManager.FACULTY_DKE));// Эта правильная ее нужно раскоментить!!!
-            data.add(connectedManager.getGroupDTOByFaculty(ConnectedManager.FACULTY_DEE));// Эта правильная ее нужно раскоментить!!!
-            data.add(connectedManager.getGroupDTOByFaculty(ConnectedManager.FACULTY_DPM));// Эта правильная ее нужно раскоментить!!!
+            data.add(connectedManager.getGroupDTOByFaculty(ConnectedManager.FACULTY_DKE));
+            data.add(connectedManager.getGroupDTOByFaculty(ConnectedManager.FACULTY_DEE));
+            data.add(connectedManager.getGroupDTOByFaculty(ConnectedManager.FACULTY_DPM));
 
             return data;
         }

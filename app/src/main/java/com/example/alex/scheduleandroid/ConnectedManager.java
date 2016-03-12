@@ -1,10 +1,8 @@
 package com.example.alex.scheduleandroid;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -22,7 +20,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by alex on 02.03.16.
@@ -36,8 +33,6 @@ public class ConnectedManager {
     public static final String FACULTY_DPM = "3";
     public static final String MY_TAG = "myTag";
 
-    DownloadPageTask MyTask;
-    private ProgressDialog pDialog;
     private Context context;
 
     private String[] faculties;
@@ -54,11 +49,6 @@ public class ConnectedManager {
 
 
         if (this.checkConnection()) {
-            //запускаем новый поток для подачи запроса на сервер
-//            MyTask =  new DownloadPageTask();
-//            MyTask.execute(GROUP_URL + faculty);
-
-//            Log.d(MY_TAG , "before downloading");
             String jsonStringGroups = null; //JSON который длжен вернуть сервер
 
             try {
@@ -66,9 +56,6 @@ public class ConnectedManager {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-//            pDialog.dismiss();// отменяем прогресс бар
-
-//            Log.d(MY_TAG, "after downloading");
 
             //парсим полученный JSON
             grpDTO = this.parseRespondJSONGroups(jsonStringGroups, faculty);
@@ -84,16 +71,11 @@ public class ConnectedManager {
         WorkDayDTO workDayDTO = null;
 
         if (this.checkConnection()) {
-            MyTask = new DownloadPageTask();
-            MyTask.execute(LESSON_URL + group);
 
             String jsonStringLessons = null;
             try {
-                jsonStringLessons = MyTask.get();
-                pDialog.dismiss();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+                jsonStringLessons = downloadOneUrl(LESSON_URL + group);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -108,14 +90,12 @@ public class ConnectedManager {
     private String downloadOneUrl(String myurl) throws IOException {
         InputStream inputstream = null;
         String data = "";
-//        Log.d(MY_TAG , "OK");
         try {
             URL url = new URL(myurl);
             HttpURLConnection connection = (HttpURLConnection) url
                     .openConnection();// открываем соединение
             connection.setRequestMethod("GET");
 
-//            connection.setRequestProperty("faculty", "1");
 
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) { // 200 OK
@@ -135,7 +115,6 @@ public class ConnectedManager {
                 data = connection.getResponseMessage() + " . Error Code : " + responseCode;
             }
             connection.disconnect();// закрываем соединение
-            //return data;
         } catch (MalformedURLException e) {
             Log.d(MY_TAG , "1");
             e.printStackTrace();
@@ -219,7 +198,6 @@ public class ConnectedManager {
 
             if(success == 1) {
                 JSONArray jsonLessons = jsonObject.getJSONArray("lesson");
-//                Log.d(MY_TAG , jsonLessons.length() + "");
 
                 for (int i = 0; i< jsonLessons.length(); i++) {
 
@@ -232,20 +210,14 @@ public class ConnectedManager {
                     classRoom  = arrayElement.getString("classRoom");
                     place  = arrayElement.getString("place");
                     numberLesson  = arrayElement.getInt("numberLesson");
-//                    Log.d(MY_TAG , "0");
                     typeLesson  = arrayElement.getString("typeLesson");
-//                    Log.d(MY_TAG , "44");
 
                     date = null;
 
                     try{
-//                        Log.d(MY_TAG , "Q");
                         JSONArray jsonDateLesson = arrayElement.getJSONArray("dateLesson");
-//                        Log.d(MY_TAG , "1");
 
                         date = new String[jsonDateLesson.length()];
-
-//                        Log.d(MY_TAG , "2");
 
                         for (int j = 0; j < jsonDateLesson.length(); j++) {
                             JSONObject arrayDateElement = jsonDateLesson.getJSONObject(j);
@@ -253,7 +225,6 @@ public class ConnectedManager {
 
 
                         }
-//                        Log.d(MY_TAG , "3");
                     }catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -268,7 +239,6 @@ public class ConnectedManager {
 
         } catch (JSONException e) {
             e.printStackTrace();
-//            Log.d(MY_TAG, "oo");
         }
 
 
@@ -276,34 +246,6 @@ public class ConnectedManager {
 
     }
 
-    private class DownloadPageTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            String strMsg = context.getString(R.string.downloadingGroups);
-
-            pDialog = new ProgressDialog(context);
-            pDialog.setMessage(strMsg);
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
-
-        @Override
-        protected String doInBackground(String... urls) {
-            try {
-                return downloadOneUrl(urls[0]);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "error";
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-        }
-    }
 
     private String getStringFaculty(String numFaculty) {
         String strFaculty = null;
