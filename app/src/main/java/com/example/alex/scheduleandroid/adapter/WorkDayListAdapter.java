@@ -39,9 +39,9 @@ public class WorkDayListAdapter extends RecyclerView.Adapter<WorkDayListAdapter.
     @Override
     public void onBindViewHolder(LessonViewHolder holder, int position) {
         WorkDayDTO item = data.get(position);
+
         holder.textView.setText(item.getDateOfWorkDay(position));
 
-//        Log.d(ConnectedManager.MY_TAG, position + "");
         LessonListAdapter lessonListAdapter = new LessonListAdapter(context);
         SimpleAdapter adapter = lessonListAdapter.getAdapter(item , position);
 

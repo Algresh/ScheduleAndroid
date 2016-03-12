@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
 
 import com.example.alex.scheduleandroid.adapter.WorkDayListAdapter;
 import com.example.alex.scheduleandroid.dto.WorkDayDTO;
@@ -37,9 +38,14 @@ public class LessonsShowActivity extends AppCompatActivity {
         this.dayOfWeek = this.getResources().getStringArray(R.array.name_day_of_week);
         this.month = this.getResources().getStringArray(R.array.name_month);
 
-        RecyclerView recyclerViewLessons = (RecyclerView) findViewById(R.id.recycleViewLessons);
-        recyclerViewLessons.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewLessons.setAdapter(new WorkDayListAdapter(mockLesson() , this));
+        List<WorkDayDTO> list = mockLesson();
+
+        if (list != null) {
+
+            RecyclerView recyclerViewLessons = (RecyclerView) findViewById(R.id.recycleViewLessons);
+            recyclerViewLessons.setLayoutManager(new LinearLayoutManager(this));
+            recyclerViewLessons.setAdapter(new WorkDayListAdapter(list , this));
+        }
     }
 
     private List<WorkDayDTO> mockLesson(){
@@ -52,8 +58,14 @@ public class LessonsShowActivity extends AppCompatActivity {
 
         WorkDayDTO workDayDTO = connectedManager.getWorkDTOByGroup(group, dates);
 
-        for (int i = 0; i < DAYS_FOR_SHOWING; i++) {
-            list.add(workDayDTO);
+        if (workDayDTO != null) {
+            for (int i = 0; i < DAYS_FOR_SHOWING; i++) {
+                list.add(workDayDTO);
+            }
+        } else {
+            TextView textView = (TextView) findViewById(R.id.noLessonsInGroup);
+            textView.setText(R.string.noDateAboutThisGroup);
+            return null;
         }
 
         return list;
