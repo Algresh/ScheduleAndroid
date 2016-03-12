@@ -55,19 +55,19 @@ public class ConnectedManager {
 
         if (this.checkConnection()) {
             //запускаем новый поток для подачи запроса на сервер
-            MyTask =  new DownloadPageTask();
-            MyTask.execute(GROUP_URL + faculty);
+//            MyTask =  new DownloadPageTask();
+//            MyTask.execute(GROUP_URL + faculty);
 
 //            Log.d(MY_TAG , "before downloading");
             String jsonStringGroups = null; //JSON который длжен вернуть сервер
+
             try {
-                jsonStringGroups = MyTask.get();// получаем значения из AsyncTask
-                pDialog.dismiss();// отменяем прогресс бар
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+                jsonStringGroups = downloadOneUrl(GROUP_URL + faculty);// получаем значения из AsyncTask
+            } catch (IOException e) {
                 e.printStackTrace();
             }
+//            pDialog.dismiss();// отменяем прогресс бар
+
 //            Log.d(MY_TAG, "after downloading");
 
             //парсим полученный JSON

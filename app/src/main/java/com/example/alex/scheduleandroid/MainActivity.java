@@ -1,7 +1,9 @@
 package com.example.alex.scheduleandroid;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,6 +20,7 @@ import com.example.alex.scheduleandroid.dto.GroupDTO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -28,6 +31,12 @@ public class MainActivity extends AppCompatActivity {
 
     private ConnectedManager connectedManager;
     private Toolbar toolbar;
+
+    private ProgressDialog pDialog;
+
+    private RecyclerView recyclerView;
+
+    private MyAsyncTask myAsyncTask;
 
 
     @Override
@@ -40,13 +49,10 @@ public class MainActivity extends AppCompatActivity {
 
         connectedManager = new ConnectedManager(this);
 
-
-
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycleView);
+        recyclerView = (RecyclerView) findViewById(R.id.recycleView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new GroupListAdapter(createMockDepartmentListData() , this));
-
+        myAsyncTask =  new MyAsyncTask();
+        myAsyncTask.execute();
     }
 
     private void initToolBar() {
@@ -63,17 +69,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private List<GroupDTO> createMockDepartmentListData() {
-        List<GroupDTO> data = new ArrayList<>();
-        data.add(connectedManager.getGroupDTOByFaculty(ConnectedManager.FACULTY_DKE));// Эта правильная ее нужно раскоментить!!!
-        data.add(connectedManager.getGroupDTOByFaculty(ConnectedManager.FACULTY_DEE));// Эта правильная ее нужно раскоментить!!!
-        data.add(connectedManager.getGroupDTOByFaculty(ConnectedManager.FACULTY_DPM));// Эта правильная ее нужно раскоментить!!!
-//        data.add(new GroupDTO("Департамент электронной инженерии"));
-//        data.add(new GroupDTO("Департамент электронной инженерии"));
-//        data.add(new GroupDTO("Департамент прикладной математики"));
-
-        return data;
-    }
 
 
     private void initNavigationView() {
@@ -103,6 +98,41 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    public class MyAsyncTask extends AsyncTask<Void , Void , List<GroupDTO>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            String strMsg = MainActivity.this.getString(R.string.downloadingGroups);
+
+            pDialog = new ProgressDialog(MainActivity.this);
+            pDialog.setMessage(strMsg);
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
+        @Override
+        protected List<GroupDTO> doInBackground(Void... params) {
+            List<GroupDTO> data = new ArrayList<>();
+            data.add(connectedManager.getGroupDTOByFaculty(ConnectedManager.FACULTY_DKE));// Эта правильная ее нужно раскоментить!!!
+            data.add(connectedManager.getGroupDTOByFaculty(ConnectedManager.FACULTY_DEE));// Эта правильная ее нужно раскоментить!!!
+            data.add(connectedManager.getGroupDTOByFaculty(ConnectedManager.FACULTY_DPM));// Эта правильная ее нужно раскоментить!!!
+
+            return data;
+        }
+
+        @Override
+        protected void onPostExecute( List<GroupDTO> list) {
+            super.onPostExecute(list);
+            pDialog.dismiss();
+            recyclerView.setAdapter(new GroupListAdapter(list, MainActivity.this));
+
+        }
+
     }
 
 
