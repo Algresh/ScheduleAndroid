@@ -16,6 +16,9 @@
     <string name="close"> close </string>
     <string name="noLessons"> Занятий нет </string>
     <string name="noDateAboutThisGroup"> Нет данных по этой группе </string>
+    <string name="yourGroup"> Ваша группа: </string>
+    <string name="yourGroupSelect">Принять</string>
+    <string name="groupSaved">Группа сохранена</string>
 
     <string-array name="name_array_curses">
         <item> 1 курс бакалавриат</item>

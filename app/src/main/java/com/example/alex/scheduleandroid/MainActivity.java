@@ -1,6 +1,7 @@
 package com.example.alex.scheduleandroid;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -83,14 +84,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 drawerLayout.closeDrawers();
-//                switch (item.getItemId()) {
-//                    case R.id.listOfGroups:
-//
-//
-//                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
-//                        startActivity(intent);
-//                        break;
-//                }
+                switch (item.getItemId()) {
+                    case R.id.settings:
+                        Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                        startActivity(intent);
+                        break;
+                }
                 return true;
             }
         });

@@ -10,11 +10,13 @@
     <item
         android:title="@string/notifyMessage"
         android:orderInCategory="1"
+        android:id="@+id/notification"
         android:icon="@drawable/message_text" />
 
     <item
         android:title="@string/setting"
         android:orderInCategory="1"
+        android:id="@+id/settings"
         android:icon="@drawable/settings" />
 
     <item
