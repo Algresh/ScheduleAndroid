@@ -1,8 +1,5 @@
 package com.example.alex.scheduleandroid;
 
-/**
- * Created by alex on 13.03.16.
- */
 public class Constants {
     public final static String GROUP_USER = "group_user";
 
@@ -23,5 +20,71 @@ public class Constants {
     public static final String TEACHER = "teacher";
     public static final String SUB_GROUP = "subGroup";
     public static final String ADDRESS = "address";
+
+    public static final String DATABASE_NAME = "mydatabase.db";
+    public static final int RIGHT_DATABASE_VERSION = 1;
+
+    //------------------------TABLE GROUP----------------------
+    public static final String DATABASE_TABLE_GROUP = "grp";
+    public static final String GROUP_COLUMN_ID = "id";
+    public static final String GROUP_COLUMN_NAME = "nam_grp";
+    public static final String GROUP_COLUMN_VERSION = "version_grp";
+    public static final String GROUP_COLUMN_NUMBER_MESSAGE = "num_message";
+    public static final String GROUP_COLUMN_FACULTY = "faculty";
+    public static final String GROUP_COLUMN_COURSE = "course";
+
+    //------------------------TABLE LESSON----------------------
+    public static final String DATABASE_TABLE_LESSON = "lesson";
+    public static final String LESSON_COLUMN_ID = "id";
+    public static final String LESSON_COLUMN_NAME = "nam_subj";
+    public static final String LESSON_COLUMN_TYPE = "type_lesson";
+    public static final String LESSON_COLUMN_NUMBER = "number_lesson";
+    public static final String LESSON_COLUMN_CLASSROOM = "class_room";
+    public static final String LESSON_COLUMN_TEACHER = "teacher";
+    public static final String LESSON_COLUMN_SUB_GRP = "sub_grp";
+    public static final String LESSON_COLUMN_PLACE = "place_lesson";
+    public static final String LESSON_COLUMN_GRP_ID = "grp_id";
+
+    //------------------------TABLE DATELESSON----------------------
+    public static final String DATABASE_TABLE_DATELESSON = "date_lesson";
+    public static final String DATELESSON_COLUMN_ID = "id";
+    public static final String DATELESSON_COLUMN_DATE = "lesson_date";
+    public static final String DATELESSON_COLUMN_LESSON_ID = "lesson_id";
+
+
+    //------------------------CREATE TABLE GROUP----------------------
+    public static final String DATABASE_CREATE_TABLE_GROUP = "create table " + DATABASE_TABLE_GROUP + "(" +
+            GROUP_COLUMN_ID  + " integer primary key autoincrement," +
+            GROUP_COLUMN_NAME  + " text," +
+            GROUP_COLUMN_VERSION  + " integer," +
+            GROUP_COLUMN_NUMBER_MESSAGE  + " integer," +
+            GROUP_COLUMN_FACULTY  + " integer," +
+            GROUP_COLUMN_COURSE  + " integer" +
+            ");";
+
+
+    //------------------------CREATE TABLE LESSON----------------------
+    public static final String DATABASE_CREATE_TABLE_LESSON = "create table " + DATABASE_TABLE_LESSON + "(" +
+            LESSON_COLUMN_ID  + " integer primary key autoincrement," +
+            LESSON_COLUMN_NAME + " text," +
+            LESSON_COLUMN_TYPE + " text," +
+            LESSON_COLUMN_NUMBER + " integer," +
+            LESSON_COLUMN_CLASSROOM + " text," +
+            LESSON_COLUMN_TEACHER + " text," +
+            LESSON_COLUMN_SUB_GRP + " integer," +
+            LESSON_COLUMN_PLACE + " text," +
+            LESSON_COLUMN_GRP_ID + " integer);";
+
+
+    //------------------------CREATE TABLE DATELESSON----------------------
+    public static final String DATABASE_CREATE_TABLE_DATELESSON = "create table " + DATABASE_TABLE_DATELESSON + "(" +
+            DATELESSON_COLUMN_ID  + "id integer primary key autoincrement," +
+            DATELESSON_COLUMN_DATE  + "lesson_date text," +
+            DATELESSON_COLUMN_LESSON_ID  + " integer );";
+
+
+    public static final String SELECTION_CHECK_GROUP = GROUP_COLUMN_NAME + "=? AND "
+            + GROUP_COLUMN_FACULTY + "=? AND " + GROUP_COLUMN_COURSE + "=?";
+
 
 }

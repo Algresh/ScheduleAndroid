@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 
 import com.example.alex.scheduleandroid.adapter.GroupListAdapter;
+import com.example.alex.scheduleandroid.database.DatabaseManager;
 import com.example.alex.scheduleandroid.dto.FacultyDTO;
 
 import java.util.ArrayList;
@@ -131,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
             data.add(connectedManager.getGroupDTOByFaculty(Constants.FACULTY_DKE));
             data.add(connectedManager.getGroupDTOByFaculty(Constants.FACULTY_DEE));
             data.add(connectedManager.getGroupDTOByFaculty(Constants.FACULTY_DPM));
+
+            DatabaseManager databaseManager = new DatabaseManager(MainActivity.this);
+            databaseManager.updateGroups(data);
 
             return data;
         }
