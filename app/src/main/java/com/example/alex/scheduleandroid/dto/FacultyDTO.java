@@ -2,20 +2,18 @@ package com.example.alex.scheduleandroid.dto;
 
 
 
-import com.example.alex.scheduleandroid.Group;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by algresh on 14.02.16.
  */
-public class GroupDTO {
+public class FacultyDTO {
     private String titleFaculty;
 
     private List<Group> groups;
 
-    public GroupDTO(String title) {
+    public FacultyDTO(String title) {
         this.titleFaculty = title;
 
         groups = new ArrayList<Group>();

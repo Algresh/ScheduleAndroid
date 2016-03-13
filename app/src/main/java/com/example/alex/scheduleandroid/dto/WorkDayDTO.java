@@ -1,7 +1,5 @@
 package com.example.alex.scheduleandroid.dto;
 
-import com.example.alex.scheduleandroid.Lesson;
-
 import java.util.ArrayList;
 import java.util.List;
 

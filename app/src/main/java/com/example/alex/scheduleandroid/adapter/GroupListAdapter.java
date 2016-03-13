@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +13,17 @@ import android.widget.TextView;
 
 import com.example.alex.scheduleandroid.LessonsShowActivity;
 import com.example.alex.scheduleandroid.R;
-import com.example.alex.scheduleandroid.dto.GroupDTO;
+import com.example.alex.scheduleandroid.dto.FacultyDTO;
 
 import java.util.List;
 
 public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.GroupViewHolder> {
 
-    private List<GroupDTO> data;// группы с сервера
+    private List<FacultyDTO> data;// группы с сервера
     private Context context;
 
 
-    public GroupListAdapter(List<GroupDTO> dataDepartment, Context context) {
+    public GroupListAdapter(List<FacultyDTO> dataDepartment, Context context) {
         this.data = dataDepartment;
         this.context = context;
     }
@@ -38,7 +37,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.Grou
 
     @Override
     public void onBindViewHolder(GroupViewHolder holder, int position) {
-        GroupDTO item = data.get(position);
+        FacultyDTO item = data.get(position);
         holder.textView.setText(item.getTitle());
 
         GroupExpandableListAdapter groupExpandableListAdapter = new GroupExpandableListAdapter(context);

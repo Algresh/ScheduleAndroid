@@ -1,11 +1,10 @@
 package com.example.alex.scheduleandroid.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.SimpleAdapter;
 
-import com.example.alex.scheduleandroid.ConnectedManager;
-import com.example.alex.scheduleandroid.Lesson;
+import com.example.alex.scheduleandroid.Constants;
+import com.example.alex.scheduleandroid.dto.Lesson;
 import com.example.alex.scheduleandroid.R;
 import com.example.alex.scheduleandroid.dto.WorkDayDTO;
 
@@ -18,18 +17,10 @@ import java.util.HashMap;
 
 public class LessonListAdapter {
 
-    private static final String CLASS_ROOM = "classRoom";
-    private static final String NUMBER_LESSON = "numberLesson";
-    private static final String NAME_SUBJECT = "nameSubject";
-    private static final String TEACHER = "teacher";
-    private static final String SUB_GROUP = "subGroup";
-    private static final String ADDRESS = "address";
-
-    public static final String MY_TAG = "myTag";
-
     Context context;
 
-    String[] from = {CLASS_ROOM , NUMBER_LESSON , NAME_SUBJECT , TEACHER , SUB_GROUP , ADDRESS};
+    String[] from = {Constants.CLASS_ROOM , Constants.NUMBER_LESSON , Constants.NAME_SUBJECT ,
+            Constants.TEACHER , Constants.SUB_GROUP , Constants.ADDRESS};
 
     int[] to = {R.id.classRoom , R.id.numLesson , R.id.nameSubj
             , R.id.teacher , R.id.subGroup , R.id.address};
@@ -84,16 +75,16 @@ public class LessonListAdapter {
 
                     title = item.getTypeLesson() + ": " + item.getTitleOfSubject();
 
-                    hm.put(CLASS_ROOM , classRoom + item.getClassRoom());
-                    hm.put(NUMBER_LESSON , numLesson +  item.getNumberOfLesson());
-                    hm.put(NAME_SUBJECT , title );
-                    hm.put(TEACHER , item.getTeacher());
+                    hm.put(Constants.CLASS_ROOM , classRoom + item.getClassRoom());
+                    hm.put(Constants.NUMBER_LESSON , numLesson +  item.getNumberOfLesson());
+                    hm.put(Constants.NAME_SUBJECT , title );
+                    hm.put(Constants.TEACHER , item.getTeacher());
                     if(item.getSunGroup() != 0 ){
-                        hm.put(SUB_GROUP , subGrp + item.getSunGroup());
+                        hm.put(Constants.SUB_GROUP , subGrp + item.getSunGroup());
                     } else {
-                        hm.put(SUB_GROUP ,"");
+                        hm.put(Constants.SUB_GROUP ,"");
                     }
-                    hm.put(ADDRESS, item.getAdress());
+                    hm.put(Constants.ADDRESS, item.getAdress());
 
                     list.add(hm);
                 }
@@ -104,7 +95,7 @@ public class LessonListAdapter {
         if (dayWithoutLessons) {
             hm = new HashMap<String , String>();
             title = context.getResources().getString(R.string.noLessons);
-            hm.put(NAME_SUBJECT , title );
+            hm.put(Constants.NAME_SUBJECT , title );
             list.add(hm);
         }
 

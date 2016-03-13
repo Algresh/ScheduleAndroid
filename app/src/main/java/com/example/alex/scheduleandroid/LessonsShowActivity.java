@@ -24,8 +24,6 @@ import java.util.List;
 public class LessonsShowActivity extends AppCompatActivity {
 
     private static final int LAYOUT = R.layout.activity_lessons_show;
-    private static final int DAYS_FOR_SHOWING = 7;
-    final static String GROUP_USER = "group_user";
 
     private ConnectedManager connectedManager;
 
@@ -72,8 +70,8 @@ public class LessonsShowActivity extends AppCompatActivity {
         View headerLayout = navigationView.getHeaderView(0);
 
         TextView tvUserGroup = (TextView) headerLayout.findViewById(R.id.groupUserNavigationHeader);
-        SharedPreferences sPref = getSharedPreferences(GROUP_USER, MODE_PRIVATE);
-        userGrp = sPref.getString(GROUP_USER , "");
+        SharedPreferences sPref = getSharedPreferences(Constants.GROUP_USER, MODE_PRIVATE);
+        userGrp = sPref.getString(Constants.GROUP_USER , "");
         tvUserGroup.setText(userGrp);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -104,7 +102,7 @@ public class LessonsShowActivity extends AppCompatActivity {
 
 
     private String[] getSevenDays(java.util.Calendar calendar){
-        String[] sevenDays = new String[DAYS_FOR_SHOWING];
+        String[] sevenDays = new String[Constants.DAYS_FOR_SHOWING];
 
         String month;
         String dayOdWeek;
@@ -115,7 +113,7 @@ public class LessonsShowActivity extends AppCompatActivity {
 
         calendar.add(Calendar.DAY_OF_MONTH, 2);
 
-        for (int i = 2; i < DAYS_FOR_SHOWING; i++) {
+        for (int i = 2; i < Constants.DAYS_FOR_SHOWING; i++) {
 
 
             month = this.month[calendar.get(Calendar.MONTH)];
@@ -156,7 +154,7 @@ public class LessonsShowActivity extends AppCompatActivity {
             WorkDayDTO workDayDTO = connectedManager.getWorkDTOByGroup(group, dates);
 
             if (workDayDTO != null) {
-                for (int i = 0; i < DAYS_FOR_SHOWING; i++) {
+                for (int i = 0; i < Constants.DAYS_FOR_SHOWING; i++) {
                     list.add(workDayDTO);
                 }
             } else {

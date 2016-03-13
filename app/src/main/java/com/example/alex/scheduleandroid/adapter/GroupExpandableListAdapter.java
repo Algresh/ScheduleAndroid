@@ -3,8 +3,9 @@ package com.example.alex.scheduleandroid.adapter;
 import android.content.Context;
 import android.widget.SimpleExpandableListAdapter;
 
+import com.example.alex.scheduleandroid.Constants;
 import com.example.alex.scheduleandroid.R;
-import com.example.alex.scheduleandroid.dto.GroupDTO;
+import com.example.alex.scheduleandroid.dto.FacultyDTO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,8 +13,6 @@ import java.util.Map;
 
 
 public class GroupExpandableListAdapter {
-
-    final static int NUMBER_OF_CURSES = 6;
 
     private ArrayList<Map<String , String>> coursesData; //колекция названий курсов
 
@@ -43,7 +42,7 @@ public class GroupExpandableListAdapter {
         this.courses = context.getResources().getStringArray(R.array.name_array_curses);
     }
 
-    public SimpleExpandableListAdapter getAdapter(GroupDTO item) {
+    public SimpleExpandableListAdapter getAdapter(FacultyDTO item) {
 
         String[] titleGroups; //Получаем группы
 
@@ -51,7 +50,7 @@ public class GroupExpandableListAdapter {
 
         childData = new ArrayList<ArrayList<Map<String, String>>>();
 
-        for(int i = 0; i < NUMBER_OF_CURSES; i++) {
+        for(int i = 0; i < Constants.NUMBER_OF_CURSES; i++) {
             titleGroups = item.getNameOfGroups(i);
             childData.add(this.filingGroups(titleGroups));// заполняем коллекцию курсов группами
         }

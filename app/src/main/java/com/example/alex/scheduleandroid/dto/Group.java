@@ -1,4 +1,4 @@
-package com.example.alex.scheduleandroid;
+package com.example.alex.scheduleandroid.dto;
 
 /**
  * Created by alex on 02.03.16.

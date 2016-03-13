@@ -20,7 +20,6 @@ public class SettingActivity extends AppCompatActivity {
 
     SharedPreferences sPref;
 
-    final static String GROUP_USER = "group_user";
     private DrawerLayout drawerLayout;
 
     private String userGrp;
@@ -30,8 +29,8 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
-        sPref = getSharedPreferences(GROUP_USER , MODE_PRIVATE);
-        String userGrp = sPref.getString(GROUP_USER , "");
+        sPref = getSharedPreferences(Constants.GROUP_USER , MODE_PRIVATE);
+        String userGrp = sPref.getString(Constants.GROUP_USER , "");
 
 
         btnSelectYourGroup = (Button) findViewById(R.id.selectYourGroup);
@@ -49,8 +48,8 @@ public class SettingActivity extends AppCompatActivity {
         View headerLayout = navigationView.getHeaderView(0);
 
         TextView tvUserGroup = (TextView) headerLayout.findViewById(R.id.groupUserNavigationHeader);
-        sPref = getSharedPreferences(GROUP_USER, MODE_PRIVATE);
-        userGrp = sPref.getString(GROUP_USER , "");
+        sPref = getSharedPreferences(Constants.GROUP_USER, MODE_PRIVATE);
+        userGrp = sPref.getString(Constants.GROUP_USER , "");
         tvUserGroup.setText(userGrp);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -81,7 +80,7 @@ public class SettingActivity extends AppCompatActivity {
         String grpSaved = this.getResources().getString(R.string.groupSaved);
 
         SharedPreferences.Editor editor = sPref.edit();
-        editor.putString(GROUP_USER , str);
+        editor.putString(Constants.GROUP_USER , str);
         editor.apply();
         Toast.makeText(this , grpSaved , Toast.LENGTH_SHORT).show();
     }

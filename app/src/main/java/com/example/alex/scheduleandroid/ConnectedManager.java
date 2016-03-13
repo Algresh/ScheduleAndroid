@@ -7,7 +7,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 
-import com.example.alex.scheduleandroid.dto.GroupDTO;
+import com.example.alex.scheduleandroid.dto.Group;
+import com.example.alex.scheduleandroid.dto.FacultyDTO;
+import com.example.alex.scheduleandroid.dto.Lesson;
 import com.example.alex.scheduleandroid.dto.WorkDayDTO;
 
 import org.json.JSONArray;
@@ -26,13 +28,6 @@ import java.net.URL;
  */
 public class ConnectedManager {
 
-    public static final String GROUP_URL = "http://10.0.2.2/schedule/APIController/get_all_groups.php?faculty=";
-    public static final String LESSON_URL = "http://10.0.2.2/schedule/APIController/get_all_lessons_by_grp.php?grp=";
-    public static final String FACULTY_DKE = "1";
-    public static final String FACULTY_DEE = "2";
-    public static final String FACULTY_DPM = "3";
-    public static final String MY_TAG = "myTag";
-
     private Context context;
 
     private String[] faculties;
@@ -44,15 +39,15 @@ public class ConnectedManager {
         this.faculties = context.getResources().getStringArray(R.array.name_array_faculties);
     }
 
-    public GroupDTO getGroupDTOByFaculty(String faculty) {
-        GroupDTO grpDTO = null;
+    public FacultyDTO getGroupDTOByFaculty(String faculty) {
+        FacultyDTO grpDTO = null;
 
 
         if (this.checkConnection()) {
             String jsonStringGroups = null; //JSON который длжен вернуть сервер
 
             try {
-                jsonStringGroups = downloadOneUrl(GROUP_URL + faculty);// получаем значения из AsyncTask
+                jsonStringGroups = downloadOneUrl(Constants.GROUP_URL + faculty);// получаем значения из AsyncTask
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -74,7 +69,7 @@ public class ConnectedManager {
 
             String jsonStringLessons = null;
             try {
-                jsonStringLessons = downloadOneUrl(LESSON_URL + group);
+                jsonStringLessons = downloadOneUrl(Constants.LESSON_URL + group);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -116,10 +111,10 @@ public class ConnectedManager {
             }
             connection.disconnect();// закрываем соединение
         } catch (MalformedURLException e) {
-            Log.d(MY_TAG , "1");
+            Log.d(Constants.MY_TAG , "1");
             e.printStackTrace();
         } catch (IOException e) {
-            Log.d(MY_TAG , "2");
+            Log.d(Constants.MY_TAG , "2");
             e.printStackTrace();
         } finally {
             if (inputstream != null) {
@@ -129,14 +124,14 @@ public class ConnectedManager {
         return data;
     }
 
-    private GroupDTO parseRespondJSONGroups (String jsonString , String title) {
+    private FacultyDTO parseRespondJSONGroups (String jsonString , String title) {
         // метод для парсинга JSON
 
         if(jsonString.equals("error")) {
             return null;
         }
 
-        GroupDTO  grpDTO = new GroupDTO(this.getStringFaculty(title));
+        FacultyDTO grpDTO = new FacultyDTO(this.getStringFaculty(title));
         int idGrp;
         String namGrp;
         int versionGrp;
@@ -250,13 +245,13 @@ public class ConnectedManager {
     private String getStringFaculty(String numFaculty) {
         String strFaculty = null;
         switch (numFaculty) {
-            case "1":
+            case Constants.FACULTY_DKE:
                 strFaculty = this.faculties[0];
                 break;
-            case "2":
+            case Constants.FACULTY_DEE:
                 strFaculty = this.faculties[1];
                 break;
-            case "3":
+            case Constants.FACULTY_DPM:
                 strFaculty = this.faculties[2];
                 break;
         }

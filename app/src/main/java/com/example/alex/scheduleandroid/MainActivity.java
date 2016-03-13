@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 
 import com.example.alex.scheduleandroid.adapter.GroupListAdapter;
-import com.example.alex.scheduleandroid.dto.GroupDTO;
+import com.example.alex.scheduleandroid.dto.FacultyDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    final static String GROUP_USER = "group_user";
     private static final int LAYOUT = R.layout.activity_main;
 
     private DrawerLayout drawerLayout;
@@ -87,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
         View headerLayout = navigationView.getHeaderView(0);
 
         TextView tvUserGroup = (TextView) headerLayout.findViewById(R.id.groupUserNavigationHeader);
-        SharedPreferences sPref = getSharedPreferences(GROUP_USER, MODE_PRIVATE);
-        userGrp = sPref.getString(GROUP_USER , "");
+        SharedPreferences sPref = getSharedPreferences(Constants.GROUP_USER, MODE_PRIVATE);
+        userGrp = sPref.getString(Constants.GROUP_USER , "");
         tvUserGroup.setText(userGrp);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -113,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public class MyAsyncTask extends AsyncTask<Void , Void , List<GroupDTO>> {
+    public class MyAsyncTask extends AsyncTask<Void , Void , List<FacultyDTO>> {
 
         @Override
         protected void onPreExecute() {
@@ -127,17 +126,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected List<GroupDTO> doInBackground(Void... params) {
-            List<GroupDTO> data = new ArrayList<>();
-            data.add(connectedManager.getGroupDTOByFaculty(ConnectedManager.FACULTY_DKE));
-            data.add(connectedManager.getGroupDTOByFaculty(ConnectedManager.FACULTY_DEE));
-            data.add(connectedManager.getGroupDTOByFaculty(ConnectedManager.FACULTY_DPM));
+        protected List<FacultyDTO> doInBackground(Void... params) {
+            List<FacultyDTO> data = new ArrayList<>();
+            data.add(connectedManager.getGroupDTOByFaculty(Constants.FACULTY_DKE));
+            data.add(connectedManager.getGroupDTOByFaculty(Constants.FACULTY_DEE));
+            data.add(connectedManager.getGroupDTOByFaculty(Constants.FACULTY_DPM));
 
             return data;
         }
 
         @Override
-        protected void onPostExecute( List<GroupDTO> list) {
+        protected void onPostExecute( List<FacultyDTO> list) {
             super.onPostExecute(list);
             pDialog.dismiss();
             recyclerView.setAdapter(new GroupListAdapter(list, MainActivity.this));
