@@ -5,6 +5,7 @@ public class Constants {
 
     public static final String GROUP_URL = "http://10.0.2.2/schedule/APIController/get_all_groups.php?faculty=";
     public static final String LESSON_URL = "http://10.0.2.2/schedule/APIController/get_all_lessons_by_grp.php?grp=";
+    public static final String VERSION_GROUP_URL = "http://10.0.2.2/schedule/APIController/get_version_group.php?grp=";
 
     public static final String FACULTY_DKE = "1";
     public static final String FACULTY_DEE = "2";
@@ -85,6 +86,15 @@ public class Constants {
 
     public static final String SELECTION_CHECK_GROUP = GROUP_COLUMN_NAME + "=? AND "
             + GROUP_COLUMN_FACULTY + "=? AND " + GROUP_COLUMN_COURSE + "=?";
+
+    public static final String SELECTION_COMPARE_VERSIONS = GROUP_COLUMN_NAME + "=? AND "
+            + GROUP_COLUMN_VERSION + "=?";
+
+    public static final String SELECTION_ID_BY_GROUP_NAME = GROUP_COLUMN_NAME + "=?";
+
+    public static final String SELECTION_LESSONS_BY_GROUP_ID = LESSON_COLUMN_GRP_ID + "=?";
+
+    public static final String SELECTION_DATELESSON_DELETE = DATELESSON_COLUMN_LESSON_ID + "=?";
 
 
 }

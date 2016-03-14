@@ -10,11 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.alex.scheduleandroid.adapter.WorkDayListAdapter;
+import com.example.alex.scheduleandroid.database.DatabaseManager;
 import com.example.alex.scheduleandroid.dto.WorkDayDTO;
 
 import java.util.ArrayList;
@@ -147,11 +149,20 @@ public class LessonsShowActivity extends AppCompatActivity {
             java.util.Calendar calendar = java.util.Calendar.getInstance(java.util.TimeZone.getDefault(), java.util.Locale.getDefault());
             calendar.setTime(new java.util.Date());
 
+            DatabaseManager databaseManager = new DatabaseManager(LessonsShowActivity.this);
+
             List<WorkDayDTO> list = new ArrayList<>();
 
             String[] dates = getSevenDays(calendar);
 
+            int versionGrp = connectedManager.getVersionGroup(group);
             WorkDayDTO workDayDTO = connectedManager.getWorkDTOByGroup(group, dates);
+
+            if (!databaseManager.compareVersions(versionGrp , group)) {
+                databaseManager.updateLessons(workDayDTO , group);
+            }
+
+
 
             if (workDayDTO != null) {
                 for (int i = 0; i < Constants.DAYS_FOR_SHOWING; i++) {

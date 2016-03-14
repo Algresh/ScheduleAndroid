@@ -37,7 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Запишем в журнал
-        Log.w("SQLite", "Обновляемся с версии " + oldVersion + " на версию " + newVersion);
+        Log.w(Constants.MY_TAG, "Обновляемся с версии " + oldVersion + " на версию " + newVersion);
 
         // Удаляем старую таблицу и создаём новую
         db.execSQL("DROP TABLE IF IT EXISTS " + Constants.DATABASE_TABLE_GROUP);

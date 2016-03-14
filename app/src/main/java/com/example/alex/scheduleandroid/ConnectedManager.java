@@ -82,6 +82,25 @@ public class ConnectedManager {
         return workDayDTO;
     }
 
+    public int getVersionGroup(String group) {
+        int version = -1;
+
+        if (this.checkConnection()) {
+
+            String jsonStringVersion = null;
+
+            try {
+                jsonStringVersion = downloadOneUrl(Constants.VERSION_GROUP_URL + group);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            version = this.parseRespondJSONVersionGroup(jsonStringVersion);
+        }
+
+        return version;
+    }
+
     private String downloadOneUrl(String myurl) throws IOException {
         InputStream inputstream = null;
         String data = "";
@@ -122,6 +141,27 @@ public class ConnectedManager {
             }
         }
         return data;
+    }
+
+    private int parseRespondJSONVersionGroup (String jsonString) {
+
+        if(jsonString.equals("error")) {
+            return -1;
+        }
+
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            int success = jsonObject.getInt("success");
+
+            if (success == 1) {
+                return jsonObject.getInt("version");
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 
     private FacultyDTO parseRespondJSONGroups (String jsonString , String title) {
