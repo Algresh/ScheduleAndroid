@@ -54,7 +54,7 @@ public class DatabaseManager {
 
     }
 
-    public void updateLessons(WorkDayDTO workDayDTO , String group) {
+    public void updateLessons(WorkDayDTO workDayDTO , String group , int versionGrp) {
 
         sqLiteDatabase.beginTransaction();
 
@@ -70,12 +70,20 @@ public class DatabaseManager {
 
             deleteAllLessonsByGroup(idGroup);
 
-            addLessonsByGroup(workDayDTO , idGroup);
+            addLessonsByGroup(workDayDTO, idGroup);
+
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(Constants.GROUP_COLUMN_VERSION, versionGrp);
+            int updCount = sqLiteDatabase.update(Constants.DATABASE_TABLE_GROUP , contentValues,
+                    Constants.SELECTION_VERSION_UPDATE_BY_ID , new String[]{String.valueOf(idGroup)} );
+            Log.d(Constants.MY_TAG, "updated rows count = " + updCount);
 
 
         } else {
             cursor.close();
         }
+        sqLiteDatabase.setTransactionSuccessful();
         sqLiteDatabase.endTransaction();
 
     }
@@ -85,8 +93,6 @@ public class DatabaseManager {
         ContentValues contentValues = new ContentValues();
 
         for (Lesson lessonItem : workDayDTO.getLessons()) {
-
-            contentValues.clear();
 
             contentValues.put(Constants.LESSON_COLUMN_NAME , lessonItem.getTitleOfSubject());
             contentValues.put(Constants.LESSON_COLUMN_CLASSROOM , lessonItem.getClassRoom());
@@ -107,6 +113,7 @@ public class DatabaseManager {
                 sqLiteDatabase.insert(Constants.DATABASE_TABLE_DATELESSON, null, contentValues);
                 sumRowsAdded++;
             }
+            contentValues.clear();
 
         }
         Log.d(Constants.MY_TAG , "ADD " + sumRowsAdded);

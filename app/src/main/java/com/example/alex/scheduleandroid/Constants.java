@@ -79,8 +79,8 @@ public class Constants {
 
     //------------------------CREATE TABLE DATELESSON----------------------
     public static final String DATABASE_CREATE_TABLE_DATELESSON = "create table " + DATABASE_TABLE_DATELESSON + "(" +
-            DATELESSON_COLUMN_ID  + "id integer primary key autoincrement," +
-            DATELESSON_COLUMN_DATE  + "lesson_date text," +
+            DATELESSON_COLUMN_ID  + " integer primary key autoincrement," +
+            DATELESSON_COLUMN_DATE  + " text," +
             DATELESSON_COLUMN_LESSON_ID  + " integer );";
 
 
@@ -95,6 +95,7 @@ public class Constants {
     public static final String SELECTION_LESSONS_BY_GROUP_ID = LESSON_COLUMN_GRP_ID + "=?";
 
     public static final String SELECTION_DATELESSON_DELETE = DATELESSON_COLUMN_LESSON_ID + "=?";
+    public static final String SELECTION_VERSION_UPDATE_BY_ID = GROUP_COLUMN_ID + "=?";
 
 
 }

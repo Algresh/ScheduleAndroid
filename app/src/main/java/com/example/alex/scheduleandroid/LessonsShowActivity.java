@@ -159,7 +159,7 @@ public class LessonsShowActivity extends AppCompatActivity {
             WorkDayDTO workDayDTO = connectedManager.getWorkDTOByGroup(group, dates);
 
             if (!databaseManager.compareVersions(versionGrp , group)) {
-                databaseManager.updateLessons(workDayDTO , group);
+                databaseManager.updateLessons(workDayDTO , group , versionGrp);
             }
 
 
