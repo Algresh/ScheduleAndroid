@@ -178,7 +178,6 @@ public class DatabaseManager {
             contentValues.clear();
 
         }
-        Log.d(Constants.MY_TAG, "ADD " + sumRowsAdded);
         return sumRowsAdded;
     }
 
@@ -226,7 +225,6 @@ public class DatabaseManager {
         sumRowsDeleted = sumRowsDeleted + sqLiteDatabase.delete(Constants.DATABASE_TABLE_LESSON ,
                 Constants.SELECTION_LESSONS_BY_GROUP_ID , argsQuery);
 
-        Log.d(Constants.MY_TAG , "DELETE " + sumRowsDeleted);
         return sumRowsDeleted;
     }
 
