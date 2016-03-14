@@ -265,7 +265,7 @@ public class ConnectedManager {
                     }
 
 
-                    workDayDTO.setGroup(new Lesson(nameSubject , numberLesson , classRoom , typeLesson , teacher ,subGrp ,place ,date));
+                    workDayDTO.setLesson(new Lesson(nameSubject , numberLesson , classRoom , typeLesson , teacher ,subGrp ,place ,date));
                 }
 
             } else {

@@ -84,6 +84,7 @@ public class Constants {
             DATELESSON_COLUMN_LESSON_ID  + " integer );";
 
 
+    //------------------------SELECTIONS----------------------
     public static final String SELECTION_CHECK_GROUP = GROUP_COLUMN_NAME + "=? AND "
             + GROUP_COLUMN_FACULTY + "=? AND " + GROUP_COLUMN_COURSE + "=?";
 
@@ -94,7 +95,7 @@ public class Constants {
 
     public static final String SELECTION_LESSONS_BY_GROUP_ID = LESSON_COLUMN_GRP_ID + "=?";
 
-    public static final String SELECTION_DATELESSON_DELETE = DATELESSON_COLUMN_LESSON_ID + "=?";
+    public static final String SELECTION_DATELESSON_BY_LESSON_ID = DATELESSON_COLUMN_LESSON_ID + "=?";
     public static final String SELECTION_VERSION_UPDATE_BY_ID = GROUP_COLUMN_ID + "=?";
 
 

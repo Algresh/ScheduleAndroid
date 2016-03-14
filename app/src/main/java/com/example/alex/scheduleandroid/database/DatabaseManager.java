@@ -24,11 +24,15 @@ public class DatabaseManager {
         sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
     }
 
+    // закрывает соединение с базой
     public void closeDatabase() {
         sqLiteDatabase.close();
     }
 
+    //этот метод проверяет все группы
+    // если есть те которых нет в базе записывает их
     public void updateGroups(List<FacultyDTO> list) {
+
 
         ContentValues cv = new ContentValues();
 
@@ -48,22 +52,57 @@ public class DatabaseManager {
         }
     }
 
-    public WorkDayDTO getWorkDayDTO (String group) {
 
-        /**
-         * @TODO доделать класс
-         */
+    //этот метод вытаскивает данные из базы и кладет их в WorkDTO
+    public WorkDayDTO getWorkDayDTO (String group , String[] dateOfWorkDay) {
+
+
         WorkDayDTO workDayDTO = null;
 
         Cursor cursor;
         int idGroup = getGroupIdByName(group);
 
         if (idGroup > 0) {
+            workDayDTO = new WorkDayDTO(dateOfWorkDay);
             String[] argsQuery;
 
-            argsQuery = new String[]{String.valueOf(group)};
+            argsQuery = new String[]{String.valueOf(idGroup)};
             cursor = sqLiteDatabase.query(Constants.DATABASE_TABLE_LESSON , null , Constants.SELECTION_LESSONS_BY_GROUP_ID ,
                     argsQuery, null, null, null );
+
+            if (cursor.moveToFirst()) {
+
+                do {
+
+                    String[] date = null;
+
+                    String teacher = cursor.getString(cursor.getColumnIndex(Constants.LESSON_COLUMN_TEACHER));
+                    int subGrp = cursor.getInt(cursor.getColumnIndex(Constants.LESSON_COLUMN_SUB_GRP));
+                    String classRoom = cursor.getString(cursor.getColumnIndex(Constants.LESSON_COLUMN_CLASSROOM));
+                    String place = cursor.getString(cursor.getColumnIndex(Constants.LESSON_COLUMN_PLACE));
+                    int numberLesson = cursor.getInt(cursor.getColumnIndex(Constants.LESSON_COLUMN_NUMBER));
+                    String typeLesson = cursor.getString(cursor.getColumnIndex(Constants.LESSON_COLUMN_TYPE));
+                    String nameSubject = cursor.getString(cursor.getColumnIndex(Constants.LESSON_COLUMN_NAME));
+
+                    int idLesson =  cursor.getInt(cursor.getColumnIndex(Constants.LESSON_COLUMN_ID));
+
+                    argsQuery = new String[]{String.valueOf(idLesson)};
+
+                    Cursor cursorDate = sqLiteDatabase.query(Constants.DATABASE_TABLE_DATELESSON , null, Constants.SELECTION_DATELESSON_BY_LESSON_ID,
+                            argsQuery, null, null, null);
+
+                    if(cursorDate.moveToFirst()) {
+                        int i = 0;
+                        date = new String[cursorDate.getCount()];
+                        do {
+                            date[i] = cursorDate.getString(cursorDate.getColumnIndex(Constants.DATELESSON_COLUMN_DATE));
+                            i++;
+                        } while (cursorDate.moveToNext());
+                    }
+                    workDayDTO.setLesson(new Lesson(nameSubject , numberLesson , classRoom , typeLesson , teacher ,subGrp ,place ,date));
+
+                } while (cursor.moveToNext());
+            }
 
         }
 
@@ -71,6 +110,7 @@ public class DatabaseManager {
         return workDayDTO;
     }
 
+    //сравнивает версию группы которая в базе и которая пришла от сервера
     public boolean compareVersions (int version , String group) {
         String[] argsQuery = {group , String.valueOf(version)};
 
@@ -81,6 +121,8 @@ public class DatabaseManager {
 
     }
 
+    //обновляет занятия для задонной группы
+    //сначала удаляет все занятия а потом записывает новые
     public void updateLessons(WorkDayDTO workDayDTO , String group , int versionGrp) {
 
         sqLiteDatabase.beginTransaction();
@@ -88,9 +130,9 @@ public class DatabaseManager {
         int idGroup = getGroupIdByName(group);
 
         if(idGroup > 0) {
-            deleteAllLessonsByGroup(idGroup);
+            deleteAllLessonsByGroup(idGroup);//удаление
 
-            addLessonsByGroup(workDayDTO, idGroup);
+            addLessonsByGroup(workDayDTO, idGroup);//добавление
 
             ContentValues contentValues = new ContentValues();
 
@@ -106,6 +148,8 @@ public class DatabaseManager {
 
     }
 
+    //добавляет занятия в базу
+    // возвращает количество добавлений
     private int addLessonsByGroup (WorkDayDTO workDayDTO , int group) {
         int sumRowsAdded = 0;
         ContentValues contentValues = new ContentValues();
@@ -154,6 +198,8 @@ public class DatabaseManager {
 
     }
 
+    //удаляет все занятия группы из базы
+    // возвращает количество удалений
     private int deleteAllLessonsByGroup (int group) {
         int sumRowsDeleted = 0;
         Cursor cursor;
@@ -170,7 +216,7 @@ public class DatabaseManager {
             do {
                 idLesson = cursor.getInt(idLessonIndex);
                 sumRowsDeleted = sumRowsDeleted + sqLiteDatabase.delete(Constants.DATABASE_TABLE_DATELESSON ,
-                        Constants.SELECTION_DATELESSON_DELETE , new String[] {String.valueOf(idLesson)});
+                        Constants.SELECTION_DATELESSON_BY_LESSON_ID , new String[] {String.valueOf(idLesson)});
 
             } while (cursor.moveToNext());
         } else {
@@ -184,6 +230,9 @@ public class DatabaseManager {
         return sumRowsDeleted;
     }
 
+
+    //проверяет наличие группы в базе
+    //true - если есть группа, false - усли нет
     private boolean checkDatabaseOnGroup (Group grp , String faculty) {
 
         String[] argsQuery = {grp.getTitleGrp() , String.valueOf(faculty) , String.valueOf(grp.getCourse())};

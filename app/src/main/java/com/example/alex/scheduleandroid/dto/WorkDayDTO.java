@@ -29,7 +29,7 @@ public class WorkDayDTO {
         this.dateOfWorkDay = dateOfWorkDay;
     }
 
-    public void setGroup(Lesson grp) {
+    public void setLesson(Lesson grp) {
         this.lessons.add(grp);
     }
 

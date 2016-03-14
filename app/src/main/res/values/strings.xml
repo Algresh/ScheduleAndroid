@@ -5,7 +5,8 @@
     <string name="notifyMessage">Уведомления</string>
     <string name="setting">Настройки</string>
     <string name="messageAboutError">Сообщить об ошибке</string>
-    <string name="downloadingGroups">Загружаем список. Подождите…</string>
+    <string name="downloadingGroups">Загружаем список групп. Подождите…</string>
+    <string name="downloadingLessons">Загружаем список занятий. Подождите…</string>
     <string name="about_app">О программе</string>
     <string name="today"> Сегодня </string>
     <string name="tomorrow"> Завтра </string>

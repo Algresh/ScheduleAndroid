@@ -135,7 +135,7 @@ public class LessonsShowActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            String strMsg = LessonsShowActivity.this.getString(R.string.downloadingGroups);
+            String strMsg = LessonsShowActivity.this.getString(R.string.downloadingLessons);
 
             pDialog = new ProgressDialog(LessonsShowActivity.this);
             pDialog.setMessage(strMsg);
@@ -156,10 +156,13 @@ public class LessonsShowActivity extends AppCompatActivity {
             String[] dates = getSevenDays(calendar);
 
             int versionGrp = connectedManager.getVersionGroup(group);
-            WorkDayDTO workDayDTO = connectedManager.getWorkDTOByGroup(group, dates);
+            WorkDayDTO workDayDTO;
 
             if (!databaseManager.compareVersions(versionGrp , group)) {
+                workDayDTO = connectedManager.getWorkDTOByGroup(group, dates);
                 databaseManager.updateLessons(workDayDTO , group , versionGrp);
+            } else {
+                workDayDTO = databaseManager.getWorkDayDTO(group , dates);
             }
 
             databaseManager.closeDatabase();
