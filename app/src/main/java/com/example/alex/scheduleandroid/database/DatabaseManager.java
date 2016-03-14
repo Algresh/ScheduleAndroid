@@ -24,6 +24,10 @@ public class DatabaseManager {
         sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
     }
 
+    public void closeDatabase() {
+        sqLiteDatabase.close();
+    }
+
     public void updateGroups(List<FacultyDTO> list) {
 
         ContentValues cv = new ContentValues();
@@ -44,6 +48,29 @@ public class DatabaseManager {
         }
     }
 
+    public WorkDayDTO getWorkDayDTO (String group) {
+
+        /**
+         * @TODO доделать класс
+         */
+        WorkDayDTO workDayDTO = null;
+
+        Cursor cursor;
+        int idGroup = getGroupIdByName(group);
+
+        if (idGroup > 0) {
+            String[] argsQuery;
+
+            argsQuery = new String[]{String.valueOf(group)};
+            cursor = sqLiteDatabase.query(Constants.DATABASE_TABLE_LESSON , null , Constants.SELECTION_LESSONS_BY_GROUP_ID ,
+                    argsQuery, null, null, null );
+
+        }
+
+
+        return workDayDTO;
+    }
+
     public boolean compareVersions (int version , String group) {
         String[] argsQuery = {group , String.valueOf(version)};
 
@@ -58,16 +85,9 @@ public class DatabaseManager {
 
         sqLiteDatabase.beginTransaction();
 
-        String[] argsQuery = {group};
-        Cursor cursor;
-        cursor = sqLiteDatabase.query(Constants.DATABASE_TABLE_GROUP, null, Constants.SELECTION_ID_BY_GROUP_NAME,
-                argsQuery, null, null, null);
+        int idGroup = getGroupIdByName(group);
 
-        if (cursor.moveToFirst()) {
-            int idGroupIndex = cursor.getColumnIndex(Constants.GROUP_COLUMN_ID);
-            int idGroup = cursor.getInt(idGroupIndex);
-            cursor.close();
-
+        if(idGroup > 0) {
             deleteAllLessonsByGroup(idGroup);
 
             addLessonsByGroup(workDayDTO, idGroup);
@@ -75,14 +95,12 @@ public class DatabaseManager {
             ContentValues contentValues = new ContentValues();
 
             contentValues.put(Constants.GROUP_COLUMN_VERSION, versionGrp);
-            int updCount = sqLiteDatabase.update(Constants.DATABASE_TABLE_GROUP , contentValues,
-                    Constants.SELECTION_VERSION_UPDATE_BY_ID , new String[]{String.valueOf(idGroup)} );
+            int updCount = sqLiteDatabase.update(Constants.DATABASE_TABLE_GROUP, contentValues,
+                    Constants.SELECTION_VERSION_UPDATE_BY_ID, new String[]{String.valueOf(idGroup)});
             Log.d(Constants.MY_TAG, "updated rows count = " + updCount);
 
-
-        } else {
-            cursor.close();
         }
+
         sqLiteDatabase.setTransactionSuccessful();
         sqLiteDatabase.endTransaction();
 
@@ -116,8 +134,24 @@ public class DatabaseManager {
             contentValues.clear();
 
         }
-        Log.d(Constants.MY_TAG , "ADD " + sumRowsAdded);
+        Log.d(Constants.MY_TAG, "ADD " + sumRowsAdded);
         return sumRowsAdded;
+    }
+
+    private int getGroupIdByName (String name ) {
+        int idGroup = -1;
+        String[] argsQuery = {name};
+        Cursor cursor;
+        cursor = sqLiteDatabase.query(Constants.DATABASE_TABLE_GROUP, null, Constants.SELECTION_ID_BY_GROUP_NAME,
+                argsQuery, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            int idGroupIndex = cursor.getColumnIndex(Constants.GROUP_COLUMN_ID);
+            idGroup = cursor.getInt(idGroupIndex);
+        }
+        cursor.close();
+        return idGroup;
+
     }
 
     private int deleteAllLessonsByGroup (int group) {

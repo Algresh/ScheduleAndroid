@@ -135,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
             DatabaseManager databaseManager = new DatabaseManager(MainActivity.this);
             databaseManager.updateGroups(data);
+            databaseManager.closeDatabase();
 
             return data;
         }

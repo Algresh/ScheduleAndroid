@@ -162,7 +162,7 @@ public class LessonsShowActivity extends AppCompatActivity {
                 databaseManager.updateLessons(workDayDTO , group , versionGrp);
             }
 
-
+            databaseManager.closeDatabase();
 
             if (workDayDTO != null) {
                 for (int i = 0; i < Constants.DAYS_FOR_SHOWING; i++) {
