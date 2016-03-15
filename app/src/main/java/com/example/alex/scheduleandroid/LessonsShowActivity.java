@@ -6,10 +6,12 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,10 +43,12 @@ public class LessonsShowActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private String userGrp;
+    private Toolbar toolbar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppDefault);
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
 
@@ -55,7 +59,7 @@ public class LessonsShowActivity extends AppCompatActivity {
 
         this.dayOfWeek = this.getResources().getStringArray(R.array.name_day_of_week);
         this.month = this.getResources().getStringArray(R.array.name_month);
-
+        initToolBar();
         initNavigationView();
 
 
@@ -65,8 +69,23 @@ public class LessonsShowActivity extends AppCompatActivity {
         downloadPageTask.execute();
     }
 
+    private void initToolBar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbarLessons);
+        toolbar.setTitle(group);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return false;
+            }
+        });
+    }
+
     private void initNavigationView() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout_lesson);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar
+                , R.string.open, R.string.close);
+        drawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
         View headerLayout = navigationView.getHeaderView(0);

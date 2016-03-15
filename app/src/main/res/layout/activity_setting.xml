@@ -7,46 +7,68 @@
     android:fitsSystemWindows="true">
 
 
-    <LinearLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp"
-        android:orientation="vertical"
-        tools:context="com.example.alex.scheduleandroid.SettingActivity">
+        android:layout_height="match_parent">
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <android.support.v7.widget.Toolbar
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/toolbarSetting"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_width="match_parent"
+                android:background="?attr/colorPrimary"
+                android:theme="@style/ThemeOverlay.AppCompat.Light"
+                >
+            </android.support.v7.widget.Toolbar>
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/yourGroup"
-            android:id="@+id/textViewYourGroup"
-            android:layout_gravity="center_horizontal" />
+        </android.support.design.widget.AppBarLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp">
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:orientation="vertical"
+            android:layout_marginTop="50dp"
+            tools:context="com.example.alex.scheduleandroid.SettingActivity">
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/editTextYourGroup"
-                android:layout_weight="1" />
 
-            <Button
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/yourGroupSelect"
-                android:id="@+id/selectYourGroup"
-                android:onClick="onClickSelectYourGroup"
-                android:textSize="15sp" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/yourGroup"
+                android:id="@+id/textViewYourGroup"
+                android:layout_gravity="center_horizontal" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editTextYourGroup"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yourGroupSelect"
+                    android:id="@+id/selectYourGroup"
+                    android:onClick="onClickSelectYourGroup"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+
+
         </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
 
-
-    </LinearLayout>
 
     <include
         android:layout_width="wrap_content"

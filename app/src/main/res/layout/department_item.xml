@@ -50,7 +50,8 @@
                 android:id="@+id/lvGroup"
                 android:layout_width="match_parent"
                 android:layout_height="450dp"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:background="@color/lesson_course">
             </ExpandableListView>
 
             <!--</LinearLayout>-->

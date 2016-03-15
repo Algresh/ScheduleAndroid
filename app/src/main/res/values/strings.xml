@@ -21,6 +21,7 @@
     <string name="yourGroupSelect">Принять</string>
     <string name="groupSaved">Группа сохранена</string>
     <string name="my_lessons">Мои занятия</string>
+    <string name="settings">Настройки</string>
 
     <string-array name="name_array_curses">
         <item> 1 курс бакалавриат</item>
