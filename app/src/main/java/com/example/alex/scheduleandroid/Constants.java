@@ -10,6 +10,8 @@ public class Constants {
     public static final String FACULTY_DKE = "1";
     public static final String FACULTY_DEE = "2";
     public static final String FACULTY_DPM = "3";
+    public static final String[] FACULTIES = {FACULTY_DKE , FACULTY_DEE , FACULTY_DPM};
+
     public static final String MY_TAG = "myTag";
 
     public static final int NUMBER_OF_CURSES = 6;
@@ -97,6 +99,7 @@ public class Constants {
 
     public static final String SELECTION_DATELESSON_BY_LESSON_ID = DATELESSON_COLUMN_LESSON_ID + "=?";
     public static final String SELECTION_VERSION_UPDATE_BY_ID = GROUP_COLUMN_ID + "=?";
+    public static final String SELECTION_GROUPS_BY_FACULTY = GROUP_COLUMN_FACULTY + "=?";
 
 
 }

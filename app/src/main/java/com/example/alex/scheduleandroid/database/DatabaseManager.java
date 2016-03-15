@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.alex.scheduleandroid.Constants;
+import com.example.alex.scheduleandroid.R;
 import com.example.alex.scheduleandroid.dto.FacultyDTO;
 import com.example.alex.scheduleandroid.dto.Group;
 import com.example.alex.scheduleandroid.dto.Lesson;
@@ -19,9 +20,13 @@ public class DatabaseManager {
     private DatabaseHelper mDatabaseHelper;
     private SQLiteDatabase sqLiteDatabase;
 
+    private String[] facultiesStr;
+
     public DatabaseManager(Context context) {
         mDatabaseHelper = new DatabaseHelper(context);
         sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
+
+        facultiesStr = context.getResources().getStringArray(R.array.name_array_faculties);
     }
 
     // закрывает соединение с базой
@@ -37,18 +42,23 @@ public class DatabaseManager {
         ContentValues cv = new ContentValues();
 
         for(FacultyDTO item : list) {
-            for (Group itemGrp: item.getGroups()) {
-                if(!checkDatabaseOnGroup(itemGrp , item.getTitle())) {
-                    cv.clear();
-                    cv.put(Constants.GROUP_COLUMN_NAME , itemGrp.getTitleGrp());
-                    cv.put(Constants.GROUP_COLUMN_VERSION , itemGrp.getVersionGrp());
-                    cv.put(Constants.GROUP_COLUMN_NUMBER_MESSAGE , itemGrp.getNumberMessages());
-                    cv.put(Constants.GROUP_COLUMN_FACULTY , item.getTitle());
-                    cv.put(Constants.GROUP_COLUMN_COURSE, itemGrp.getCourse());
-                    long rowID = sqLiteDatabase.insert(Constants.DATABASE_TABLE_GROUP , null , cv);
-                    Log.d(Constants.MY_TAG, "row inserted, ID = " + rowID);
+            int facultyId = getFacultuIdByString(item.getTitle());
+
+            if (facultyId > 0) {
+                for (Group itemGrp: item.getGroups()) {
+                    if(!checkDatabaseOnGroup(itemGrp , item.getTitle())) {
+                        cv.clear();
+                        cv.put(Constants.GROUP_COLUMN_NAME , itemGrp.getTitleGrp());
+                        cv.put(Constants.GROUP_COLUMN_VERSION , itemGrp.getVersionGrp());
+                        cv.put(Constants.GROUP_COLUMN_NUMBER_MESSAGE , itemGrp.getNumberMessages());
+                        cv.put(Constants.GROUP_COLUMN_FACULTY , facultyId);
+                        cv.put(Constants.GROUP_COLUMN_COURSE, itemGrp.getCourse());
+                        long rowID = sqLiteDatabase.insert(Constants.DATABASE_TABLE_GROUP , null , cv);
+                        Log.d(Constants.MY_TAG, "row inserted, ID = " + rowID);
+                    }
                 }
             }
+
         }
     }
 
@@ -108,6 +118,31 @@ public class DatabaseManager {
 
 
         return workDayDTO;
+    }
+
+
+    public FacultyDTO getFacultyDTO(String facultyId , String faculty) {
+        FacultyDTO facultyDTO = new FacultyDTO(faculty);
+
+        Cursor cursor = sqLiteDatabase.query(Constants.DATABASE_TABLE_GROUP, null,
+                Constants.SELECTION_GROUPS_BY_FACULTY, new String[]{facultyId}, null, null, null);
+
+        if (cursor.moveToFirst()) {
+
+            do {
+                int idGrp = cursor.getInt(cursor.getColumnIndex(Constants.GROUP_COLUMN_ID));
+                int versionGrp = cursor.getInt(cursor.getColumnIndex(Constants.GROUP_COLUMN_VERSION));
+                int numMessages = cursor.getInt(cursor.getColumnIndex(Constants.GROUP_COLUMN_NUMBER_MESSAGE));
+                int course = cursor.getInt(cursor.getColumnIndex(Constants.GROUP_COLUMN_COURSE));
+                String namGrp = cursor.getString(cursor.getColumnIndex(Constants.GROUP_COLUMN_NAME));
+
+                facultyDTO.setGroup(new Group(namGrp , versionGrp , idGrp , numMessages , course));
+
+            } while (cursor.moveToNext());
+
+        }
+
+        return facultyDTO;
     }
 
     //сравнивает версию группы которая в базе и которая пришла от сервера
@@ -239,6 +274,17 @@ public class DatabaseManager {
                 Constants.SELECTION_CHECK_GROUP , argsQuery , null, null, null);
 
         return cursor.getCount() != 0;
-
     }
+
+    public int getFacultuIdByString(String facultyStr) {
+        int facultyId = 0;
+
+        for (int i = 0;i < this.facultiesStr.length ; i++) {
+            if (facultyStr.equals(this.facultiesStr[i])) {
+                facultyId = i + 1;
+            }
+        }
+        return facultyId;
+    }
+
 }

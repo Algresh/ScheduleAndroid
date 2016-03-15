@@ -129,12 +129,25 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected List<FacultyDTO> doInBackground(Void... params) {
             List<FacultyDTO> data = new ArrayList<>();
-            data.add(connectedManager.getGroupDTOByFaculty(Constants.FACULTY_DKE));
-            data.add(connectedManager.getGroupDTOByFaculty(Constants.FACULTY_DEE));
-            data.add(connectedManager.getGroupDTOByFaculty(Constants.FACULTY_DPM));
-
+            String[] facultiesId = Constants.FACULTIES;
             DatabaseManager databaseManager = new DatabaseManager(MainActivity.this);
-            databaseManager.updateGroups(data);
+
+            if (connectedManager.checkConnection() && false){
+                for(String strItem: facultiesId) {
+                    data.add(connectedManager.getGroupDTOByFaculty(strItem));
+                }
+
+                databaseManager.updateGroups(data);
+            } else {
+                for(String strItem: facultiesId) {
+                    String faculty = connectedManager.getStringFaculty(strItem);
+                    data.add(databaseManager.getFacultyDTO(strItem, faculty));
+                }
+            }
+
+//            data.add(connectedManager.getGroupDTOByFaculty(Constants.FACULTY_DEE));
+//            data.add(connectedManager.getGroupDTOByFaculty(Constants.FACULTY_DPM));
+
             databaseManager.closeDatabase();
 
             return data;

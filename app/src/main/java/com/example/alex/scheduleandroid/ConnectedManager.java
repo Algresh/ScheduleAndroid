@@ -282,7 +282,7 @@ public class ConnectedManager {
     }
 
 
-    private String getStringFaculty(String numFaculty) {
+    public String getStringFaculty(String numFaculty) {
         String strFaculty = null;
         switch (numFaculty) {
             case Constants.FACULTY_DKE:
@@ -299,7 +299,7 @@ public class ConnectedManager {
         return strFaculty;
     }
 
-    private boolean checkConnection () {
+    public boolean checkConnection () {
         // этот класс отвечает за проверку подключения
         ConnectivityManager myConnMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkinfo = myConnMgr.getActiveNetworkInfo();
