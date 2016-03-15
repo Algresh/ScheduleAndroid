@@ -73,7 +73,7 @@ public class LessonsShowActivity extends AppCompatActivity {
 
         TextView tvUserGroup = (TextView) headerLayout.findViewById(R.id.groupUserNavigationHeader);
         SharedPreferences sPref = getSharedPreferences(Constants.GROUP_USER, MODE_PRIVATE);
-        userGrp = sPref.getString(Constants.GROUP_USER , "");
+        userGrp = sPref.getString(Constants.GROUP_USER, "");
         tvUserGroup.setText(userGrp);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -154,14 +154,18 @@ public class LessonsShowActivity extends AppCompatActivity {
             List<WorkDayDTO> list = new ArrayList<>();
 
             String[] dates = getSevenDays(calendar);
-
-            int versionGrp = connectedManager.getVersionGroup(group);
             WorkDayDTO workDayDTO;
 
-            if (!databaseManager.compareVersions(versionGrp , group)) {
-                workDayDTO = connectedManager.getWorkDTOByGroup(group, dates);
-                if (workDayDTO != null) {
-                    databaseManager.updateLessons(workDayDTO , group , versionGrp);
+            if (connectedManager.checkConnection()) {
+                int versionGrp = connectedManager.getVersionGroup(group);
+
+                if (!databaseManager.compareVersions(versionGrp , group) || databaseManager.isLessonEmpty()) {
+                    workDayDTO = connectedManager.getWorkDTOByGroup(group, dates);
+                    if (workDayDTO != null) {
+                        databaseManager.updateLessons(workDayDTO , group , versionGrp);
+                    }
+                } else {
+                    workDayDTO = databaseManager.getWorkDayDTO(group , dates);
                 }
             } else {
                 workDayDTO = databaseManager.getWorkDayDTO(group , dates);

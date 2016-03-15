@@ -46,7 +46,7 @@ public class DatabaseManager {
 
             if (facultyId > 0) {
                 for (Group itemGrp: item.getGroups()) {
-                    if(!checkDatabaseOnGroup(itemGrp , item.getTitle())) {
+                    if(!checkDatabaseOnGroup(itemGrp , String.valueOf(facultyId))) {
                         cv.clear();
                         cv.put(Constants.GROUP_COLUMN_NAME , itemGrp.getTitleGrp());
                         cv.put(Constants.GROUP_COLUMN_VERSION , itemGrp.getVersionGrp());
@@ -60,6 +60,14 @@ public class DatabaseManager {
             }
 
         }
+    }
+
+    public boolean isLessonEmpty () {
+
+        Cursor cursor = sqLiteDatabase.query(Constants.DATABASE_TABLE_LESSON , null, null, null
+                , null, null, null);
+
+        return cursor.getCount() == 0;
     }
 
 

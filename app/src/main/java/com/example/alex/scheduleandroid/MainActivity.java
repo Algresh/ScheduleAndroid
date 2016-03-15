@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
             String[] facultiesId = Constants.FACULTIES;
             DatabaseManager databaseManager = new DatabaseManager(MainActivity.this);
 
-            if (connectedManager.checkConnection() && false){
+            if (connectedManager.checkConnection()){
                 for(String strItem: facultiesId) {
                     data.add(connectedManager.getGroupDTOByFaculty(strItem));
                 }
@@ -144,9 +144,6 @@ public class MainActivity extends AppCompatActivity {
                     data.add(databaseManager.getFacultyDTO(strItem, faculty));
                 }
             }
-
-//            data.add(connectedManager.getGroupDTOByFaculty(Constants.FACULTY_DEE));
-//            data.add(connectedManager.getGroupDTOByFaculty(Constants.FACULTY_DPM));
 
             databaseManager.closeDatabase();
 
