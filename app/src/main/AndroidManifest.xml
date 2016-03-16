@@ -19,7 +19,17 @@
             </intent-filter>
         </activity>
         <activity android:name=".LessonsShowActivity" />
-        <activity android:name=".SettingActivity"></activity>
+        <activity android:name=".SettingActivity" />
+
+        <receiver android:name=".ScheduleWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/schedule_widget_info" />
+        </receiver>
     </application>
 
 </manifest>

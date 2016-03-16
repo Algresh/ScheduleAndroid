@@ -42,7 +42,7 @@ public class DatabaseManager {
         ContentValues cv = new ContentValues();
 
         for(FacultyDTO item : list) {
-            int facultyId = getFacultuIdByString(item.getTitle());
+            int facultyId = getFacultyIdByString(item.getTitle());
 
             if (facultyId > 0) {
                 for (Group itemGrp: item.getGroups()) {
@@ -62,6 +62,7 @@ public class DatabaseManager {
         }
     }
 
+    //проверка на наличие занятий в базе
     public boolean isLessonEmpty () {
 
         Cursor cursor = sqLiteDatabase.query(Constants.DATABASE_TABLE_LESSON , null, null, null
@@ -128,7 +129,7 @@ public class DatabaseManager {
         return workDayDTO;
     }
 
-
+    //этот метод вытаскивает данные из базы и кладет их в FacultyDTO
     public FacultyDTO getFacultyDTO(String facultyId , String faculty) {
         FacultyDTO facultyDTO = new FacultyDTO(faculty);
 
@@ -224,6 +225,7 @@ public class DatabaseManager {
         return sumRowsAdded;
     }
 
+    //возвращает id группы
     private int getGroupIdByName (String name ) {
         int idGroup = -1;
         String[] argsQuery = {name};
@@ -271,6 +273,24 @@ public class DatabaseManager {
         return sumRowsDeleted;
     }
 
+    //получить номер первой пары группы
+    public int getNumberLesson (String dateStr, String group) {
+
+        String idGroup = String.valueOf(getGroupIdByName(group));
+//        Log.d(Constants.MY_TAG, dateStr);
+//        Log.d(Constants.MY_TAG, idGroup);
+
+        Cursor cursor =sqLiteDatabase.rawQuery(Constants.QUERY_NUMBER_LESSON, new String[]{idGroup, dateStr});
+
+        if (cursor.moveToFirst()) {
+            int firstLesson = cursor.getInt(cursor.getColumnIndex(Constants.LESSON_COLUMN_NUMBER));
+
+            return firstLesson;
+        }
+
+        return 0;
+    }
+
 
     //проверяет наличие группы в базе
     //true - если есть группа, false - усли нет
@@ -278,13 +298,14 @@ public class DatabaseManager {
 
         String[] argsQuery = {grp.getTitleGrp() , String.valueOf(faculty) , String.valueOf(grp.getCourse())};
 
-        Cursor cursor = sqLiteDatabase.query(Constants.DATABASE_TABLE_GROUP , null,
-                Constants.SELECTION_CHECK_GROUP , argsQuery , null, null, null);
+        Cursor cursor = sqLiteDatabase.query(Constants.DATABASE_TABLE_GROUP, null,
+                Constants.SELECTION_CHECK_GROUP, argsQuery, null, null, null);
 
         return cursor.getCount() != 0;
     }
 
-    public int getFacultuIdByString(String facultyStr) {
+    // возвращает номер факультета
+    public int getFacultyIdByString(String facultyStr) {
         int facultyId = 0;
 
         for (int i = 0;i < this.facultiesStr.length ; i++) {

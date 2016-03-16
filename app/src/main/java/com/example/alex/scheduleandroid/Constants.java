@@ -101,5 +101,11 @@ public class Constants {
     public static final String SELECTION_VERSION_UPDATE_BY_ID = GROUP_COLUMN_ID + "=?";
     public static final String SELECTION_GROUPS_BY_FACULTY = GROUP_COLUMN_FACULTY + "=?";
 
+    //------------------------QUERIES----------------------
+    public static final String QUERY_NUMBER_LESSON = "SELECT lesson.number_lesson FROM lesson " +
+            "INNER JOIN date_lesson " +
+            "ON lesson.id = date_lesson.lesson_id " +
+            "WHERE lesson.grp_id=? AND date_lesson.lesson_date =? ORDER BY lesson.number_lesson";
+
 
 }

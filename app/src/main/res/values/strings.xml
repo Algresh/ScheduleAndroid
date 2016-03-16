@@ -22,6 +22,10 @@
     <string name="groupSaved">Группа сохранена</string>
     <string name="my_lessons">Мои занятия</string>
     <string name="settings">Настройки</string>
+    <string name="textWidget"> Сегодня вам к %1$s паре </string>
+    <string name="noGroupTextWidget"> Выберите группу в настройках </string>
+    <string name="noLessonsTextWidget"> Сегодня нет пар! </string>
+    <string name="noDateTextWidget"> Нет данных </string>
 
     <string-array name="name_array_curses">
         <item> 1 курс бакалавриат</item>
@@ -62,5 +66,7 @@
         <item> Ноя </item>
         <item> Дек </item>
     </string-array>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 
 </resources>
