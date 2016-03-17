@@ -9,6 +9,7 @@ import android.widget.RemoteViews;
 
 import com.example.alex.scheduleandroid.database.DatabaseManager;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -30,13 +31,10 @@ public class ScheduleWidget extends AppWidgetProvider {
             DatabaseManager databaseManager = new DatabaseManager(context);
 
             if (!databaseManager.isLessonEmpty()) {
-                java.util.Calendar calendar = java.util.Calendar.getInstance(java.util.TimeZone.getDefault(), java.util.Locale.getDefault());
-                calendar.setTime(new java.util.Date());
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat simpleFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
 
-                int numMonth = calendar.get(Calendar.MONTH) + 1;
-                String month = numMonth < 10 ? "0" + String.valueOf(numMonth): String.valueOf(numMonth);
-
-                String dateStr = calendar.get(Calendar.YEAR) + "-" + month + "-" + calendar.get(Calendar.DAY_OF_MONTH);
+                String dateStr = simpleFormat.format(calendar.getTime());
 
                 int firstLesson = databaseManager.getNumberLesson(dateStr, userGrp);
 

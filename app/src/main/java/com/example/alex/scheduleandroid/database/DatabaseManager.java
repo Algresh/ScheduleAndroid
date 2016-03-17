@@ -283,7 +283,7 @@ public class DatabaseManager {
         Cursor cursor =sqLiteDatabase.rawQuery(Constants.QUERY_NUMBER_LESSON, new String[]{idGroup, dateStr});
 
         if (cursor.moveToFirst()) {
-            int firstLesson = cursor.getInt(cursor.getColumnIndex(Constants.LESSON_COLUMN_NUMBER));
+            int firstLesson = cursor.getInt(cursor.getColumnIndex(Constants.DATELESSON_COLUMN_FIRST_LESSON));
 
             return firstLesson;
         }

@@ -13,6 +13,7 @@ public class Constants {
     public static final String[] FACULTIES = {FACULTY_DKE , FACULTY_DEE , FACULTY_DPM};
 
     public static final String MY_TAG = "myTag";
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
 
     public static final int NUMBER_OF_CURSES = 6;
     public static final int DAYS_FOR_SHOWING = 7;
@@ -53,6 +54,7 @@ public class Constants {
     public static final String DATELESSON_COLUMN_ID = "id";
     public static final String DATELESSON_COLUMN_DATE = "lesson_date";
     public static final String DATELESSON_COLUMN_LESSON_ID = "lesson_id";
+    public static final String DATELESSON_COLUMN_FIRST_LESSON = "first_lesson";
 
 
     //------------------------CREATE TABLE GROUP----------------------
@@ -102,10 +104,10 @@ public class Constants {
     public static final String SELECTION_GROUPS_BY_FACULTY = GROUP_COLUMN_FACULTY + "=?";
 
     //------------------------QUERIES----------------------
-    public static final String QUERY_NUMBER_LESSON = "SELECT lesson.number_lesson FROM lesson " +
+    public static final String QUERY_NUMBER_LESSON = "SELECT MIN(lesson.number_lesson) AS first_lesson FROM lesson " +
             "INNER JOIN date_lesson " +
             "ON lesson.id = date_lesson.lesson_id " +
-            "WHERE lesson.grp_id=? AND date_lesson.lesson_date =? ORDER BY lesson.number_lesson";
+            "WHERE lesson.grp_id=? AND date_lesson.lesson_date =?";
 
 
 }
