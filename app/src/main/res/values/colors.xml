@@ -8,6 +8,7 @@
     <color name="colorBlack">#000000</color>
     <color name="colorLessonItem">#DDDDDD</color>
     <color name="navigationHeader">#FFCA28</color>
+    <color name="settingButton">#FFCA28</color>
     <color name="nameDepartment">#FFE082</color>
     <color name="lesson_course">#FFF8E1</color>
 </resources>

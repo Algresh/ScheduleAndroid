@@ -31,6 +31,7 @@
             android:padding="16dp"
             android:orientation="vertical"
             android:layout_marginTop="50dp"
+            android:background="@color/lesson_course"
             tools:context="com.example.alex.scheduleandroid.SettingActivity">
 
 
@@ -42,27 +43,15 @@
                 android:id="@+id/textViewYourGroup"
                 android:layout_gravity="center_horizontal" />
 
-            <LinearLayout
-                android:orientation="horizontal"
+            <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp">
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/editTextYourGroup"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/yourGroupSelect"
-                    android:id="@+id/selectYourGroup"
-                    android:onClick="onClickSelectYourGroup"
-                    android:textSize="15sp" />
-            </LinearLayout>
-
+                android:text="@string/yourGroupSelect"
+                android:id="@+id/selectYourGroup"
+                android:onClick="onClickSelectYourGroup"
+                android:textSize="15sp"
+                android:layout_marginTop="20dp"
+                android:background="@color/settingButton"/>
 
 
         </LinearLayout>

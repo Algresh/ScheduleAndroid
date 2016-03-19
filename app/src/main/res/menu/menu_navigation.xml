@@ -10,7 +10,7 @@
     <item
         android:title="@string/my_lessons"
         android:orderInCategory="1"
-        android:icon="@drawable/view_list"
+        android:icon="@drawable/account"
         android:id="@+id/myLessonsItem"
         />
 
@@ -26,10 +26,10 @@
         android:id="@+id/settings"
         android:icon="@drawable/settings" />
 
-    <item
-        android:title="@string/messageAboutError"
-        android:orderInCategory="1"
-        android:icon="@drawable/alert_circle" />
+    <!--<item-->
+        <!--android:title="@string/messageAboutError"-->
+        <!--android:orderInCategory="1"-->
+        <!--android:icon="@drawable/alert_circle" />-->
 
     <item
         android:title="@string/about_app"

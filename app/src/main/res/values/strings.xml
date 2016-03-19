@@ -18,7 +18,7 @@
     <string name="noLessons"> Занятий нет </string>
     <string name="noDateAboutThisGroup"> Нет данных по этой группе </string>
     <string name="yourGroup"> Ваша группа: </string>
-    <string name="yourGroupSelect">Принять</string>
+    <string name="yourGroupSelect">Выбрать группу</string>
     <string name="groupSaved">Группа сохранена</string>
     <string name="my_lessons">Мои занятия</string>
     <string name="settings">Настройки</string>
@@ -26,6 +26,7 @@
     <string name="noGroupTextWidget"> Выберите группу в настройках </string>
     <string name="noLessonsTextWidget"> Сегодня нет пар! </string>
     <string name="noDateTextWidget"> Нет данных </string>
+    <string name="selectGroup"> Выберите группу </string>
 
     <string-array name="name_array_curses">
         <item> 1 курс бакалавриат</item>

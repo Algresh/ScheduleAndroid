@@ -18,7 +18,7 @@ import android.widget.Toast;
 public class SettingActivity extends AppCompatActivity {
 
     Button btnSelectYourGroup;
-    EditText edtYourGroup;
+    TextView textView;
 
     SharedPreferences sPref;
 
@@ -34,16 +34,23 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
         initToolBar();
 
-        sPref = getSharedPreferences(Constants.GROUP_USER , MODE_PRIVATE);
-        String userGrp = sPref.getString(Constants.GROUP_USER , "");
-
-
         btnSelectYourGroup = (Button) findViewById(R.id.selectYourGroup);
-        edtYourGroup = (EditText) findViewById(R.id.editTextYourGroup);
-        edtYourGroup.setText(userGrp);
+
+/**
+ * @TODO сделать так чтобы при изменение Preference срабатовало событие
+ */
 
         initNavigationView();
+        initUserGroupNameFromPreference();
 
+    }
+
+    private void initUserGroupNameFromPreference() {
+        String yourGroup= getString(R.string.yourGroup);
+        sPref = getSharedPreferences(Constants.GROUP_USER , MODE_PRIVATE);
+        String userGrp = sPref.getString(Constants.GROUP_USER , "");
+        textView = (TextView) findViewById(R.id.textViewYourGroup);
+        textView.setText(yourGroup + userGrp);
     }
 
     private void initToolBar() {
@@ -97,13 +104,23 @@ public class SettingActivity extends AppCompatActivity {
 
     public void onClickSelectYourGroup (View view) {
 
-        String str = edtYourGroup.getText().toString();
-        String grpSaved = this.getResources().getString(R.string.groupSaved);
+        Intent intent = new Intent(this,SelectionGroupActivity.class);
+        startActivityForResult(intent, 1);
 
-        SharedPreferences.Editor editor = sPref.edit();
-        editor.putString(Constants.GROUP_USER , str);
-        editor.apply();
-        Toast.makeText(this , grpSaved , Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(resultCode == RESULT_OK) {
+            String str = data.getStringExtra("group");
+            String grpSaved = this.getResources().getString(R.string.groupSaved);
+
+            SharedPreferences.Editor editor = sPref.edit();
+            editor.putString(Constants.GROUP_USER , str);
+            editor.apply();
+            Toast.makeText(this , grpSaved , Toast.LENGTH_SHORT).show();
+            initUserGroupNameFromPreference();
+        }
+    }
 }

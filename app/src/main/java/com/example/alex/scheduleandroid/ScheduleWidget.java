@@ -38,7 +38,7 @@ public class ScheduleWidget extends AppWidgetProvider {
 
                 int firstLesson = databaseManager.getNumberLesson(dateStr, userGrp);
 
-                if (firstLesson !=0) {
+                if (firstLesson != 0) {
                     String widgetText = context.getString(R.string.textWidget);
                     fullWidgetText = String.format(widgetText, String.valueOf(firstLesson));
                 } else {

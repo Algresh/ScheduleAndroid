@@ -242,6 +242,24 @@ public class DatabaseManager {
 
     }
 
+    public String[] getAllGroups() {
+
+        Cursor cursor = sqLiteDatabase.query(Constants.DATABASE_TABLE_GROUP, null, null, null, null
+                ,null, Constants.GROUP_COLUMN_FACULTY + ", " + Constants.GROUP_COLUMN_COURSE);
+
+        String[] strGroups = new String[cursor.getCount()];
+        int i = 0;
+        if(cursor.moveToFirst()) {
+            do {
+                strGroups[i] = cursor.getString(cursor.getColumnIndex(Constants.GROUP_COLUMN_NAME));
+                i++;
+            } while (cursor.moveToNext());
+
+        }
+
+        return strGroups;
+    }
+
     //удаляет все занятия группы из базы
     // возвращает количество удалений
     private int deleteAllLessonsByGroup (int group) {
