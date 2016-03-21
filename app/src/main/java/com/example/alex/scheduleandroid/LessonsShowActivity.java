@@ -42,8 +42,13 @@ public class LessonsShowActivity extends AppCompatActivity {
     private DownloadPageTask downloadPageTask;
 
     private DrawerLayout drawerLayout;
+    private LinearLayoutManager manager;
     private String userGrp;
     private Toolbar toolbar;
+    private boolean loading = true;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
+    WorkDayListAdapter adapter;
+
 
 
     @Override
@@ -64,9 +69,11 @@ public class LessonsShowActivity extends AppCompatActivity {
 
 
         recyclerViewLessons = (RecyclerView) findViewById(R.id.recycleViewLessons);
-        recyclerViewLessons.setLayoutManager(new LinearLayoutManager(this));
+        manager = new LinearLayoutManager(this);
+        recyclerViewLessons.setLayoutManager(manager);
         downloadPageTask = new DownloadPageTask();
         downloadPageTask.execute();
+
     }
 
     private void initToolBar() {
@@ -122,26 +129,31 @@ public class LessonsShowActivity extends AppCompatActivity {
     }
 
 
-    private String[] getSevenDays(java.util.Calendar calendar){
-        String[] sevenDays = new String[Constants.DAYS_FOR_SHOWING];
+    private List<String> getSevenDays(java.util.Calendar calendar, int numberWeek){
+        List<String>sevenDays = new ArrayList<>();
+        int firstElementIndex = 0;
 
         String month;
         String dayOdWeek;
         String dayOdMonth;
 
-        sevenDays[0] = this.getResources().getString(R.string.today);
-        sevenDays[1] = this.getResources().getString(R.string.tomorrow);
+        if(numberWeek == 0) {
+            sevenDays.add(this.getResources().getString(R.string.today));
+            sevenDays.add(getResources().getString(R.string.tomorrow));
+            calendar.add(Calendar.DAY_OF_MONTH, 2);
+            firstElementIndex = 2;
+        } else {
+            calendar.add(Calendar.DAY_OF_MONTH, numberWeek * 7);
+        }
 
-        calendar.add(Calendar.DAY_OF_MONTH, 2);
 
-        for (int i = 2; i < Constants.DAYS_FOR_SHOWING; i++) {
-
+        for (int i = firstElementIndex; i < Constants.DAYS_FOR_SHOWING; i++) {
 
             month = this.month[calendar.get(Calendar.MONTH)];
             dayOdWeek = this.dayOfWeek[calendar.get(Calendar.DAY_OF_WEEK) - 1];
             dayOdMonth = Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
 
-            sevenDays[i] = dayOdMonth + " " + month + ", " + dayOdWeek;
+            sevenDays.add(dayOdMonth + " " + month + ", " + dayOdWeek);
 
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
@@ -149,7 +161,7 @@ public class LessonsShowActivity extends AppCompatActivity {
         return  sevenDays;
     }
 
-    public class DownloadPageTask extends AsyncTask<Void , Void , List<WorkDayDTO>>
+    public class DownloadPageTask extends AsyncTask<Void , Void , WorkDayDTO>
     {
         @Override
         protected void onPreExecute() {
@@ -164,15 +176,14 @@ public class LessonsShowActivity extends AppCompatActivity {
 
 
         @Override
-        protected List<WorkDayDTO> doInBackground(Void... params) {
+        protected WorkDayDTO doInBackground(Void... params) {
             java.util.Calendar calendar = java.util.Calendar.getInstance(java.util.TimeZone.getDefault(), java.util.Locale.getDefault());
             calendar.setTime(new java.util.Date());
 
             DatabaseManager databaseManager = new DatabaseManager(LessonsShowActivity.this);
 
-            List<WorkDayDTO> list = new ArrayList<>();
 
-            String[] dates = getSevenDays(calendar);
+            List dates = getSevenDays(calendar, 0);
             WorkDayDTO workDayDTO;
 
             if (connectedManager.checkConnection()) {
@@ -192,23 +203,51 @@ public class LessonsShowActivity extends AppCompatActivity {
 
             databaseManager.closeDatabase();
 
-            if (workDayDTO != null) {
-                for (int i = 0; i < Constants.DAYS_FOR_SHOWING; i++) {
-                    list.add(workDayDTO);
-                }
-            } else {
-                return null;
-            }
+//            if (workDayDTO != null) {
+//                for (int i = 0; i < Constants.DAYS_FOR_SHOWING; i++) {
+//                    list.add(workDayDTO);
+//                }
+//            } else {
+//                return null;
+//            }
 
-            return list;
+            return workDayDTO;
         }
 
         @Override
-        protected void onPostExecute(List<WorkDayDTO> list) {
-            super.onPostExecute(list);
+        protected void onPostExecute(WorkDayDTO workDayDTO) {
+            super.onPostExecute(workDayDTO);
             pDialog.dismiss();
-            if (list != null) {
-                recyclerViewLessons.setAdapter(new WorkDayListAdapter(list, LessonsShowActivity.this));
+            if (workDayDTO != null) {
+                adapter = new WorkDayListAdapter(workDayDTO, LessonsShowActivity.this);
+
+                recyclerViewLessons.setAdapter(adapter);
+
+                recyclerViewLessons.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        if (dy > 0) //check for scroll down
+                        {
+                            java.util.Calendar calendar = java.util.Calendar.getInstance(java.util.TimeZone.getDefault(), java.util.Locale.getDefault());
+                            calendar.setTime(new java.util.Date());
+                            visibleItemCount = manager.getChildCount();
+                            totalItemCount = manager.getItemCount();
+                            pastVisiblesItems = manager.findFirstVisibleItemPosition();
+
+                            if (loading) {
+                                if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                                    loading = false;
+                                    Log.d(Constants.MY_TAG, "Last Item Wow !");
+                                    adapter.addNewItems(getSevenDays(calendar, 1));
+//                                    adapter.addNewItems(new WorkDayDTO(new String[]{"asfdsadf"}));
+
+                                    //Do pagination.. i.e. fetch new data
+                                }
+                            }
+                        }
+                    }
+                });
+
             } else {
                 TextView textView = (TextView) findViewById(R.id.noLessonsInGroup);
                 textView.setText(R.string.noDateAboutThisGroup);

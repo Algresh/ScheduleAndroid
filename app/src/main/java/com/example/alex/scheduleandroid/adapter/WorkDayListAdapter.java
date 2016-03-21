@@ -13,18 +13,20 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.example.alex.scheduleandroid.ConnectedManager;
+import com.example.alex.scheduleandroid.Constants;
 import com.example.alex.scheduleandroid.R;
+import com.example.alex.scheduleandroid.dto.Lesson;
 import com.example.alex.scheduleandroid.dto.WorkDayDTO;
 
 import java.util.List;
 
 public class WorkDayListAdapter extends RecyclerView.Adapter<WorkDayListAdapter.LessonViewHolder> {
 
-    private List<WorkDayDTO> data;// расписание с сервера
+    private WorkDayDTO data;// расписание с сервера
 
     private Context context;
 
-    public WorkDayListAdapter(List<WorkDayDTO> data, Context context) {
+    public WorkDayListAdapter(WorkDayDTO data, Context context) {
         this.data = data;
         this.context = context;
     }
@@ -38,17 +40,30 @@ public class WorkDayListAdapter extends RecyclerView.Adapter<WorkDayListAdapter.
 
     @Override
     public void onBindViewHolder(LessonViewHolder holder, int position) {
-        WorkDayDTO item = data.get(position);
+//        WorkDayDTO item = data.get(1);
+//        if (position > 6) position = 6;
 
-        holder.textView.setText(item.getDateOfWorkDay(position));
+        holder.textView.setText(data.getDateOfWorkDay(position));
 
         LessonListAdapter lessonListAdapter = new LessonListAdapter(context);
-        SimpleAdapter adapter = lessonListAdapter.getAdapter(item , position);
+        SimpleAdapter adapter = lessonListAdapter.getAdapter(data , position);
 
         holder.listView.setAdapter(adapter);
         setListViewHeightBasedOnChildren(holder.listView);
 
     }
+
+    public void addNewItems(List<String> dateOfWorkDay) {
+        data.addNewDateOfWorkDay(dateOfWorkDay);
+//        data.add(data.size(), workDayDTO);
+        notifyItemInserted(data.getNumberOfDateOfWorkDay() - 1);
+//        notifyItemInserted(data.size() + Constants.DAYS_FOR_SHOWING - 1);
+//        notifyDataSetChanged();
+//        notifyItemRangeInserted(data.size() + 1, 7);
+    }
+
+
+
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         /**
@@ -76,7 +91,7 @@ public class WorkDayListAdapter extends RecyclerView.Adapter<WorkDayListAdapter.
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return data.getNumberOfDateOfWorkDay();
     }
 
     public class LessonViewHolder extends RecyclerView.ViewHolder {

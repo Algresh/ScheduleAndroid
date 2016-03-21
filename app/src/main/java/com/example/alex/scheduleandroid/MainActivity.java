@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recycleView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
         myAsyncTask =  new MyAsyncTask();
         myAsyncTask.execute();
     }

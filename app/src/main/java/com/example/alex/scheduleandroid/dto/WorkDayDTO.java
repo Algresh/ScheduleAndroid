@@ -7,25 +7,25 @@ import java.util.List;
  * Created by alex on 06.03.16.
  */
 public class WorkDayDTO {
-    private String[] dateOfWorkDay;
+    private List<String> dateOfWorkDay;
 
     private List<Lesson> lessons;
 
-    public WorkDayDTO(String[] dateOfWorkDay) {
+    public WorkDayDTO(List dateOfWorkDay) {
         this.dateOfWorkDay = dateOfWorkDay;
 
         lessons = new ArrayList<Lesson>();
     }
 
-    public String[] getDateOfWorkDay() {
+    public List getDateOfWorkDay() {
         return dateOfWorkDay;
     }
 
     public String getDateOfWorkDay(int position) {
-        return dateOfWorkDay[position];
+        return dateOfWorkDay.get(position);
     }
 
-    public void setDateOfWorkDay(String[] dateOfWorkDay) {
+    public void setDateOfWorkDay(List dateOfWorkDay) {
         this.dateOfWorkDay = dateOfWorkDay;
     }
 
@@ -35,6 +35,14 @@ public class WorkDayDTO {
 
     public void setLessons(List<Lesson> lessons) {
         this.lessons = lessons;
+    }
+
+    public void addNewLessons(List<Lesson> lessons){
+        this.lessons.addAll(lessons);
+    }
+
+    public void addNewDateOfWorkDay(List<String> dateOfWorkDay){
+        this.dateOfWorkDay.addAll(dateOfWorkDay);
     }
 
     public Lesson getLesson(int position) {
@@ -47,6 +55,10 @@ public class WorkDayDTO {
 
     public int getNumberOfLessons() {
         return lessons.size();
+    }
+
+    public int getNumberOfDateOfWorkDay() {
+        return dateOfWorkDay.size();
     }
 
 }

@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 public class ConnectedManager {
 
@@ -59,7 +60,7 @@ public class ConnectedManager {
 
     }
 
-    public WorkDayDTO getWorkDTOByGroup(String group ,String[] date) {
+    public WorkDayDTO getWorkDTOByGroup(String group ,List date) {
         WorkDayDTO workDayDTO = null;
 
         if (this.checkConnection()) {
@@ -204,7 +205,7 @@ public class ConnectedManager {
         return grpDTO;
     }
 
-    private WorkDayDTO parseRespondJSONLessons (String jsonString , String[] dateOfLesson) {
+    private WorkDayDTO parseRespondJSONLessons (String jsonString , List dateOfLesson) {
         if(jsonString.equals("error")) {
             return null;
         }

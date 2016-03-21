@@ -73,7 +73,7 @@ public class DatabaseManager {
 
 
     //этот метод вытаскивает данные из базы и кладет их в WorkDTO
-    public WorkDayDTO getWorkDayDTO (String group , String[] dateOfWorkDay) {
+    public WorkDayDTO getWorkDayDTO (String group , List dateOfWorkDay) {
 
 
         WorkDayDTO workDayDTO = null;
