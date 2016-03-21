@@ -45,9 +45,8 @@ public class LessonsShowActivity extends AppCompatActivity {
     private LinearLayoutManager manager;
     private String userGrp;
     private Toolbar toolbar;
-    private boolean loading = true;
-    int pastVisiblesItems, visibleItemCount, totalItemCount;
-    WorkDayListAdapter adapter;
+    private int numberLoadingWeek = 0;
+    private WorkDayListAdapter adapter;
 
 
 
@@ -89,19 +88,23 @@ public class LessonsShowActivity extends AppCompatActivity {
 
     private void initNavigationView() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout_lesson);
+        // синхронизируем toolbar и drawerLayout
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar
                 , R.string.open, R.string.close);
         drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
 
+        // получения хидера navigationView
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
         View headerLayout = navigationView.getHeaderView(0);
 
+        //устанавливаем название группы юзера в TextView в хидере
         TextView tvUserGroup = (TextView) headerLayout.findViewById(R.id.groupUserNavigationHeader);
         SharedPreferences sPref = getSharedPreferences(Constants.GROUP_USER, MODE_PRIVATE);
         userGrp = sPref.getString(Constants.GROUP_USER, "");
         tvUserGroup.setText(userGrp);
 
+        // обработка нажатий на меню в navigationView
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -128,7 +131,9 @@ public class LessonsShowActivity extends AppCompatActivity {
         });
     }
 
-
+    // мето который генерирует dateOfWorkDay для разных недель
+    // если numberWeek равен нулю это значит текущая неделя
+    // остальные значения numberWeek говорят сколько раз по 7 дней надо прибавить к текущей дате
     private List<String> getSevenDays(java.util.Calendar calendar, int numberWeek){
         List<String>sevenDays = new ArrayList<>();
         int firstElementIndex = 0;
@@ -137,7 +142,7 @@ public class LessonsShowActivity extends AppCompatActivity {
         String dayOdWeek;
         String dayOdMonth;
 
-        if(numberWeek == 0) {
+        if(numberWeek == 0) {// для текущех 7 дней
             sevenDays.add(this.getResources().getString(R.string.today));
             sevenDays.add(getResources().getString(R.string.tomorrow));
             calendar.add(Calendar.DAY_OF_MONTH, 2);
@@ -177,39 +182,35 @@ public class LessonsShowActivity extends AppCompatActivity {
 
         @Override
         protected WorkDayDTO doInBackground(Void... params) {
-            java.util.Calendar calendar = java.util.Calendar.getInstance(java.util.TimeZone.getDefault(), java.util.Locale.getDefault());
-            calendar.setTime(new java.util.Date());
-
+            Calendar calendar = Calendar.getInstance();
             DatabaseManager databaseManager = new DatabaseManager(LessonsShowActivity.this);
 
 
-            List dates = getSevenDays(calendar, 0);
+            List dates = getSevenDays(calendar, numberLoadingWeek);
             WorkDayDTO workDayDTO;
 
-            if (connectedManager.checkConnection()) {
+            if (connectedManager.checkConnection()) {// проверка подключения
+                // узнаем верси расписания группы
                 int versionGrp = connectedManager.getVersionGroup(group);
 
+                // если версия не соответствует той которая есть на телефоне или вообще нет занятий
+                // то загружаем их с сервера и заносим в БД
                 if (!databaseManager.compareVersions(versionGrp , group) || databaseManager.isLessonEmpty()) {
                     workDayDTO = connectedManager.getWorkDTOByGroup(group, dates);
                     if (workDayDTO != null) {
                         databaseManager.updateLessons(workDayDTO , group , versionGrp);
                     }
                 } else {
+                    // если совпали версии просто достаем их из БД
                     workDayDTO = databaseManager.getWorkDayDTO(group , dates);
                 }
             } else {
+                // если нет подключения берем расписание из БД
                 workDayDTO = databaseManager.getWorkDayDTO(group , dates);
             }
 
             databaseManager.closeDatabase();
 
-//            if (workDayDTO != null) {
-//                for (int i = 0; i < Constants.DAYS_FOR_SHOWING; i++) {
-//                    list.add(workDayDTO);
-//                }
-//            } else {
-//                return null;
-//            }
 
             return workDayDTO;
         }
@@ -223,34 +224,33 @@ public class LessonsShowActivity extends AppCompatActivity {
 
                 recyclerViewLessons.setAdapter(adapter);
 
+                // необходимо чтобы подгружать новые занятия при скролле
                 recyclerViewLessons.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
                     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                        if (dy > 0) //check for scroll down
-                        {
-                            java.util.Calendar calendar = java.util.Calendar.getInstance(java.util.TimeZone.getDefault(), java.util.Locale.getDefault());
-                            calendar.setTime(new java.util.Date());
-                            visibleItemCount = manager.getChildCount();
-                            totalItemCount = manager.getItemCount();
-                            pastVisiblesItems = manager.findFirstVisibleItemPosition();
-
-                            if (loading) {
-                                if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                                    loading = false;
-                                    Log.d(Constants.MY_TAG, "Last Item Wow !");
-                                    adapter.addNewItems(getSevenDays(calendar, 1));
-//                                    adapter.addNewItems(new WorkDayDTO(new String[]{"asfdsadf"}));
-
-                                    //Do pagination.. i.e. fetch new data
-                                }
-                            }
-                        }
+                        addNewItemsByScroll(dy);
                     }
                 });
 
             } else {
                 TextView textView = (TextView) findViewById(R.id.noLessonsInGroup);
                 textView.setText(R.string.noDateAboutThisGroup);
+            }
+        }
+
+        // метод добавляющий новые элементы когда скрол достиг последнего элемента
+        private void addNewItemsByScroll(int dy) {
+            if (dy > 0) { //проверка что скроллится вниз
+
+                Calendar calendar = Calendar.getInstance();
+                int visibleItemCount = manager.getChildCount();
+                int totalItemCount = manager.getItemCount();
+                int pastVisiblesItems = manager.findFirstVisibleItemPosition();
+
+                if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                    numberLoadingWeek++;
+                    adapter.addNewItems(getSevenDays(calendar, numberLoadingWeek));
+                }
             }
         }
 
