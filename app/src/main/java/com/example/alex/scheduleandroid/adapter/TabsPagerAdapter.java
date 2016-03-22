@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.example.alex.scheduleandroid.Constants;
 import com.example.alex.scheduleandroid.fragment.InboxFragment;
 import com.example.alex.scheduleandroid.fragment.SentFragment;
 
@@ -12,17 +13,18 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 
     private String[] tabs;
 
-    public TabsPagerAdapter(FragmentManager fm) {
+    public TabsPagerAdapter(FragmentManager fm, String[] tabsTittle) {
         super(fm);
-        tabs = new String[]{"Входящие" , "Отправленные"};
+        tabs = tabsTittle;
     }
 
     @Override
     public Fragment getItem(int position) {
+
         switch (position) {
-            case 0:
+            case Constants.TAB_INBOX:
                 return InboxFragment.getInstance();
-            case 1:
+            case Constants.TAB_SENT:
                 return SentFragment.getInstance();
         }
 

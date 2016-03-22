@@ -27,6 +27,7 @@
     <string name="noLessonsTextWidget"> Сегодня нет пар! </string>
     <string name="noDateTextWidget"> Нет данных </string>
     <string name="selectGroup"> Выберите группу </string>
+    <string name="notificationTitle"> Уведомления </string>
 
     <string-array name="name_array_curses">
         <item> 1 курс бакалавриат</item>
@@ -35,6 +36,11 @@
         <item> 4 курс бакалавриат</item>
         <item> 1 курс магистратура</item>
         <item> 2 курс магистратура</item>
+    </string-array>
+
+    <string-array name="tabs_title">
+        <item> Входящие</item>
+        <item>" Отправленные </item>
     </string-array>
 
     <string-array name="name_array_faculties">

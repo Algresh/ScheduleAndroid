@@ -124,6 +124,10 @@ public class LessonsShowActivity extends AppCompatActivity {
                         intent.putExtra("group" , userGrp);
                         startActivity(intent);
                         break;
+                    case R.id.notificationItem:
+                        intent = new Intent(LessonsShowActivity.this , NotificationActivity.class);
+                        startActivity(intent);
+                        break;
                 }
 
                 return true;

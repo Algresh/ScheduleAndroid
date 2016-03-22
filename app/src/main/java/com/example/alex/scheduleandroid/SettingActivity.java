@@ -95,6 +95,10 @@ public class SettingActivity extends AppCompatActivity {
                         intent.putExtra("group", userGrp);
                         startActivity(intent);
                         break;
+                    case R.id.notificationItem:
+                        intent = new Intent(SettingActivity.this , NotificationActivity.class);
+                        startActivity(intent);
+                        break;
                 }
 
                 return true;
