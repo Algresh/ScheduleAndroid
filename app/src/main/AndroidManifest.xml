@@ -31,7 +31,8 @@
                 android:resource="@xml/schedule_widget_info" />
         </receiver>
 
-        <activity android:name=".SelectionGroupActivity"></activity>
+        <activity android:name=".SelectionGroupActivity" />
+        <activity android:name=".NotificationActivity"></activity>
     </application>
 
 </manifest>

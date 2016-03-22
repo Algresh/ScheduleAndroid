@@ -12,6 +12,9 @@ public class Constants {
     public static final String FACULTY_DPM = "3";
     public static final String[] FACULTIES = {FACULTY_DKE , FACULTY_DEE , FACULTY_DPM};
 
+    public static final int TAB_INBOX = 0;
+    public static final int TAB_SENT = 1;
+
     public static final String MY_TAG = "myTag";
     public static final String DATE_FORMAT = "yyyy-MM-dd";
 

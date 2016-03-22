@@ -17,7 +17,7 @@
     <item
         android:title="@string/notifyMessage"
         android:orderInCategory="1"
-        android:id="@+id/notification"
+        android:id="@+id/notificationItem"
         android:icon="@drawable/message_text" />
 
     <item

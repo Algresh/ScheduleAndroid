@@ -107,6 +107,10 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtra("group" , userGrp);
                         startActivity(intent);
                         break;
+                    case R.id.notificationItem:
+                        intent = new Intent(MainActivity.this , NotificationActivity.class);
+                        startActivity(intent);
+                        break;
 
                 }
                 return true;
