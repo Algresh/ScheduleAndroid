@@ -71,8 +71,11 @@ public class SentFragment extends Fragment {
         Map map;
         for (MessageDTO item: listMessages) {
             map = new HashMap();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            String date_sent = format.format(item.getDateSent());
+
+            map.put(Constants.NOTIFICATION_COLUMN_DATE, date_sent );//Время зависит от поставленного на телевоне
             map.put(Constants.NOTIFICATION_COLUMN_TEXT_MSG, item.getTextMsg());
-            map.put(Constants.NOTIFICATION_COLUMN_DATE, (new Date(item.getDateSent())).toString() );
             list.add(map);
         }
 

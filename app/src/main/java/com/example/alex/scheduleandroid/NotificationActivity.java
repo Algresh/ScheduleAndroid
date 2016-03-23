@@ -109,6 +109,11 @@ public class NotificationActivity extends AppCompatActivity implements SendDialo
         sendDialogFragment.show(manager, Constants.DIALOG_SENT_MESSAGE);
     }
 
+    /**
+     *
+     * @TODO сделать так чтобы при добавлении уведомления оно сразу показывалось в списке!!!
+     */
+
     @Override
     public void onClickSendMessage(String message) {
         Log.d(Constants.MY_TAG, message);
