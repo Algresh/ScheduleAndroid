@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -18,7 +19,7 @@ import android.widget.TextView;
 import com.example.alex.scheduleandroid.adapter.TabsPagerAdapter;
 import com.example.alex.scheduleandroid.fragment.SendDialogFragment;
 
-public class NotificationActivity extends AppCompatActivity {
+public class NotificationActivity extends AppCompatActivity implements SendDialogFragment.MyDialogListener {
 
     private ViewPager viewPager;
     private Toolbar toolbar;
@@ -105,5 +106,10 @@ public class NotificationActivity extends AppCompatActivity {
         FragmentManager manager = getSupportFragmentManager();
         SendDialogFragment sendDialogFragment = new SendDialogFragment();
         sendDialogFragment.show(manager, Constants.DIALOG_SENT_MESSAGE);
+    }
+
+    @Override
+    public void onClickSendMessage(String message) {
+        Log.d(Constants.MY_TAG, message);
     }
 }
