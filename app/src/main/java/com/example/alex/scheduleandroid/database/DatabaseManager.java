@@ -11,8 +11,10 @@ import com.example.alex.scheduleandroid.R;
 import com.example.alex.scheduleandroid.dto.FacultyDTO;
 import com.example.alex.scheduleandroid.dto.Group;
 import com.example.alex.scheduleandroid.dto.Lesson;
+import com.example.alex.scheduleandroid.dto.MessageDTO;
 import com.example.alex.scheduleandroid.dto.WorkDayDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -298,7 +300,7 @@ public class DatabaseManager {
 //        Log.d(Constants.MY_TAG, dateStr);
 //        Log.d(Constants.MY_TAG, idGroup);
 
-        Cursor cursor =sqLiteDatabase.rawQuery(Constants.QUERY_NUMBER_LESSON, new String[]{idGroup, dateStr});
+        Cursor cursor = sqLiteDatabase.rawQuery(Constants.QUERY_NUMBER_LESSON, new String[]{idGroup, dateStr});
 
         if (cursor.moveToFirst()) {
             int firstLesson = cursor.getInt(cursor.getColumnIndex(Constants.DATELESSON_COLUMN_FIRST_LESSON));
@@ -332,6 +334,60 @@ public class DatabaseManager {
             }
         }
         return facultyId;
+    }
+
+    public void addNewMyMessage(String textMsg, String group) {
+
+        int idMyGroup = getGroupIdByName(group);
+
+        ContentValues contentValues = new ContentValues();
+
+        if(idMyGroup > 0 && !textMsg.equals("")) {
+            contentValues.put(Constants.NOTIFICATION_COLUMN_TEXT_MSG, textMsg);
+            contentValues.put(Constants.NOTIFICATION_COLUMN_GROUP_ID, idMyGroup);
+            contentValues.put(Constants.NOTIFICATION_COLUMN_DATE, System.currentTimeMillis());
+
+            sqLiteDatabase.insert(Constants.DATABASE_TABLE_NOTIFICATION, null, contentValues);
+        }
+    }
+
+    public List<MessageDTO> getMyMessages (String group) {
+        return getMessages(group, Constants.MY_MESSAGES);
+    }
+
+    public List<MessageDTO> getOtherMessages (String group) {
+        return getMessages(group, Constants.OTHER_MESSAGES);
+    }
+
+    private List<MessageDTO> getMessages (String group , int type) {
+        List<MessageDTO> list = new ArrayList<>();
+
+        int idGrp = getGroupIdByName(group);
+
+        Cursor cursor;
+        String selection = "";
+        if (type == Constants.MY_MESSAGES) {
+            selection = Constants.SELECTION_MY_MESSAGES;
+        } else if (type == Constants.OTHER_MESSAGES) {
+            selection = Constants.SELECTION_OTHER_MESSAGES;
+        }
+
+        cursor = sqLiteDatabase.query(Constants.DATABASE_TABLE_NOTIFICATION, null, selection,
+                new String[]{String.valueOf(idGrp)}, null, null, null);
+
+        if(cursor.moveToFirst()) {
+
+            do {
+                int id = cursor.getInt(cursor.getColumnIndex(Constants.NOTIFICATION_COLUMN_ID));
+                int groupId = cursor.getInt(cursor.getColumnIndex(Constants.NOTIFICATION_COLUMN_GROUP_ID));
+                long date_sent = cursor.getLong(cursor.getColumnIndex(Constants.NOTIFICATION_COLUMN_DATE));
+                String text_msg = cursor.getString(cursor.getColumnIndex(Constants.NOTIFICATION_COLUMN_TEXT_MSG));
+
+                list.add(new MessageDTO(id, date_sent, groupId, text_msg));
+            } while (cursor.moveToNext());
+        }
+
+        return list;
     }
 
 }

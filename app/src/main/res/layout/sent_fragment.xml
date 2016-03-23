@@ -15,4 +15,10 @@
         android:background="@color/settingButton"
         android:onClick="onClickShowDialog"
         />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listViewMyMessages"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

@@ -23,6 +23,9 @@ public class Constants {
     public static final int NUMBER_OF_CURSES = 6;
     public static final int DAYS_FOR_SHOWING = 7;
 
+    public static final int MY_MESSAGES = 0;
+    public static final int OTHER_MESSAGES = 1;
+
     public static final String CLASS_ROOM = "classRoom";
     public static final String NUMBER_LESSON = "numberLesson";
     public static final String NAME_SUBJECT = "nameSubject";
@@ -61,6 +64,13 @@ public class Constants {
     public static final String DATELESSON_COLUMN_LESSON_ID = "lesson_id";
     public static final String DATELESSON_COLUMN_FIRST_LESSON = "first_lesson";
 
+    //------------------------TABLE DATELESSON----------------------
+    public static final String DATABASE_TABLE_NOTIFICATION = "notification";
+    public static final String NOTIFICATION_COLUMN_ID = "id";
+    public static final String NOTIFICATION_COLUMN_DATE = "date_sent";
+    public static final String NOTIFICATION_COLUMN_GROUP_ID = "id_grp";
+    public static final String NOTIFICATION_COLUMN_TEXT_MSG = "text_msg";
+
 
     //------------------------CREATE TABLE GROUP----------------------
     public static final String DATABASE_CREATE_TABLE_GROUP = "create table " + DATABASE_TABLE_GROUP + "(" +
@@ -92,6 +102,13 @@ public class Constants {
             DATELESSON_COLUMN_DATE  + " text," +
             DATELESSON_COLUMN_LESSON_ID  + " integer );";
 
+    //------------------------CREATE TABLE NOTIFICATION----------------------
+    public static final String DATABASE_CREATE_TABLE_NOTIFICATION = "create table " + DATABASE_TABLE_NOTIFICATION + "(" +
+            NOTIFICATION_COLUMN_ID  + " integer primary key autoincrement," +
+            NOTIFICATION_COLUMN_DATE  + " integer," +
+            NOTIFICATION_COLUMN_TEXT_MSG  + " text," +
+            NOTIFICATION_COLUMN_GROUP_ID  + " integer );";
+
 
     //------------------------SELECTIONS----------------------
     public static final String SELECTION_CHECK_GROUP = GROUP_COLUMN_NAME + "=? AND "
@@ -107,6 +124,8 @@ public class Constants {
     public static final String SELECTION_DATELESSON_BY_LESSON_ID = DATELESSON_COLUMN_LESSON_ID + "=?";
     public static final String SELECTION_VERSION_UPDATE_BY_ID = GROUP_COLUMN_ID + "=?";
     public static final String SELECTION_GROUPS_BY_FACULTY = GROUP_COLUMN_FACULTY + "=?";
+    public static final String SELECTION_MY_MESSAGES = NOTIFICATION_COLUMN_GROUP_ID + "=?";
+    public static final String SELECTION_OTHER_MESSAGES = NOTIFICATION_COLUMN_GROUP_ID + "<>?";
 
     //------------------------QUERIES----------------------
     public static final String QUERY_NUMBER_LESSON = "SELECT MIN(lesson.number_lesson) AS first_lesson FROM lesson " +

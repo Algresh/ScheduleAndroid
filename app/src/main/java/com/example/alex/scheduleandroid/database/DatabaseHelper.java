@@ -32,6 +32,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(Constants.DATABASE_CREATE_TABLE_LESSON);
 
         db.execSQL(Constants.DATABASE_CREATE_TABLE_DATELESSON);
+
+        db.execSQL(Constants.DATABASE_CREATE_TABLE_NOTIFICATION);
     }
 
     @Override
@@ -43,6 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF IT EXISTS " + Constants.DATABASE_TABLE_GROUP);
         db.execSQL("DROP TABLE IF IT EXISTS " + Constants.DATABASE_TABLE_LESSON);
         db.execSQL("DROP TABLE IF IT EXISTS " + Constants.DATABASE_TABLE_DATELESSON);
+        db.execSQL("DROP TABLE IF IT EXISTS " + Constants.DATABASE_TABLE_NOTIFICATION);
         // Создаём новую таблицу
         onCreate(db);
     }

@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.alex.scheduleandroid.adapter.TabsPagerAdapter;
+import com.example.alex.scheduleandroid.database.DatabaseManager;
 import com.example.alex.scheduleandroid.fragment.SendDialogFragment;
 
 public class NotificationActivity extends AppCompatActivity implements SendDialogFragment.MyDialogListener {
@@ -111,5 +112,8 @@ public class NotificationActivity extends AppCompatActivity implements SendDialo
     @Override
     public void onClickSendMessage(String message) {
         Log.d(Constants.MY_TAG, message);
+        DatabaseManager manager = new DatabaseManager(this);
+        manager.addNewMyMessage(message, userGrp);
+        manager.closeDatabase();
     }
 }
