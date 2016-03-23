@@ -15,6 +15,8 @@ public class Constants {
     public static final int TAB_INBOX = 0;
     public static final int TAB_SENT = 1;
 
+    public static final String DIALOG_SENT_MESSAGE = "dialog_message";
+
     public static final String MY_TAG = "myTag";
     public static final String DATE_FORMAT = "yyyy-MM-dd";
 

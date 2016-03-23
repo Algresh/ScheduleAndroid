@@ -28,6 +28,9 @@
     <string name="noDateTextWidget"> Нет данных </string>
     <string name="selectGroup"> Выберите группу </string>
     <string name="notificationTitle"> Уведомления </string>
+    <string name="buttonCreateMessage"> Создать уведомление </string>
+    <string name="buttonSentMessage"> Отправить уведомление </string>
+    <string name="textNotification"> Текст уведомления </string>
 
     <string-array name="name_array_curses">
         <item> 1 курс бакалавриат</item>

@@ -3,6 +3,7 @@ package com.example.alex.scheduleandroid;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.alex.scheduleandroid.adapter.TabsPagerAdapter;
+import com.example.alex.scheduleandroid.fragment.SendDialogFragment;
 
 public class NotificationActivity extends AppCompatActivity {
 
@@ -97,5 +99,11 @@ public class NotificationActivity extends AppCompatActivity {
 
         tabLayout.setupWithViewPager(viewPager);
 
+    }
+
+    public void onClickShowDialog(View view) {
+        FragmentManager manager = getSupportFragmentManager();
+        SendDialogFragment sendDialogFragment = new SendDialogFragment();
+        sendDialogFragment.show(manager, Constants.DIALOG_SENT_MESSAGE);
     }
 }
