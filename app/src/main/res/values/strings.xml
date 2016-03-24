@@ -31,6 +31,8 @@
     <string name="buttonCreateMessage"> Создать уведомление </string>
     <string name="buttonSentMessage"> Отправить уведомление </string>
     <string name="textNotification"> Текст уведомления </string>
+    <string name="notificationSuccess"> Уведомление успешно отправлено </string>
+    <string name="notificationError"> Отправить не удалось </string>
 
     <string-array name="name_array_curses">
         <item> 1 курс бакалавриат</item>

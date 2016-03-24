@@ -1,7 +1,9 @@
 package com.example.alex.scheduleandroid;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -15,10 +17,13 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.alex.scheduleandroid.adapter.TabsPagerAdapter;
 import com.example.alex.scheduleandroid.database.DatabaseManager;
 import com.example.alex.scheduleandroid.fragment.SendDialogFragment;
+
+import java.net.HttpURLConnection;
 
 public class NotificationActivity extends AppCompatActivity implements SendDialogFragment.MyDialogListener {
 
@@ -26,6 +31,8 @@ public class NotificationActivity extends AppCompatActivity implements SendDialo
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private String userGrp;
+
+    private ProgressDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,9 +123,53 @@ public class NotificationActivity extends AppCompatActivity implements SendDialo
 
     @Override
     public void onClickSendMessage(String message) {
-        Log.d(Constants.MY_TAG, message);
-        DatabaseManager manager = new DatabaseManager(this);
-        manager.addNewMyMessage(message, userGrp);
-        manager.closeDatabase();
+
+        new NotificationTask().execute(message);
+
+    }
+
+    public class NotificationTask extends AsyncTask<String, Void, Integer>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            String strMsg = NotificationActivity.this.getString(R.string.downloadingGroups);
+
+            pDialog = new ProgressDialog(NotificationActivity.this);
+            pDialog.setMessage(strMsg);
+            pDialog.show();
+        }
+
+
+        @Override
+        protected Integer doInBackground(String... params) {
+            String message = params[0];
+
+            ConnectedManager connectedManager = new ConnectedManager(NotificationActivity.this);
+            int responseCode = connectedManager.postNotification(message, userGrp);
+
+            DatabaseManager manager = new DatabaseManager(NotificationActivity.this);
+            manager.addNewMyMessage(message, userGrp);
+            manager.closeDatabase();
+
+            return responseCode;
+        }
+
+        @Override
+        protected void onPostExecute(Integer requestCode) {
+            super.onPostExecute(requestCode);
+            pDialog.dismiss();
+            if (requestCode == HttpURLConnection.HTTP_OK) {
+                Toast.makeText(NotificationActivity.this, getString(R.string.notificationSuccess),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(NotificationActivity.this, getString(R.string.notificationError),
+                        Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
     }
 }

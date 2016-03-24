@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -35,6 +36,15 @@ public class ConnectedManager {
         this.context = context;
 
         this.faculties = context.getResources().getStringArray(R.array.name_array_faculties);
+    }
+
+    public int postNotification(String message, String group) {
+
+        if (this.checkConnection()) {
+            return postMessage(Constants.POST_NOTIFICATION_URL, message, group);
+        }
+
+        return -1;
     }
 
     public FacultyDTO getGroupDTOByFaculty(String faculty) {
@@ -139,6 +149,33 @@ public class ConnectedManager {
             }
         }
         return data;
+    }
+
+    private int postMessage(String myUrl, String message, String grp) {
+        int responseCode = -1;
+        try {
+            URL url = new URL(myUrl);
+
+            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+            String urlParameters = "message=" + message + "&group=" + grp;
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
+            connection.setDoOutput(true);
+            DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+            dStream.writeBytes(urlParameters);
+            dStream.flush();
+            dStream.close();
+            responseCode = connection.getResponseCode();
+            Log.d(Constants.MY_TAG, "" + responseCode);
+        } catch (MalformedURLException e) {
+            Log.d(Constants.MY_TAG, "Q1");
+            e.printStackTrace();
+        } catch (IOException e) {
+            Log.d(Constants.MY_TAG, "Q2");
+            e.printStackTrace();
+        } finally {
+            return responseCode;
+        }
     }
 
     private int parseRespondJSONVersionGroup (String jsonString) {
