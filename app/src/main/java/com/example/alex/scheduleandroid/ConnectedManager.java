@@ -138,10 +138,8 @@ public class ConnectedManager {
             }
             connection.disconnect();// закрываем соединение
         } catch (MalformedURLException e) {
-            Log.d(Constants.MY_TAG , "1");
             e.printStackTrace();
         } catch (IOException e) {
-            Log.d(Constants.MY_TAG , "2");
             e.printStackTrace();
         } finally {
             if (inputstream != null) {
@@ -159,19 +157,16 @@ public class ConnectedManager {
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
             String urlParameters = "message=" + message + "&group=" + grp;
             connection.setRequestMethod("POST");
-            connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
             connection.setDoOutput(true);
+
             DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
             dStream.writeBytes(urlParameters);
             dStream.flush();
             dStream.close();
             responseCode = connection.getResponseCode();
-            Log.d(Constants.MY_TAG, "" + responseCode);
         } catch (MalformedURLException e) {
-            Log.d(Constants.MY_TAG, "Q1");
             e.printStackTrace();
         } catch (IOException e) {
-            Log.d(Constants.MY_TAG, "Q2");
             e.printStackTrace();
         } finally {
             return responseCode;

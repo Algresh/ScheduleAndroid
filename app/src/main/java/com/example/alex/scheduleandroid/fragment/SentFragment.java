@@ -52,8 +52,9 @@ public class SentFragment extends Fragment {
             List<MessageDTO> listMessages = databaseManager.getMyMessages("need");
             ArrayList<Map<String, String>> date = transformDate(listMessages);
 
-            int[] to = {R.id.textViewMessageTxt, R.id.textViewMessageDate};
-            String[] from = {Constants.NOTIFICATION_COLUMN_TEXT_MSG, Constants.NOTIFICATION_COLUMN_DATE};
+            int[] to = {R.id.textViewMessageTxt, R.id.textViewMessageDate, R.id.imageViewCheckSent};
+            String[] from = {Constants.NOTIFICATION_COLUMN_TEXT_MSG, Constants.NOTIFICATION_COLUMN_DATE,
+                    Constants.IMAGE_LIST_NOTIFICATION};
 
             SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), date, R.layout.message_item, from, to);
 
@@ -73,9 +74,17 @@ public class SentFragment extends Fragment {
             map = new HashMap();
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             String date_sent = format.format(item.getDateSent());
+            int img;
+
+            if (item.getSent_ok() == 1) {
+                img = R.drawable.check_circle_outline;
+            } else {
+                img = R.drawable.close_circle_outline;
+            }
 
             map.put(Constants.NOTIFICATION_COLUMN_DATE, date_sent );//Время зависит от поставленного на телевоне
             map.put(Constants.NOTIFICATION_COLUMN_TEXT_MSG, item.getTextMsg());
+            map.put(Constants.IMAGE_LIST_NOTIFICATION, img);
             list.add(map);
         }
 

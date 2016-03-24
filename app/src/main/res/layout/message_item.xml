@@ -12,11 +12,25 @@
         android:text="Large Text"
         android:id="@+id/textViewMessageTxt" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/textViewMessageDate"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/textViewMessageDate" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageViewCheckSent"
+            android:src="@drawable/check_circle_outline"
+            android:layout_marginLeft="10dp"/>
+    </LinearLayout>
+
 </LinearLayout>

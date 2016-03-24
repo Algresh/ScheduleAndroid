@@ -27,6 +27,8 @@ public class Constants {
     public static final int MY_MESSAGES = 0;
     public static final int OTHER_MESSAGES = 1;
 
+    public static final String IMAGE_LIST_NOTIFICATION = "image_notification";
+
     public static final String CLASS_ROOM = "classRoom";
     public static final String NUMBER_LESSON = "numberLesson";
     public static final String NAME_SUBJECT = "nameSubject";

@@ -135,7 +135,7 @@ public class NotificationActivity extends AppCompatActivity implements SendDialo
         protected void onPreExecute() {
             super.onPreExecute();
 
-            String strMsg = NotificationActivity.this.getString(R.string.downloadingGroups);
+            String strMsg = NotificationActivity.this.getString(R.string.sendingMessage);
 
             pDialog = new ProgressDialog(NotificationActivity.this);
             pDialog.setMessage(strMsg);
