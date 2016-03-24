@@ -65,12 +65,13 @@ public class Constants {
     public static final String DATELESSON_COLUMN_LESSON_ID = "lesson_id";
     public static final String DATELESSON_COLUMN_FIRST_LESSON = "first_lesson";
 
-    //------------------------TABLE DATELESSON----------------------
+    //------------------------TABLE NOTIFICATION----------------------
     public static final String DATABASE_TABLE_NOTIFICATION = "notification";
     public static final String NOTIFICATION_COLUMN_ID = "id";
     public static final String NOTIFICATION_COLUMN_DATE = "date_sent";
     public static final String NOTIFICATION_COLUMN_GROUP_ID = "id_grp";
     public static final String NOTIFICATION_COLUMN_TEXT_MSG = "text_msg";
+    public static final String NOTIFICATION_COLUMN_SENT_OK = "sent_ok";
 
 
     //------------------------CREATE TABLE GROUP----------------------
@@ -108,6 +109,7 @@ public class Constants {
             NOTIFICATION_COLUMN_ID  + " integer primary key autoincrement," +
             NOTIFICATION_COLUMN_DATE  + " integer," +
             NOTIFICATION_COLUMN_TEXT_MSG  + " text," +
+            NOTIFICATION_COLUMN_SENT_OK  + " integer," +
             NOTIFICATION_COLUMN_GROUP_ID  + " integer );";
 
 

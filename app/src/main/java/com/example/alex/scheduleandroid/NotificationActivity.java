@@ -150,8 +150,12 @@ public class NotificationActivity extends AppCompatActivity implements SendDialo
             ConnectedManager connectedManager = new ConnectedManager(NotificationActivity.this);
             int responseCode = connectedManager.postNotification(message, userGrp);
 
+            boolean flag;
+            if (responseCode == HttpURLConnection.HTTP_OK) flag = true;
+            else flag = false;
+
             DatabaseManager manager = new DatabaseManager(NotificationActivity.this);
-            manager.addNewMyMessage(message, userGrp);
+            manager.addNewMyMessage(message, userGrp, flag);
             manager.closeDatabase();
 
             return responseCode;

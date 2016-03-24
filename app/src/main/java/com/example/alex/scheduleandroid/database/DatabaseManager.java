@@ -336,7 +336,8 @@ public class DatabaseManager {
         return facultyId;
     }
 
-    public void addNewMyMessage(String textMsg, String group) {
+    public void addNewMyMessage(String textMsg, String group, boolean flagOk) {
+        int sentOk = flagOk ? 1: 0;
 
         int idMyGroup = getGroupIdByName(group);
 
@@ -346,6 +347,7 @@ public class DatabaseManager {
             contentValues.put(Constants.NOTIFICATION_COLUMN_TEXT_MSG, textMsg);
             contentValues.put(Constants.NOTIFICATION_COLUMN_GROUP_ID, idMyGroup);
             contentValues.put(Constants.NOTIFICATION_COLUMN_DATE, System.currentTimeMillis());
+            contentValues.put(Constants.NOTIFICATION_COLUMN_SENT_OK, sentOk);
 
             sqLiteDatabase.insert(Constants.DATABASE_TABLE_NOTIFICATION, null, contentValues);
         }
@@ -382,8 +384,9 @@ public class DatabaseManager {
                 int groupId = cursor.getInt(cursor.getColumnIndex(Constants.NOTIFICATION_COLUMN_GROUP_ID));
                 long date_sent = cursor.getLong(cursor.getColumnIndex(Constants.NOTIFICATION_COLUMN_DATE));
                 String text_msg = cursor.getString(cursor.getColumnIndex(Constants.NOTIFICATION_COLUMN_TEXT_MSG));
+                int sentOk = cursor.getInt(cursor.getColumnIndex(Constants.NOTIFICATION_COLUMN_SENT_OK));
 
-                list.add(new MessageDTO(id, date_sent, groupId, text_msg));
+                list.add(new MessageDTO(id, date_sent, groupId, text_msg, sentOk));
             } while (cursor.moveToNext());
         }
 

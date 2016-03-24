@@ -6,12 +6,14 @@ public class MessageDTO  {
     long dateSent;
     int grpId;
     String textMsg;
+    int sent_ok;
 
-    public MessageDTO(int id, long dateSent, int grpId, String textMsg) {
+    public MessageDTO(int id, long dateSent, int grpId, String textMsg, int sent_ok) {
         this.id = id;
         this.dateSent = dateSent;
         this.grpId = grpId;
         this.textMsg = textMsg;
+        this.sent_ok = sent_ok;
     }
 
     public int getId() {
@@ -44,5 +46,13 @@ public class MessageDTO  {
 
     public void setTextMsg(String textMsg) {
         this.textMsg = textMsg;
+    }
+
+    public int getSent_ok() {
+        return sent_ok;
+    }
+
+    public void setSent_ok(int sent_ok) {
+        this.sent_ok = sent_ok;
     }
 }
