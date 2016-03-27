@@ -7,6 +7,7 @@ public class Constants {
     public static final String LESSON_URL = "http://10.0.2.2/schedule/APIController/get_all_lessons_by_grp.php?grp=";
     public static final String VERSION_GROUP_URL = "http://10.0.2.2/schedule/APIController/get_version_group.php?grp=";
     public static final String POST_NOTIFICATION_URL = "http://10.0.2.2/schedule/APIController/post_message.php";
+    public static final String GET_NOTIFICATIONS_URL = "http://10.0.2.2/schedule/APIController/get_all_messages.php?group=";
 
     public static final String FACULTY_DKE = "1";
     public static final String FACULTY_DEE = "2";

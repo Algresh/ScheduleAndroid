@@ -49,7 +49,7 @@ public class SentFragment extends Fragment {
         if( !group.equals("")){
             DatabaseManager databaseManager = new DatabaseManager(getContext());
 
-            List<MessageDTO> listMessages = databaseManager.getMyMessages("need");
+            List<MessageDTO> listMessages = databaseManager.getMyMessages(group);
             ArrayList<Map<String, String>> date = transformDate(listMessages);
 
             int[] to = {R.id.textViewMessageTxt, R.id.textViewMessageDate, R.id.imageViewCheckSent};

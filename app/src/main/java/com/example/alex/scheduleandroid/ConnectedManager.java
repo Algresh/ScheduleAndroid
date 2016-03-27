@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.example.alex.scheduleandroid.dto.Group;
 import com.example.alex.scheduleandroid.dto.FacultyDTO;
 import com.example.alex.scheduleandroid.dto.Lesson;
+import com.example.alex.scheduleandroid.dto.MessageDTO;
 import com.example.alex.scheduleandroid.dto.WorkDayDTO;
 
 import org.json.JSONArray;
@@ -23,6 +24,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ConnectedManager {
@@ -67,6 +70,29 @@ public class ConnectedManager {
         }
 
         return grpDTO;
+
+    }
+
+    public ArrayList<MessageDTO> getMessages(String group) {
+        ArrayList<MessageDTO> listMessages = null;
+
+
+        if (this.checkConnection()) {
+            String jsonStringMessages = null; //JSON который длжен вернуть сервер
+
+            try {
+                jsonStringMessages = downloadOneUrl(Constants.GET_NOTIFICATIONS_URL + group);// получаем значения из AsyncTask
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //парсим полученный JSON
+            listMessages = this.parseRespondJSONMessages(jsonStringMessages);
+        } else {
+            Toast.makeText(context, "Нет интернета", Toast.LENGTH_SHORT).show();
+        }
+
+        return listMessages;
 
     }
 
@@ -171,6 +197,43 @@ public class ConnectedManager {
         } finally {
             return responseCode;
         }
+    }
+
+    private ArrayList<MessageDTO> parseRespondJSONMessages (String jsonString) {
+        if(jsonString.equals("error")) {
+            return null;
+        }
+
+        int id;
+        String date_sent;
+        String text_msg;
+
+        ArrayList<MessageDTO> list = null;
+
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            int success = jsonObject.getInt("success");
+
+            if (success == 1) {
+                list = new ArrayList<>();
+                JSONArray jsonMessages = jsonObject.getJSONArray("message");
+
+                for(int i = 0; i<jsonMessages.length(); i++) {
+                    JSONObject jsonItem = jsonMessages.getJSONObject(i);
+                    id = jsonItem.getInt("id");
+                    text_msg = jsonItem.getString("text_msg");
+                    date_sent = jsonItem.getString("date_sent");
+                    list.add(new MessageDTO(id, date_sent, text_msg));
+
+                }
+            } else {
+                return null;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return list;
     }
 
     private int parseRespondJSONVersionGroup (String jsonString) {
