@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -31,6 +32,7 @@ public class NotificationActivity extends AppCompatActivity implements SendDialo
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private String userGrp;
+    TabsPagerAdapter adapter;
 
     private ProgressDialog pDialog;
 
@@ -41,6 +43,16 @@ public class NotificationActivity extends AppCompatActivity implements SendDialo
         initTabs();
         initToolBar();
         initNavigationView();
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager manager = getSupportFragmentManager();
+                SendDialogFragment sendDialogFragment = new SendDialogFragment();
+                sendDialogFragment.show(manager, Constants.DIALOG_SENT_MESSAGE);
+            }
+        });
 
 
     }
@@ -103,18 +115,13 @@ public class NotificationActivity extends AppCompatActivity implements SendDialo
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
         String[] tabsTitle =  getResources().getStringArray(R.array.tabs_title);
-        TabsPagerAdapter adapter = new TabsPagerAdapter(getSupportFragmentManager(), tabsTitle);
+        adapter = new TabsPagerAdapter(getSupportFragmentManager(), tabsTitle);
         viewPager.setAdapter(adapter);
 
         tabLayout.setupWithViewPager(viewPager);
 
     }
 
-    public void onClickShowDialog(View view) {
-        FragmentManager manager = getSupportFragmentManager();
-        SendDialogFragment sendDialogFragment = new SendDialogFragment();
-        sendDialogFragment.show(manager, Constants.DIALOG_SENT_MESSAGE);
-    }
 
     /**
      *
@@ -126,6 +133,10 @@ public class NotificationActivity extends AppCompatActivity implements SendDialo
 
         new NotificationTask().execute(message);
 
+//        Fragment fragment = adapter.getItem(Constants.TAB_SENT);
+//        ListView listView = (ListView) fragment.getView().findViewById(R.id.listViewMyMessages);
+//        ArrayAdapter arrayAdapter = (ArrayAdapter)listView.getAdapter();
+//        arrayAdapter.add(message);
     }
 
     public class NotificationTask extends AsyncTask<String, Void, Integer>

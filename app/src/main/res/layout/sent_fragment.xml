@@ -5,17 +5,6 @@
     android:background="@color/lesson_course"
     >
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/buttonCreateMessage"
-        android:id="@+id/buttonShowDialog"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="25dp"
-        android:background="@color/settingButton"
-        android:onClick="onClickShowDialog"
-        />
-
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

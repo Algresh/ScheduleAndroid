@@ -375,7 +375,7 @@ public class DatabaseManager {
         }
 
         cursor = sqLiteDatabase.query(Constants.DATABASE_TABLE_NOTIFICATION, null, selection,
-                new String[]{String.valueOf(idGrp)}, null, null, null);
+                new String[]{String.valueOf(idGrp)}, null, null, Constants.NOTIFICATION_COLUMN_DATE + " DESC");
 
         if(cursor.moveToFirst()) {
 
