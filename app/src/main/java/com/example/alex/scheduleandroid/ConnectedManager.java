@@ -50,6 +50,15 @@ public class ConnectedManager {
         return -1;
     }
 
+    public int postRegistration(String regId, String group) {
+
+        if (this.checkConnection()) {
+            return postRegister(Constants.POST_REGISTER_URL, regId, group);
+        }
+
+        return -1;
+    }
+
     public FacultyDTO getGroupDTOByFaculty(String faculty) {
         FacultyDTO grpDTO = null;
 
@@ -190,6 +199,32 @@ public class ConnectedManager {
             dStream.flush();
             dStream.close();
             responseCode = connection.getResponseCode();
+//            Log.d(Constants.MY_TAG, "ccvv " + responseCode);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            return responseCode;
+        }
+    }
+//    String urlParameters = "group=" + grp + "&regId=" + regId;
+    private int postRegister(String myUrl, String regId, String grp) {
+        int responseCode = -1;
+        try {
+            URL url = new URL(myUrl);
+
+            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+            String urlParameters = "group=" + grp + "&regId=" + regId;
+            connection.setRequestMethod("POST");
+            connection.setDoOutput(true);
+
+            DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+            dStream.writeBytes(urlParameters);
+            dStream.flush();
+            dStream.close();
+            responseCode = connection.getResponseCode();
+            Log.d(Constants.MY_TAG, "ccvv " + responseCode);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {

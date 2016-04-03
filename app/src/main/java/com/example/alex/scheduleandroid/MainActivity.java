@@ -1,10 +1,13 @@
 package com.example.alex.scheduleandroid;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,18 +15,26 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.alex.scheduleandroid.adapter.GroupListAdapter;
+import com.example.alex.scheduleandroid.app.Config;
 import com.example.alex.scheduleandroid.database.DatabaseManager;
 import com.example.alex.scheduleandroid.dto.FacultyDTO;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import services.GcmIntentService;
+//import com.google.android.gms.gcm.GCMRegistrar;
+//import com.google.android.gms.gcm.GCM
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
     private String userGrp;
 
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +73,35 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         myAsyncTask =  new MyAsyncTask();
         myAsyncTask.execute();
+
+        if (checkPlayServices()) {
+            registerGCM();
+        }
+    }
+
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.d(Constants.MY_TAG, "This device is not supported. Google Play Services not installed!");
+                Toast.makeText(getApplicationContext(), "This device is not supported. Google Play Services not installed!", Toast.LENGTH_LONG).show();
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    // starting the service to register with GCM
+    private void registerGCM() {
+        Intent intent = new Intent(this, GcmIntentService.class);
+        intent.putExtra("key", "register");
+        intent.putExtra("group", userGrp);
+        startService(intent);
     }
 
     private void initToolBar() {
@@ -103,12 +146,12 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case R.id.myLessonsItem:
-                        intent = new Intent(MainActivity.this , LessonsShowActivity.class);
-                        intent.putExtra("group" , userGrp);
+                        intent = new Intent(MainActivity.this, LessonsShowActivity.class);
+                        intent.putExtra("group", userGrp);
                         startActivity(intent);
                         break;
                     case R.id.notificationItem:
-                        intent = new Intent(MainActivity.this , NotificationActivity.class);
+                        intent = new Intent(MainActivity.this, NotificationActivity.class);
                         startActivity(intent);
                         break;
 
@@ -163,6 +206,26 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // register GCM registration complete receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.REGISTRATION_COMPLETE));
+
+        // register new push message receiver
+        // by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        super.onPause();
     }
 
 
