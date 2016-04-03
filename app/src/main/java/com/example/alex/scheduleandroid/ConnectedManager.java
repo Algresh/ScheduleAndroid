@@ -12,6 +12,8 @@ import com.example.alex.scheduleandroid.dto.FacultyDTO;
 import com.example.alex.scheduleandroid.dto.Lesson;
 import com.example.alex.scheduleandroid.dto.MessageDTO;
 import com.example.alex.scheduleandroid.dto.WorkDayDTO;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -186,11 +188,16 @@ public class ConnectedManager {
 
     private int postMessage(String myUrl, String message, String grp) {
         int responseCode = -1;
+        String regId = null;
         try {
+            InstanceID instanceID = InstanceID.getInstance(context);
+            regId = instanceID.getToken(context.getString(R.string.gcm_defaultSenderId),
+                    GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+
             URL url = new URL(myUrl);
 
-            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-            String urlParameters = "message=" + message + "&group=" + grp;
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            String urlParameters = "message=" + message + "&group=" + grp + "&regId=" + regId;
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
 

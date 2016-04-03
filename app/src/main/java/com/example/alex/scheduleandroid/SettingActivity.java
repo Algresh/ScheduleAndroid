@@ -1,19 +1,29 @@
 package com.example.alex.scheduleandroid;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.alex.scheduleandroid.app.Config;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+
+import services.GcmIntentService;
 
 public class SettingActivity extends AppCompatActivity {
 
@@ -26,6 +36,9 @@ public class SettingActivity extends AppCompatActivity {
 
     private String userGrp;
     private Toolbar toolbar;
+
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +58,35 @@ public class SettingActivity extends AppCompatActivity {
 
     }
 
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.d(Constants.MY_TAG, "This device is not supported. Google Play Services not installed!");
+                Toast.makeText(getApplicationContext(), "This device is not supported. Google Play Services not installed!", Toast.LENGTH_LONG).show();
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    // starting the service to register with GCM
+    private void registerGCM() {
+        Intent intent = new Intent(this, GcmIntentService.class);
+        intent.putExtra("key", "register");
+        intent.putExtra("group", userGrp);
+        startService(intent);
+    }
+
     private void initUserGroupNameFromPreference() {
         String yourGroup= getString(R.string.yourGroup);
         sPref = getSharedPreferences(Constants.GROUP_USER , MODE_PRIVATE);
-        String userGrp = sPref.getString(Constants.GROUP_USER , "");
+        String userGrp = sPref.getString(Constants.GROUP_USER, "");
         textView = (TextView) findViewById(R.id.textViewYourGroup);
         textView.setText(yourGroup + userGrp);
     }
@@ -77,7 +115,7 @@ public class SettingActivity extends AppCompatActivity {
 
         TextView tvUserGroup = (TextView) headerLayout.findViewById(R.id.groupUserNavigationHeader);
         sPref = getSharedPreferences(Constants.GROUP_USER, MODE_PRIVATE);
-        userGrp = sPref.getString(Constants.GROUP_USER , "");
+        userGrp = sPref.getString(Constants.GROUP_USER, "");
         tvUserGroup.setText(userGrp);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -96,7 +134,7 @@ public class SettingActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case R.id.notificationItem:
-                        intent = new Intent(SettingActivity.this , NotificationActivity.class);
+                        intent = new Intent(SettingActivity.this, NotificationActivity.class);
                         startActivity(intent);
                         break;
                 }
@@ -125,6 +163,31 @@ public class SettingActivity extends AppCompatActivity {
             editor.apply();
             Toast.makeText(this , grpSaved , Toast.LENGTH_SHORT).show();
             initUserGroupNameFromPreference();
+            userGrp = str;
+
+            if (checkPlayServices()) {
+                registerGCM();
+            }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // register GCM registration complete receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.REGISTRATION_COMPLETE));
+
+        // register new push message receiver
+        // by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        super.onPause();
     }
 }

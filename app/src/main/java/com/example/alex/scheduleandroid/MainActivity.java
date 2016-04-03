@@ -33,8 +33,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import services.GcmIntentService;
-//import com.google.android.gms.gcm.GCMRegistrar;
-//import com.google.android.gms.gcm.GCM
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,9 +50,6 @@ public class MainActivity extends AppCompatActivity {
     private MyAsyncTask myAsyncTask;
 
     private String userGrp;
-
-    private BroadcastReceiver mRegistrationBroadcastReceiver;
-    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
 
     @Override
@@ -74,35 +69,8 @@ public class MainActivity extends AppCompatActivity {
         myAsyncTask =  new MyAsyncTask();
         myAsyncTask.execute();
 
-        if (checkPlayServices()) {
-            registerGCM();
-        }
     }
 
-    private boolean checkPlayServices() {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (apiAvailability.isUserResolvableError(resultCode)) {
-                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
-                        .show();
-            } else {
-                Log.d(Constants.MY_TAG, "This device is not supported. Google Play Services not installed!");
-                Toast.makeText(getApplicationContext(), "This device is not supported. Google Play Services not installed!", Toast.LENGTH_LONG).show();
-                finish();
-            }
-            return false;
-        }
-        return true;
-    }
-
-    // starting the service to register with GCM
-    private void registerGCM() {
-        Intent intent = new Intent(this, GcmIntentService.class);
-        intent.putExtra("key", "register");
-        intent.putExtra("group", userGrp);
-        startService(intent);
-    }
 
     private void initToolBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -208,25 +176,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // register GCM registration complete receiver
-        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                new IntentFilter(Config.REGISTRATION_COMPLETE));
-
-        // register new push message receiver
-        // by doing this, the activity will be notified each time a new message arrives
-        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                new IntentFilter(Config.PUSH_NOTIFICATION));
-    }
-
-    @Override
-    protected void onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
-        super.onPause();
-    }
 
 
 }

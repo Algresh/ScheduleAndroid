@@ -28,7 +28,6 @@ import java.net.HttpURLConnection;
 public class GcmIntentService extends IntentService {
 
     private static final String TAG = GcmIntentService.class.getSimpleName();
-    private ProgressDialog pDialog;
 
     public GcmIntentService() {
         super(TAG);
@@ -93,9 +92,7 @@ public class GcmIntentService extends IntentService {
         Log.d(Constants.MY_TAG, "sendRegistrationToServer: " + token);
 //        new NotificationTask().execute(token);
         ConnectedManager connectedManager = new ConnectedManager(GcmIntentService.this);
-//        connectedManager.postRegistration(token, userGroup);
         int version = connectedManager.postRegistration(token, userGroup);
-        int p = 0;
     }
 
     /**
@@ -137,42 +134,6 @@ public class GcmIntentService extends IntentService {
             Log.e(Constants.MY_TAG, "Topic unsubscribe error. Topic: " + topic + ", error: " + e.getMessage());
             Toast.makeText(getApplicationContext(), "Topic subscribe error. Topic: " + topic + ", error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public class NotificationTask extends AsyncTask<String, Void, Integer>
-    {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            String strMsg = GcmIntentService.this.getString(R.string.sendingMessage);
-
-            pDialog = new ProgressDialog(GcmIntentService.this);
-            pDialog.setMessage(strMsg);
-            pDialog.show();
-        }
-
-
-        @Override
-        protected Integer doInBackground(String... params) {
-            String token = params[0];
-            Log.d(Constants.MY_TAG, "kjdfnkgnd");
-            ConnectedManager connectedManager = new ConnectedManager(GcmIntentService.this);
-            connectedManager.postRegistration(token, userGroup);
-
-
-
-            return 1;
-        }
-
-        @Override
-        protected void onPostExecute(Integer requestCode) {
-            super.onPostExecute(requestCode);
-            pDialog.dismiss();
-
-        }
-
     }
 
 
