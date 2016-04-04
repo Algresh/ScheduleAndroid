@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.alex.scheduleandroid.Constants;
-import com.example.alex.scheduleandroid.MainActivity;
+import com.example.alex.scheduleandroid.NotificationActivity;
 import com.example.alex.scheduleandroid.R;
 import com.google.android.gms.gcm.GcmListenerService;
 
@@ -18,20 +18,22 @@ import com.google.android.gms.gcm.GcmListenerService;
 
 public class MyGcmPushReceiver extends GcmListenerService {
 
-    private static final String TAG = MyGcmPushReceiver.class.getSimpleName();
+    private static int NOTIFY_ID = 1;
 
     @Override
     public void onMessageReceived(String from, Bundle bundle) {
-        String title = bundle.getString("message");
+        // получение сообщения
+        String message = bundle.getString("message");
         Log.d(Constants.MY_TAG, "From: " + from);
-        Log.d(Constants.MY_TAG, "Title: " + title);
-        sendNotification(title);
+        Log.d(Constants.MY_TAG, "Message: " + message);
+        sendNotification(message);
     }
 
+    // отправка уведомления о новом сообщении
     private void sendNotification(String message) {
         Context context = getApplicationContext();
 
-        Intent notificationIntent = new Intent(context, MainActivity.class);
+        Intent notificationIntent = new Intent(context, NotificationActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(context,
                 0, notificationIntent,
                 PendingIntent.FLAG_CANCEL_CURRENT);
@@ -42,7 +44,7 @@ public class MyGcmPushReceiver extends GcmListenerService {
                 .setSmallIcon(R.drawable.message_text)
                 .setTicker(message)
                 .setAutoCancel(true)
-                .setContentTitle("Notification!")
+                .setContentTitle(res.getString(R.string.notifyMessage))
                 .setContentText(message);
         Notification notification = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
@@ -50,7 +52,15 @@ public class MyGcmPushReceiver extends GcmListenerService {
         }
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(101, notification);
+        notificationManager.notify(NOTIFY_ID, notification);
+
+        if(NOTIFY_ID > 10000) {
+            NOTIFY_ID = 1;
+        } else {
+            NOTIFY_ID++;
+        }
+
+
     }
 
 

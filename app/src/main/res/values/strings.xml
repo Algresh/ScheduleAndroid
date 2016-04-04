@@ -2,7 +2,8 @@
     <string name="app_name">ScheduleAndroid</string>
     <string name="search_title">Search</string>
     <string name="list_groups">Список групп</string>
-    <string name="notifyMessage">Уведомления</string>
+    <string name="notifyMessages">Уведомления</string>
+    <string name="notifyMessage">Уведомление</string>
     <string name="setting">Настройки</string>
     <string name="messageAboutError">Сообщить об ошибке</string>
     <string name="downloadingGroups">Загружаем список групп. Подождите…</string>
@@ -34,6 +35,7 @@
     <string name="notificationSuccess"> Уведомление успешно отправлено </string>
     <string name="notificationError"> Отправить не удалось </string>
     <string name="sendingMessage"> Отправка уведомления </string>
+    <string name="googlePlayServicesNotInstall"> Google Play Services не установлены </string>
 
     <string-array name="name_array_curses">
         <item> 1 курс бакалавриат</item>
