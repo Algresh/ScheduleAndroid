@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +22,7 @@ import com.example.alex.scheduleandroid.app.Config;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
-import services.GcmIntentService;
+import com.example.alex.scheduleandroid.service.GcmIntentService;
 
 public class SettingActivity extends AppCompatActivity {
 

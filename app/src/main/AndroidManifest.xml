@@ -44,7 +44,7 @@
         </receiver>
 
         <activity android:name=".SelectionGroupActivity" />
-        <activity android:name=".NotificationActivity"></activity>
+        <activity android:name=".NotificationActivity"/>
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
@@ -57,7 +57,7 @@
         </receiver>
 
         <service
-            android:name="services.MyGcmPushReceiver"
+            android:name=".service.MyGcmPushReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -65,7 +65,7 @@
         </service>
 
         <service
-            android:name="services.GcmIntentService"
+            android:name=".service.GcmIntentService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID" />

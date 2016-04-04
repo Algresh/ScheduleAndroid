@@ -1,13 +1,10 @@
 package com.example.alex.scheduleandroid;
 
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,24 +12,17 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.example.alex.scheduleandroid.adapter.GroupListAdapter;
-import com.example.alex.scheduleandroid.app.Config;
 import com.example.alex.scheduleandroid.database.DatabaseManager;
 import com.example.alex.scheduleandroid.dto.FacultyDTO;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import services.GcmIntentService;
 
 public class MainActivity extends AppCompatActivity {
 
