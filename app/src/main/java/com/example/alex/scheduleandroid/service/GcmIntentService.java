@@ -1,12 +1,9 @@
-package services;
+package com.example.alex.scheduleandroid.service;
 
 import android.app.IntentService;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -14,15 +11,11 @@ import com.example.alex.scheduleandroid.ConnectedManager;
 import com.example.alex.scheduleandroid.Constants;
 import com.example.alex.scheduleandroid.R;
 import com.example.alex.scheduleandroid.app.Config;
-import com.example.alex.scheduleandroid.database.DatabaseManager;
-import com.example.alex.scheduleandroid.dto.FacultyDTO;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-
 
 
 public class GcmIntentService extends IntentService {

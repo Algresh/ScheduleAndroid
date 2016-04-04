@@ -1,4 +1,4 @@
-package services;
+package com.example.alex.scheduleandroid.service;
 
 import android.content.Intent;
 import android.util.Log;
