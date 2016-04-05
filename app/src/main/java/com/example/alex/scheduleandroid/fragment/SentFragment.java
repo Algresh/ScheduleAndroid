@@ -5,11 +5,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -20,7 +18,6 @@ import com.example.alex.scheduleandroid.dto.MessageDTO;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,7 +79,7 @@ public class SentFragment extends Fragment {
                 img = R.drawable.close_circle_outline;
             }
 
-            map.put(Constants.NOTIFICATION_COLUMN_DATE, date_sent );//Время зависит от поставленного на телевоне
+            map.put(Constants.NOTIFICATION_COLUMN_DATE, date_sent );//Время зависит от поставленного на телефоне
             map.put(Constants.NOTIFICATION_COLUMN_TEXT_MSG, item.getTextMsg());
             map.put(Constants.IMAGE_LIST_NOTIFICATION, img);
             list.add(map);

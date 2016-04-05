@@ -69,7 +69,7 @@ public class ConnectedManager {
             String jsonStringGroups = null; //JSON который длжен вернуть сервер
 
             try {
-                jsonStringGroups = downloadOneUrl(Constants.GROUP_URL + faculty);// получаем значения из AsyncTask
+                jsonStringGroups = downloadOneUrl(Constants.GROUP_URL + faculty);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -84,15 +84,16 @@ public class ConnectedManager {
 
     }
 
-    public ArrayList<MessageDTO> getMessages(String group) {
+    public ArrayList<MessageDTO> getMessages() {
         ArrayList<MessageDTO> listMessages = null;
 
 
         if (this.checkConnection()) {
             String jsonStringMessages = null; //JSON который длжен вернуть сервер
+            String regId = getTokenOfApp();
 
             try {
-                jsonStringMessages = downloadOneUrl(Constants.GET_NOTIFICATIONS_URL + group);// получаем значения из AsyncTask
+                jsonStringMessages = downloadOneUrl(Constants.GET_NOTIFICATIONS_URL + regId);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -190,9 +191,7 @@ public class ConnectedManager {
         int responseCode = -1;
         String regId = null;
         try {
-            InstanceID instanceID = InstanceID.getInstance(context);
-            regId = instanceID.getToken(context.getString(R.string.gcm_defaultSenderId),
-                    GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+            regId = getTokenOfApp();
 
             URL url = new URL(myUrl);
 
@@ -400,7 +399,7 @@ public class ConnectedManager {
                     }
 
 
-                    workDayDTO.setLesson(new Lesson(nameSubject , numberLesson , classRoom , typeLesson , teacher ,subGrp ,place ,date));
+                    workDayDTO.setLesson(new Lesson(nameSubject, numberLesson, classRoom, typeLesson, teacher, subGrp, place, date));
                 }
 
             } else {
@@ -440,6 +439,19 @@ public class ConnectedManager {
         NetworkInfo networkinfo = myConnMgr.getActiveNetworkInfo();
 
         return networkinfo != null && networkinfo.isConnected();
+    }
+
+    public String getTokenOfApp() {
+        InstanceID instanceID = InstanceID.getInstance(context);
+        String regId = null;
+        try {
+            regId = instanceID.getToken(context.getString(R.string.gcm_defaultSenderId),
+                    GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            return regId;
+        }
     }
 
 
