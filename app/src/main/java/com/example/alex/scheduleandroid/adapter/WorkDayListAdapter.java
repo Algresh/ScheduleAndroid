@@ -3,7 +3,6 @@ package com.example.alex.scheduleandroid.adapter;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +11,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import com.example.alex.scheduleandroid.ConnectedManager;
-import com.example.alex.scheduleandroid.Constants;
 import com.example.alex.scheduleandroid.R;
-import com.example.alex.scheduleandroid.dto.Lesson;
 import com.example.alex.scheduleandroid.dto.WorkDayDTO;
 
 import java.util.List;
@@ -66,9 +62,6 @@ public class WorkDayListAdapter extends RecyclerView.Adapter<WorkDayListAdapter.
 
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
-        /**
-         * @TODO understand how this method worked
-         */
         ListAdapter listAdapter = listView.getAdapter();// получаем адаптер списка
         if (listAdapter == null) {
             // pre-condition

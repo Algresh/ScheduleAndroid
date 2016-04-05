@@ -12,10 +12,14 @@ import com.example.alex.scheduleandroid.fragment.SentFragment;
 public class TabsPagerAdapter extends FragmentPagerAdapter {
 
     private String[] tabs;
+    private InboxFragment inboxFragment;
+    private SentFragment sentFragment;
 
     public TabsPagerAdapter(FragmentManager fm, String[] tabsTittle) {
         super(fm);
         tabs = tabsTittle;
+        inboxFragment = InboxFragment.getInstance();
+        sentFragment = SentFragment.getInstance();
     }
 
     @Override
@@ -23,14 +27,19 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case Constants.TAB_INBOX:
-                return InboxFragment.getInstance();
+                return inboxFragment;
             case Constants.TAB_SENT:
-                return SentFragment.getInstance();
+                return sentFragment;
         }
 
 
         return null;
     }
+
+    public SentFragment getSentFragment() {
+        return sentFragment;
+    }
+
 
     @Override
     public CharSequence getPageTitle(int position) {

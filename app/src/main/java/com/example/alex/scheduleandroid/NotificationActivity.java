@@ -1,28 +1,19 @@
 package com.example.alex.scheduleandroid;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alex.scheduleandroid.adapter.TabsPagerAdapter;
 import com.example.alex.scheduleandroid.database.DatabaseManager;
 import com.example.alex.scheduleandroid.fragment.SendDialogFragment;
+import com.example.alex.scheduleandroid.fragment.SentFragment;
 
 import java.net.HttpURLConnection;
 
@@ -32,6 +23,7 @@ public class NotificationActivity extends BaseActivity implements SendDialogFrag
     TabsPagerAdapter adapter;
 
     private ProgressDialog pDialog;
+    private String currentMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,21 +62,11 @@ public class NotificationActivity extends BaseActivity implements SendDialogFrag
 
     }
 
-
-    /**
-     *
-     * @TODO сделать так чтобы при добавлении уведомления оно сразу показывалось в списке!!!
-     */
-
     @Override
     public void onClickSendMessage(String message) {
 
+        currentMsg = message;
         new NotificationTask().execute(message);
-
-//        Fragment fragment = adapter.getItem(Constants.TAB_SENT);
-//        ListView listView = (ListView) fragment.getView().findViewById(R.id.listViewMyMessages);
-//        ArrayAdapter arrayAdapter = (ArrayAdapter)listView.getAdapter();
-//        arrayAdapter.add(message);
     }
 
     public class NotificationTask extends AsyncTask<String, Void, Integer>
@@ -124,12 +106,15 @@ public class NotificationActivity extends BaseActivity implements SendDialogFrag
         protected void onPostExecute(Integer requestCode) {
             super.onPostExecute(requestCode);
             pDialog.dismiss();
+            SentFragment fragment = adapter.getSentFragment();
             if (requestCode == HttpURLConnection.HTTP_OK) {
                 Toast.makeText(NotificationActivity.this, getString(R.string.notificationSuccess),
                         Toast.LENGTH_SHORT).show();
+                fragment.addNewMessage(currentMsg, 1);
             } else {
                 Toast.makeText(NotificationActivity.this, getString(R.string.notificationError),
                         Toast.LENGTH_SHORT).show();
+                fragment.addNewMessage(currentMsg, 0);
             }
 
         }

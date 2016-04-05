@@ -17,6 +17,7 @@ public class BaseActivity extends AppCompatActivity {
     protected DrawerLayout drawerLayout;
     protected Toolbar toolbar;
     protected int currentActivity = -1;
+    TextView tvUserGroup;
 
     public int getCurrentActivity() {
         return currentActivity;
@@ -26,15 +27,17 @@ public class BaseActivity extends AppCompatActivity {
         this.currentActivity = currentActivity;
     }
 
-    protected void initToolBar(String title, int idToolvar) {
-        toolbar = (Toolbar) findViewById(idToolvar);
+    public TextView getTvUserGroup() {
+        return tvUserGroup;
+    }
+
+    public void setTvUserGroup(TextView tvUserGroup) {
+        this.tvUserGroup = tvUserGroup;
+    }
+
+    protected void initToolBar(String title, int idToolbar) {
+        toolbar = (Toolbar) findViewById(idToolbar);
         toolbar.setTitle(title);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return false;
-            }
-        });
     }
 
 
@@ -48,7 +51,7 @@ public class BaseActivity extends AppCompatActivity {
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
         View headerLayout = navigationView.getHeaderView(0);
 
-        TextView tvUserGroup = (TextView) headerLayout.findViewById(R.id.groupUserNavigationHeader);
+        tvUserGroup = (TextView) headerLayout.findViewById(R.id.groupUserNavigationHeader);
         SharedPreferences sPref = getSharedPreferences(Constants.GROUP_USER, MODE_PRIVATE);
         userGrp = sPref.getString(Constants.GROUP_USER , "");
         tvUserGroup.setText(userGrp);

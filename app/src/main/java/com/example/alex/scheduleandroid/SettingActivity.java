@@ -35,9 +35,6 @@ public class SettingActivity extends BaseActivity {
 
         btnSelectYourGroup = (Button) findViewById(R.id.selectYourGroup);
 
-/**
- * @TODO сделать так чтобы при изменение Preference срабатовало событие
- */
 
         initNavigationView();
         initUserGroupNameFromPreference();
@@ -92,6 +89,9 @@ public class SettingActivity extends BaseActivity {
         if(resultCode == RESULT_OK) {
             String str = data.getStringExtra("group");
             String grpSaved = this.getResources().getString(R.string.groupSaved);
+
+            TextView tv = getTvUserGroup();
+            tv.setText(str);
 
             SharedPreferences.Editor editor = sPref.edit();
             editor.putString(Constants.GROUP_USER , str);
