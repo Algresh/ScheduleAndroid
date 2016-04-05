@@ -2,19 +2,10 @@ package com.example.alex.scheduleandroid;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.example.alex.scheduleandroid.adapter.WorkDayListAdapter;
@@ -25,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class LessonsShowActivity extends AppCompatActivity {
+public class LessonsShowActivity extends BaseActivity {
 
     private static final int LAYOUT = R.layout.activity_lessons_show;
 
@@ -40,11 +31,7 @@ public class LessonsShowActivity extends AppCompatActivity {
     private RecyclerView recyclerViewLessons;
 
     private DownloadPageTask downloadPageTask;
-
-    private DrawerLayout drawerLayout;
     private LinearLayoutManager manager;
-    private String userGrp;
-    private Toolbar toolbar;
     private int numberLoadingWeek = 0;
     private WorkDayListAdapter adapter;
 
@@ -55,6 +42,7 @@ public class LessonsShowActivity extends AppCompatActivity {
         setTheme(R.style.AppDefault);
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
+        setCurrentActivity(R.id.myLessonsItem);
 
         Intent intent  = getIntent();
         group = intent.getStringExtra("group");
@@ -63,7 +51,7 @@ public class LessonsShowActivity extends AppCompatActivity {
 
         this.dayOfWeek = this.getResources().getStringArray(R.array.name_day_of_week);
         this.month = this.getResources().getStringArray(R.array.name_month);
-        initToolBar();
+        initToolBar(group, R.id.toolbarLessons);
         initNavigationView();
 
 
@@ -75,65 +63,6 @@ public class LessonsShowActivity extends AppCompatActivity {
 
     }
 
-    private void initToolBar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbarLessons);
-        toolbar.setTitle(group);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return false;
-            }
-        });
-    }
-
-    private void initNavigationView() {
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout_lesson);
-        // синхронизируем toolbar и drawerLayout
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar
-                , R.string.open, R.string.close);
-        drawerLayout.setDrawerListener(toggle);
-        toggle.syncState();
-
-        // получения хидера navigationView
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
-        View headerLayout = navigationView.getHeaderView(0);
-
-        //устанавливаем название группы юзера в TextView в хидере
-        TextView tvUserGroup = (TextView) headerLayout.findViewById(R.id.groupUserNavigationHeader);
-        SharedPreferences sPref = getSharedPreferences(Constants.GROUP_USER, MODE_PRIVATE);
-        userGrp = sPref.getString(Constants.GROUP_USER, "");
-        tvUserGroup.setText(userGrp);
-
-        // обработка нажатий на меню в navigationView
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                drawerLayout.closeDrawers();
-                Intent intent;
-                switch (item.getItemId()) {
-                    case R.id.listOfGroups:
-                        intent = new Intent(LessonsShowActivity.this , MainActivity.class);
-                        startActivity(intent);
-                        break;
-                    case R.id.settings:
-                        intent = new Intent(LessonsShowActivity.this, SettingActivity.class);
-                        startActivity(intent);
-                        break;
-                    case R.id.myLessonsItem:
-                        intent = new Intent(LessonsShowActivity.this , LessonsShowActivity.class);
-                        intent.putExtra("group" , userGrp);
-                        startActivity(intent);
-                        break;
-                    case R.id.notificationItem:
-                        intent = new Intent(LessonsShowActivity.this , NotificationActivity.class);
-                        startActivity(intent);
-                        break;
-                }
-
-                return true;
-            }
-        });
-    }
 
     // мето который генерирует dateOfWorkDay для разных недель
     // если numberWeek равен нулю это значит текущая неделя

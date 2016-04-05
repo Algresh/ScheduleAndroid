@@ -26,12 +26,9 @@ import com.example.alex.scheduleandroid.fragment.SendDialogFragment;
 
 import java.net.HttpURLConnection;
 
-public class NotificationActivity extends AppCompatActivity implements SendDialogFragment.MyDialogListener {
+public class NotificationActivity extends BaseActivity implements SendDialogFragment.MyDialogListener {
 
     private ViewPager viewPager;
-    private Toolbar toolbar;
-    private DrawerLayout drawerLayout;
-    private String userGrp;
     TabsPagerAdapter adapter;
 
     private ProgressDialog pDialog;
@@ -40,8 +37,11 @@ public class NotificationActivity extends AppCompatActivity implements SendDialo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
+        setCurrentActivity(R.id.notificationItem);
+
+        String title = getString(R.string.notificationTitle);
         initTabs();
-        initToolBar();
+        initToolBar(title, R.id.toolbarNotification);
         initNavigationView();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -57,58 +57,6 @@ public class NotificationActivity extends AppCompatActivity implements SendDialo
 
     }
 
-    private void initToolBar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbarNotification);
-        toolbar.setTitle(R.string.notificationTitle);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return false;
-            }
-        });
-
-    }
-
-    private void initNavigationView() {
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar, R.string.open,  R.string.close);
-        drawerLayout.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
-        View headerLayout = navigationView.getHeaderView(0);
-
-        TextView tvUserGroup = (TextView) headerLayout.findViewById(R.id.groupUserNavigationHeader);
-        SharedPreferences sPref = getSharedPreferences(Constants.GROUP_USER, MODE_PRIVATE);
-        userGrp = sPref.getString(Constants.GROUP_USER, "");
-        tvUserGroup.setText(userGrp);
-
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                drawerLayout.closeDrawers();
-                Intent intent;
-                switch (item.getItemId()) {
-                    case R.id.listOfGroups:
-                        intent = new Intent(NotificationActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        break;
-                    case R.id.settings:
-                        intent = new Intent(NotificationActivity.this, SettingActivity.class);
-                        startActivity(intent);
-                        break;
-                    case R.id.myLessonsItem:
-                        intent = new Intent(NotificationActivity.this, LessonsShowActivity.class);
-                        intent.putExtra("group", userGrp);
-                        startActivity(intent);
-                        break;
-                }
-
-                return true;
-            }
-        });
-
-    }
 
     private void initTabs() {
         viewPager = (ViewPager) findViewById(R.id.viewPager);
