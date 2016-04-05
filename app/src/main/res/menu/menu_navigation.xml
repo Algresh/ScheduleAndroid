@@ -34,5 +34,6 @@
     <item
         android:title="@string/about_app"
         android:orderInCategory="1"
+        android:id="@+id/aboutApp"
         android:icon="@drawable/home" />
 </menu>

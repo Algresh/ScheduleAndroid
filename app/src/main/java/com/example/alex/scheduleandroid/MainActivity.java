@@ -112,6 +112,10 @@ public class MainActivity extends AppCompatActivity {
                         intent = new Intent(MainActivity.this, NotificationActivity.class);
                         startActivity(intent);
                         break;
+                    case R.id.aboutApp:
+                        intent = new Intent(MainActivity.this, AboutAppActivity.class);
+                        startActivity(intent);
+                        break;
 
                 }
                 return true;

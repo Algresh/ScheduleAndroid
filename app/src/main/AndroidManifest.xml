@@ -2,12 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.alex.scheduleandroid">
 
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <permission android:name="com.example.alex.scheduleandroid.permission.C2D_MESSAGE"
+    <permission
+        android:name="com.example.alex.scheduleandroid.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="com.example.alex.scheduleandroid.permission.C2D_MESSAGE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -19,8 +20,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <meta-data android:name="com.google.android.gms.version"
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".MainActivity">
@@ -44,7 +45,8 @@
         </receiver>
 
         <activity android:name=".SelectionGroupActivity" />
-        <activity android:name=".NotificationActivity"/>
+        <activity android:name=".NotificationActivity" />
+
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
@@ -63,7 +65,6 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
-
         <service
             android:name=".service.GcmIntentService"
             android:exported="false">
@@ -72,6 +73,10 @@
             </intent-filter>
         </service>
 
+        <activity
+            android:name=".AboutAppActivity"
+            android:label="@string/title_activity_about_app"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
