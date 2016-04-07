@@ -41,7 +41,7 @@ public class MyGcmPushReceiver extends GcmListenerService {
         Resources res = context.getResources();
         Notification.Builder builder = new Notification.Builder(context);
         builder.setContentIntent(contentIntent)
-                .setSmallIcon(R.drawable.message_text)
+                .setSmallIcon(R.drawable.message_text_white)
                 .setTicker(message)
                 .setAutoCancel(true)
                 .setContentTitle(res.getString(R.string.notifyMessage))

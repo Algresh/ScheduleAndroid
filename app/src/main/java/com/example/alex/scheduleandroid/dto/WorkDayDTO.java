@@ -61,4 +61,11 @@ public class WorkDayDTO {
         return dateOfWorkDay.size();
     }
 
+    @Override
+    public String toString() {
+        return "WorkDayDTO{" +
+                "dateOfWorkDay=" + dateOfWorkDay +
+                ", lessons=" + lessons +
+                '}';
+    }
 }

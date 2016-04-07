@@ -3,12 +3,13 @@ package com.example.alex.scheduleandroid;
 public class Constants {
     public final static String GROUP_USER = "group_user";
 
-    public static final String GROUP_URL = "http://10.0.2.2/schedule/APIController/get_all_groups.php?faculty=";
-    public static final String LESSON_URL = "http://10.0.2.2/schedule/APIController/get_all_lessons_by_grp.php?grp=";
-    public static final String VERSION_GROUP_URL = "http://10.0.2.2/schedule/APIController/get_version_group.php?grp=";
-    public static final String POST_NOTIFICATION_URL = "http://10.0.2.2/schedule/APIController/post_message.php";
-    public static final String GET_NOTIFICATIONS_URL = "http://10.0.2.2/schedule/APIController/get_all_messages.php?regId=";
-    public static final String POST_REGISTER_URL = "http://10.0.2.2/schedule/APIController/register.php";
+    public static final String SITE_URL = "http://parallelcomputing.890m.com/";
+    public static final String GROUP_URL = SITE_URL + "APIController/get_all_groups.php?faculty=";
+    public static final String LESSON_URL = SITE_URL + "APIController/get_all_lessons_by_grp.php?grp=";
+    public static final String VERSION_GROUP_URL = SITE_URL + "APIController/get_version_group.php?grp=";
+    public static final String POST_NOTIFICATION_URL = SITE_URL + "APIController/post_message.php";
+    public static final String GET_NOTIFICATIONS_URL = SITE_URL + "APIController/get_all_messages.php?regId=";
+    public static final String POST_REGISTER_URL = SITE_URL + "APIController/register.php";
 
     public static final String FACULTY_DKE = "1";
     public static final String FACULTY_DEE = "2";
